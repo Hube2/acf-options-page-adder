@@ -1,8 +1,8 @@
-<?php
+<?php 
 
 	/*
 		Plugin Name: Advance Custom Fields: Options Page Adder
-		Plugin URI: https://github.com/Hube2/Advanced-Custom-Fields-Options-Page-Adder
+		Plugin URI: https://github.com/Hube2/acf-options-page-adder
 		Description: Allows easy creation of options pages using Advanced Custom Fields (ACF) and ACF: Options Page  without needing to do any PHP coding. Requires that both ACF and ACF: Options Page be installed and active.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
@@ -252,13 +252,15 @@
 			$sorted_caps = array();
 			$caps = array();
 			//echo '<pre>'; print_r($wp_roles); echo '</pre>';
-			foreach ($roles as $role) {
-				foreach ($role['capabilities'] as $cap => $value) {
-					if (!in_array($cap, $sorted_caps)) {
-						$sorted_caps[] = $cap;
-					}
-				} // end foreach cap
-			} // end foreach role
+			if (count($roles)) {
+				foreach ($roles as $role) {
+					foreach ($role['capabilities'] as $cap => $value) {
+						if (!in_array($cap, $sorted_caps)) {
+							$sorted_caps[] = $cap;
+						}
+					} // end foreach cap
+				} // end foreach role
+			}
 			sort($sorted_caps);
 			foreach ($sorted_caps as $cap) {
 				$caps[$cap] = $cap;
