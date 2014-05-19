@@ -34,7 +34,7 @@
 		} // end public function __construct
 		
 		public function acf_add_options_sub_page() {
-			if (!function_exists('acf_add_options_sub_page')) {
+			if (!function_exists('acf_add_options_sub_page') || !function_exists('get_field')) {
 				return;
 			}
 			// get all the options pages and add them
@@ -222,6 +222,10 @@
 			global $menu;
 			//global $submenu;
 			$parent_menus = array('' => 'None');
+			if (!count($menu)) {
+				$this->parent_menus = $parent_menus;
+				return;
+			}
 			foreach ($menu as $item) {
 				if (isset($item[0]) && $item[0] != '' && $item[0] != 'Options Pages' &&
 						$item[0] != 'CPT UI' && $item[0] != 'Custom Fields' && $item[0] != 'Links' && 
