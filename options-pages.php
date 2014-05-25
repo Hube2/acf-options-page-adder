@@ -38,7 +38,6 @@
         return;
       }
       // get all the options pages and add them
-      //global $post;
       $args = array('post_type' => $this->post_type,
                     'post_status' => 'publish',
                     'posts_per_page' => -1,
@@ -48,14 +47,6 @@
       if ($page_query->have_posts()) {
         foreach ($page_query->posts as $post) {
           $id = $post->ID;
-          /*
-              fields
-                  _acfop_menu = menu text
-                  _acfop_slug = slug
-                  _acfop_parent = parent_menu
-                  _acfop_capability = capability
-          */
-          //$page_query->the_post();
           $title = get_the_title($id);
           $menu_text = trim(get_field('_acfop_menu', $id));
           if (!$menu_text) {
@@ -91,7 +82,7 @@
                                                                  'appear on the page. Enter other '.
                                                                 'details as needed',),
                                              array('key' => '_acf_key_acfop_menu',
-                                                    'label' => 'Menu Text',
+                                                   'label' => 'Menu Text',
                                                    'name' => '_acfop_menu',
                                                    'type' => 'text',
                                                    'instructions' => 'Will default to title if left blank.',
@@ -164,7 +155,7 @@
     public function admin_columns($columns) {
       $new_columns = array();
       foreach ($columns as $index => $column) {
-        if (strtolower($column) == 'title') {
+        if (strtolower($column) == __('title')) {
           $new_columns[$index] = $column;
           $new_columns['menu_text'] = __('Menu Text');
           $new_columns['slug'] = __('Slug');
@@ -241,21 +232,21 @@
         } // end if good parent menu
       } // end foreach menu
       $this->parent_menus = $parent_menus;
-      //echo '<pre>'; print_r($menu); echo '</pre><br><br><pre>'; print_r($submenu); die;
     } // end public function build_admin_menu_list
     
     public function acf_load_parent_menu_field($field) {
-      //echo '<pre>'; print_r($this->parent_menus); echo '</pre>';
       $field['choices'] = $this->parent_menus;
       return $field;
     } // end public function acf_load_parent_menu_field
     
     public function acf_load_capabilities_field($field) {
       global $wp_roles;
+      if (!$wp_roles || !count($wp_roles->roles)) {
+        return $field;
+      }
       $roles = $wp_roles->roles;
       $sorted_caps = array();
       $caps = array();
-      //echo '<pre>'; print_r($wp_roles); echo '</pre>';
       if (count($roles)) {
         foreach ($roles as $role) {
           foreach ($role['capabilities'] as $cap => $value) {
@@ -264,13 +255,12 @@
             }
           } // end foreach cap
         } // end foreach role
-      }
+      } // end if count roles
       sort($sorted_caps);
       foreach ($sorted_caps as $cap) {
         $caps[$cap] = $cap;
       } // end foreach sorted_caps
       $field['choices'] = $caps;
-      //echo '<pre>'; print_r($caps); echo '</pre>';
       return $field;
     } // end public function acf_load_capabilities_field
     
@@ -302,9 +292,7 @@
                                        'search_items' => 'Search '.$this->label.'s',
                                        'not_found' => 'No '.$this->label.'s Found',
                                        'not_found_in_trash' => 'No '.$this->label.'s Found in Trash',
-                                       'parent' => 'Parent '.$this->label
-                    )
-        );
+                                       'parent' => 'Parent '.$this->label));
       register_post_type($this->post_type, $args);
     } // end public function register_post_type
     
