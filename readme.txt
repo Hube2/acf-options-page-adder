@@ -1,4 +1,4 @@
-=== Blunt AJAX ===
+=== Advanced Custom Fields: Options Page Adder ===
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
