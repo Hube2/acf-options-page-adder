@@ -3,12 +3,12 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Donate link: 
 License: 
 License URI: 
 
-Allows easy creation of options pages using Advanced Custom Fields (ACF) and ACF: Options Page  without needing to do any PHP coding. Requires that both ACF and ACF: Options Page be installed and active.
+Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
 
 == Description ==
 
@@ -26,6 +26,12 @@ Allows easy creation of options pages using Advanced Custom Fields (ACF) and ACF
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Updated to be compatable with ACF-Pro (continues to work on ACF4)
+
+= 1.0.0 =
+* Initial Stable Version
 
 = 0.0.1 =
 * initial release

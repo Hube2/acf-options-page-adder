@@ -3,10 +3,10 @@
   /*
     Plugin Name: Advanced Custom Fields: Options Page Adder
     Plugin URI: https://github.com/Hube2/acf-options-page-adder
-    Description: Allows easy creation of options pages using Advanced Custom Fields (ACF) and ACF: Options Page  without needing to do any PHP coding. Requires that both ACF and ACF: Options Page be installed and active.
+    Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
     Author: John A. Huebner II
     Author URI: https://github.com/Hube2
-    Version: 0.0.1
+    Version: 1.1.0
     
     Copyright 2014 John A. Huebner II
   */
@@ -28,8 +28,10 @@
       add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
       add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
       add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
-      add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );  
-      add_action('acf/register_fields', array($this, 'acf_register_fields'));
+      add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );
+      
+      add_action('acf/register_fields', array($this, 'acf_register_fields')); // ACF4
+      add_action('acf/include_fields', array($this, 'acf_include_fields')); // ACF5
       add_action('plugins_loaded', array($this, 'acf_add_options_sub_page'));
     } // end public function __construct
     
@@ -68,19 +70,133 @@
       //wp_reset_query();
     } // end public function acf_add_options_sub_page
     
+    public function acf_include_fields() {
+      // this function is called when ACF5 is installed
+      if (!function_exists('register_field_group')) {
+        return;
+      }
+      $field_group = array('key' => 'acf_options-page-details',
+                           'title' => 'Options Page Details',
+                           'fields' => array(array('key' => 'field_acf_key_acfop_message',
+                                                   'label' => 'Options Page Message',
+                                                   'name' => '',
+                                                   'prefix' => '',
+                                                   'type' => 'message',
+                                                   'instructions' => '',
+                                                   'required' => 0,
+                                                   'conditional_logic' => 0,
+                                                   'message' => 'Title above is the title that will '.
+                                                                'appear on the page. Enter other '.
+                                                                'details as needed'),
+                                            
+                                             array('key' => 'field_acf_key_acfop_menu',
+                                                   'label' => 'Menu Text',
+                                                   'name' => '_acfop_menu',
+                                                   'prefix' => '',
+                                                   'type' => 'text',
+                                                   'instructions' => 'Will default to title if left blank.',
+                                                   'required' => 0,
+                                                   'conditional_logic' => 0,
+                                                   'default_value' => '',
+                                                   'placeholder' => '',
+                                                   'prepend' => '',
+                                                   'append' => '',
+                                                   'maxlength' => '',
+                                                   'readonly' => 0,
+                                                   'disabled' => 0),
+                                             array('key' => 'field_acf_key_acfop_slug',
+                                                   'label' => 'Slug',
+                                                   'name' => '_acfop_slug',
+                                                   'prefix' => '',
+                                                   'type' => 'text',
+                                                   'instructions' => 'Will default to sanitized title '.
+                                                                     'if left blank and will be '.
+                                                                     'prefixed with "'.
+                                                                     $this->prefix.'" (ACF Options Page)',
+                                                   'required' => 0,
+                                                   'conditional_logic' => 0,
+                                                   'default_value' => '',
+                                                   'placeholder' => '',
+                                                   'prepend' => '',
+                                                   'append' => '',
+                                                   'maxlength' => '',
+                                                   'readonly' => 0,
+                                                   'disabled' => 0),
+                                             array('key' => 'field_acf_key_acfop_parent',
+                                                   'label' => 'Menu Location',
+                                                   'name' => '_acfop_parent',
+                                                   'prefix' => '',
+                                                   'type' => 'select',
+                                                   'instructions' => 'Select the menu this options '.
+                                                                     'page will appear under. Will '.
+                                                                     'default to Appearance Menu.',
+                                                   'required' => 0,
+                                                   'conditional_logic' => 0,
+                                                   'choices' => array(), // dynamic populate
+                                                   'default_value' => 'themes.php',
+                                                   'allow_null' => 1,
+                                                   'multiple' => 0,
+                                                   'ui' => 0,
+                                                   'ajax' => 0,
+                                                   'placeholder' => '',
+                                                   'disabled' => 0,
+                                                   'readonly' => 0),
+                                             array('key' => 'field_acf_key_acfop_capability',
+                                                   'label' => 'Capability',
+                                                   'name' => '_acfop_capability',
+                                                   'prefix' => '',
+                                                   'type' => 'select',
+                                                   'instructions' => 'The user capability to view '.
+                                                                     'this options page. Will default '.
+                                                                     'to manage_options.',
+                                                   'required' => 0,
+                                                   'conditional_logic' => 0,
+                                                   'choices' => array(), // dynamic populate
+                                                   'default_value' => 'manage_options',
+                                                   'allow_null' => 1,
+                                                   'multiple' => 0,
+                                                   'ui' => 0,
+                                                   'ajax' => 0,
+                                                   'placeholder' => '',
+                                                   'disabled' => 0,
+                                                   'readonly' => 0)),
+                           'location' => array(array(array('param' => 'post_type',
+                                                           'operator' => '==',
+                                                           'value' => $this->post_type))),
+                           'menu_order' => 0,
+                           'position' => 'normal',
+                           'style' => 'default',
+                           'label_placement' => 'top',
+                           'instruction_placement' => 'label',
+                           'hide_on_screen' => array(0 => 'permalink',
+                                                     1 => 'the_content',
+                                                     2 => 'excerpt',
+                                                     3 => 'custom_fields',
+                                                     4 => 'discussion',
+                                                     5 => 'comments',
+                                                     6 => 'slug',
+                                                     7 => 'author',
+                                                     8 => 'format',
+                                                     9 => 'featured_image',
+                                                     10 => 'categories',
+                                                     11 => 'tags'));
+      register_field_group($field_group);
+    } // end public function acf_include_fields
+    
     public function acf_register_fields() {
+      // this function in called when ACF4 is installed
       if (!function_exists('register_field_group')) {
         return;
       }
       $field_group = array('id' => 'acf_options-page-details',
                            'title' => 'Options Page Details',
                            'fields' => array(array('key' => '_acf_key_acfop_message',
-                                                    'label' => 'Options Page Message',
+                                                   'label' => 'Options Page Message',
                                                    'name' => '',
                                                    'type' => 'message',
                                                    'message' => 'Title above is the title that will '.
-                                                                 'appear on the page. Enter other '.
-                                                                'details as needed',),
+                                                                'appear on the page. Enter other '.
+                                                                'details as needed'),
                                              array('key' => '_acf_key_acfop_menu',
                                                    'label' => 'Menu Text',
                                                    'name' => '_acfop_menu',
@@ -91,13 +207,13 @@
                                                    'prepend' => '',
                                                    'append' => '',
                                                    'formatting' => 'none',
-                                                   'maxlength' => '',),
+                                                   'maxlength' => ''),
                                              array('key' => '_acf_key_acfop_slug',
-                                                    'label' => 'Slug',
+                                                   'label' => 'Slug',
                                                    'name' => '_acfop_slug',
                                                    'type' => 'text',
                                                    'instructions' => 'Will default to sanitized title '.
-                                                                      'if left blank and will be '.
+                                                                     'if left blank and will be '.
                                                                      'prefixed with "'.
                                                                      $this->prefix.'" (ACF Options Page)',
                                                    'default_value' => '',
@@ -105,37 +221,37 @@
                                                    'prepend' => '',
                                                    'append' => '',
                                                    'formatting' => 'none',
-                                                   'maxlength' => '',),
+                                                   'maxlength' => ''),
                                              array('key' => '_acf_key_acfop_parent',
-                                                    'label' => 'Menu Location',
+                                                   'label' => 'Menu Location',
                                                    'name' => '_acfop_parent',
                                                    'type' => 'select',
                                                    'instructions' => 'Select the menu this options '.
-                                                                      'page will appear under. Will '.
+                                                                     'page will appear under. Will '.
                                                                      'default to Appearance Menu.',
                                                    'required' => 0,
                                                    'choices' => array(), // dynamic populate
                                                    'default_value' => 'themes.php',
                                                    'allow_null' => 1,
-                                                   'multiple' => 0,),
+                                                   'multiple' => 0),
                                              array('key' => '_acf_key_acfop_capability',
                                                     'label' => 'Capability',
                                                    'name' => '_acfop_capability',
                                                    'type' => 'select',
                                                    'instructions' => 'The user capability to view '.
-                                                                      'this options page. Will default '.
+                                                                     'this options page. Will default '.
                                                                      'to manage_options.',
                                                    'choices' => array(), // dynamic populate
                                                    'default_value' => 'manage_options',
                                                    'allow_null' => 0,
-                                                   'multiple' => 0,),),
+                                                   'multiple' => 0)),
                            'location' => array(array(array('param' => 'post_type',
-                                                            'operator' => '==',
+                                                           'operator' => '==',
                                                            'value' => $this->post_type,
                                                            'order_no' => 0,
-                                                           'group_no' => 0,),),),
+                                                           'group_no' => 0))),
                            'options' => array('position' => 'normal',
-                                               'layout' => 'default',
+                                              'layout' => 'default',
                                               'hide_on_screen' => array(0 => 'permalink',
                                                                         1 => 'the_content',
                                                                         2 => 'excerpt',
@@ -147,8 +263,8 @@
                                                                         8 => 'format',
                                                                         9 => 'featured_image',
                                                                         10 => 'categories',
-                                                                        11 => 'tags',),),
-                           'menu_order' => 0,);
+                                                                        11 => 'tags')),
+                           'menu_order' => 0);
       register_field_group($field_group);
     } // end public function acf_register_fields
     
