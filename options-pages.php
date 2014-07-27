@@ -29,7 +29,7 @@
       add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );
       add_action('acf/register_fields', array($this, 'acf_register_fields')); // ACF4
       add_action('acf/include_fields', array($this, 'acf_include_fields')); // ACF5
-      add_action('plugins_loaded', array($this, 'acf_add_options_sub_page'));
+      add_action('init', array($this, 'acf_add_options_sub_page'));
     } // end public function __construct
     
     public function acf_add_options_sub_page() {
