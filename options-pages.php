@@ -6,8 +6,11 @@
     Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
     Author: John A. Huebner II
     Author URI: https://github.com/Hube2
-    Version: 1.1.0
+    Version: 1.1.1
   */
+	
+	// If this file is called directly, abort.
+	if (!defined('WPINC')) {die;}
   
   new acfOptionsPageAdder();
   
@@ -42,7 +45,7 @@
                     'posts_per_page' => -1,
                     'order' => 'ASC');
       $page_query = new WP_Query($args);
-      if ($page_query->have_posts()) {
+			if (count($page_query->posts)) {
         foreach ($page_query->posts as $post) {
           $id = $post->ID;
           $title = get_the_title($id);
@@ -267,7 +270,7 @@
     public function admin_columns($columns) {
       $new_columns = array();
       foreach ($columns as $index => $column) {
-        if (strtolower($column) == __('title')) {
+        if ($index == 'title') {
           $new_columns[$index] = $column;
           $new_columns['menu_text'] = __('Menu Text');
           $new_columns['slug'] = __('Slug');
@@ -282,23 +285,21 @@
       return $new_columns;
     } // end public function admin_columns
     
-    public function admin_columns_content($column_name, $column_id) {
+    public function admin_columns_content($column_name, $post_id) {
       if (!function_exists('get_field')) {
         echo '&nbsp;';
         return;
       }
-      global $post;
-      $id = $post->ID;
       switch ($column_name) {
         case 'menu_text':
-          $value = trim(get_field('_acfop_menu', $id));
+          $value = trim(get_field('_acfop_menu', $post_id));
           if (!$value) {
-            $value = trim(get_the_title($id));
+            $value = trim(get_the_title($post_id));
           }
           echo $value;
           break;
         case 'slug':
-          $value = trim(get_field('_acfop_slug', $id));
+          $value = trim(get_field('_acfop_slug', $post_id));
           if (!$value) {
             $value = trim(get_the_title($id));
             $value = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
@@ -307,10 +308,10 @@
           echo $value;
           break;
         case 'location':
-          echo $this->parent_menus[get_field('_acfop_parent', $id)];
+          echo $this->parent_menus[get_field('_acfop_parent', $post_id)];
           break;
         case 'capability':
-          the_field('_acfop_capability', $id);
+          the_field('_acfop_capability', $post_id);
           break;
         default:
           // do nothing

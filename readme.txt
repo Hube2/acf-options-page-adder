@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Donate link: 
 License: 
 License URI: 
@@ -26,6 +26,12 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 
 == Changelog ==
+
+= 1.1.1 =
+* Removed $post global in function admin_columns_content(), not needed, post_id is passed by hook.
+* Added code to prevent plugin from running if not included by WP.
+* Reworked function acf_add_options_sub_page() to not use have_posts() function so it's less likely to interfere with other queries.
+* Other minor code changes that don't effect operation
 
 = 1.1.0 =
 * Updated to be compatable with ACF-Pro (continues to work on ACF4)
