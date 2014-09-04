@@ -59,6 +59,13 @@
           }
           $parent = get_field('_acfop_parent', $id);
           $capability = get_field('_acfop_capability', $id);
+					/* 
+							the array is missing 'slug'
+							means that the wrong slug is being used to add options pages
+							means this is broken
+							need to think of a way to fix this 
+							without breaking sites already using this plugin
+					*/
           $options_page = array('title' => $menu_text,
                                 'menu' => $title,
                                 'parent' => $parent,
