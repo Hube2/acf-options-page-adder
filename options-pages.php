@@ -308,7 +308,7 @@
         case 'slug':
           $value = trim(get_field('_acfop_slug', $post_id));
           if (!$value) {
-            $value = trim(get_the_title($id));
+            $value = trim(get_the_title($post_id));
             $value = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
           }
           $value = $this->prefix.$value;
