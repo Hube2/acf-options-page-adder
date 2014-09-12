@@ -66,11 +66,20 @@
 							need to think of a way to fix this 
 							without breaking sites already using this plugin
 					*/
-          $options_page = array('title' => $menu_text,
-                                'menu' => $title,
-                                'parent' => $parent,
-                                'capability' => $capability);
-          acf_add_options_sub_page($options_page);
+					if ($parent == '') {
+						$options_page = array('page_title' =>  $menu_text,
+																	'menu_title' => $title,
+																	'menu_slug' => $slug,
+																	'capability' => $capability,
+																	'redirect' 	=> false);
+						acf_add_options_page($options_page);
+					} else {
+						$options_page = array('title' => $menu_text,
+																	'menu' => $title,
+																	'parent' => $parent,
+																	'capability' => $capability);
+						acf_add_options_sub_page($options_page);
+					}
         } // end foreach $post;
       } // end if have_posts
       wp_reset_query();
