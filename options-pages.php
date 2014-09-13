@@ -6,7 +6,7 @@
     Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
     Author: John A. Huebner II
     Author URI: https://github.com/Hube2
-    Version: 1.1.1
+    Version: 2.0.0
   */
 	
 	// If this file is called directly, abort.
@@ -16,6 +16,7 @@
   
   class acfOptionsPageAdder {
     
+		private $version = '2.0.0';
     private $post_type = 'acf-options-page';
     private $label = 'Options Page';
     private $parent_menus = array();
@@ -40,6 +41,7 @@
         return;
       }
       // get all the options pages and add them
+			$options_pages = array('top' => array(), 'sub' => array());
       $args = array('post_type' => $this->post_type,
                     'post_status' => 'publish',
                     'posts_per_page' => -1,
@@ -49,40 +51,42 @@
         foreach ($page_query->posts as $post) {
           $id = $post->ID;
           $title = get_the_title($id);
-          $menu_text = trim(get_field('_acfop_menu', $id));
+					$menu_text = trim(get_post_meta($id, '_acfop_menu', true));
           if (!$menu_text) {
             $menu_text = $title;
           }
-          $slug = trim(get_field('_acfop_slug', $id));
-          if (!$menu_text) {
+					$slug = trim(get_post_meta($id, '_acfop_slug', true));
+          if (!$slug) {
             $slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
           }
-          $parent = get_field('_acfop_parent', $id);
-          $capability = get_field('_acfop_capability', $id);
-					/* 
-							the array is missing 'slug'
-							means that the wrong slug is being used to add options pages
-							means this is broken
-							need to think of a way to fix this 
-							without breaking sites already using this plugin
-					*/
-					if ($parent == '') {
-						$options_page = array('page_title' =>  $menu_text,
-																	'menu_title' => $title,
-																	'menu_slug' => $slug,
-																	'capability' => $capability,
-																	'redirect' 	=> false);
-						acf_add_options_page($options_page);
+					$parent = get_post_meta($id, '_acfop_parent', true);
+					$capability = get_post_meta($id, '_acfop_capability', true);
+					if ($parent == 'none') {
+						$options_pages['top'][] = array('page_title' =>  $title,
+																						'menu_title' => $menu_text,
+																						'menu_slug' => $slug,
+																						'capability' => $capability);
 					} else {
-						$options_page = array('title' => $menu_text,
-																	'menu' => $title,
-																	'parent' => $parent,
-																	'capability' => $capability);
-						acf_add_options_sub_page($options_page);
+						$options_pages['sub'][] = array('title' => $title,
+																						'menu' => $menu_text,
+																						'parent' => $parent,
+																						'slug' => $slug,
+																						'capability' => $capability);
 					}
         } // end foreach $post;
       } // end if have_posts
       wp_reset_query();
+			//echo '<pre>'; print_r($options_pages); die;
+			if (count($options_pages['top'])) {
+				foreach ($options_pages['top'] as $options_page) {
+					acf_add_options_page($options_page);
+				}
+			}
+			if (count($options_pages['sub'])) {
+				foreach ($options_pages['sub'] as $options_page) {
+					acf_add_options_sub_page($options_page);
+				}
+			}
     } // end public function acf_add_options_sub_page
     
     public function acf_include_fields() {
@@ -124,10 +128,7 @@
                                                    'name' => '_acfop_slug',
                                                    'prefix' => '',
                                                    'type' => 'text',
-                                                   'instructions' => 'Will default to sanitized title '.
-                                                                     'if left blank and will be '.
-                                                                     'prefixed with "'.
-                                                                     $this->prefix.'" (ACF Options Page)',
+                                                   'instructions' => 'Will default to sanitized title.',
                                                    'required' => 0,
                                                    'conditional_logic' => 0,
                                                    'default_value' => '',
@@ -227,10 +228,7 @@
                                                    'label' => 'Slug',
                                                    'name' => '_acfop_slug',
                                                    'type' => 'text',
-                                                   'instructions' => 'Will default to sanitized title '.
-                                                                     'if left blank and will be '.
-                                                                     'prefixed with "'.
-                                                                     $this->prefix.'" (ACF Options Page)',
+                                                   'instructions' => 'Will default to sanitized title.',
                                                    'default_value' => '',
                                                    'placeholder' => '',
                                                    'prepend' => '',
@@ -308,26 +306,41 @@
       }
       switch ($column_name) {
         case 'menu_text':
-          $value = trim(get_field('_acfop_menu', $post_id));
+					$value = trim(get_post_meta($post_id, '_acfop_menu', true));
+          //$value = trim(get_field('_acfop_menu', $post_id));
           if (!$value) {
             $value = trim(get_the_title($post_id));
           }
           echo $value;
           break;
         case 'slug':
-          $value = trim(get_field('_acfop_slug', $post_id));
+					$value = trim(get_post_meta($post_id, '_acfop_slug', true));
+          //$value = trim(get_field('_acfop_slug', $post_id));
           if (!$value) {
             $value = trim(get_the_title($post_id));
             $value = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
           }
-          $value = $this->prefix.$value;
           echo $value;
           break;
         case 'location':
-          echo $this->parent_menus[get_field('_acfop_parent', $post_id)];
-          break;
+					$value = get_post_meta($post_id, '_acfop_parent', true);
+					if (isset($this->parent_menus[$value])) {
+          	echo $this->parent_menus[$value];
+					} else {
+						global $acf_options_pages;
+						if (count($acf_options_pages)) {
+							foreach ($acf_options_pages as $key => $options_page) {
+								if ($key == $value) {
+									echo $options_page['menu_title'];
+								} // end if key == value
+							} // end foreach acf_options_page
+						} // end if cout acf_options_pages
+					} // end if esl
+					break;
         case 'capability':
-          the_field('_acfop_capability', $post_id);
+					$value = get_post_meta($post_id, '_acfop_capability', true);
+					echo $value;
+          //the_field('_acfop_capability', $post_id);
           break;
         default:
           // do nothing
@@ -338,11 +351,12 @@
     public function build_admin_menu_list() {
       global $menu;
       //global $submenu;
-      $parent_menus = array('' => 'None');
+      $parent_menus = array('none' => 'None');
       if (!count($menu)) {
         $this->parent_menus = $parent_menus;
         return;
       }
+			//echo '<pre>'; print_r($menu); die;
       foreach ($menu as $item) {
         if (isset($item[0]) && $item[0] != '' && $item[0] != 'Options Pages' &&
             $item[0] != 'CPT UI' && $item[0] != 'Custom Fields' && $item[0] != 'Links' && 
@@ -353,11 +367,18 @@
           } elseif ($item[2] == 'plugins.php') {
             $parent_menus[$item[2]] = 'Plugins';
           } else {
-            $parent_menus[$item[2]] = $item[0];
+						$key = $item[2];
+						$value = $item[0];
+						if (!preg_match('/\.php/', $key)) {
+							//$key = 'admin.php?page='.$key;
+						}
+            $parent_menus[$key] = $value;
           } // end if else
         } // end if good parent menu
       } // end foreach menu
+			
       $this->parent_menus = $parent_menus;
+			//echo '<pre>'; print_r($parent_menus); die;
     } // end public function build_admin_menu_list
     
     public function acf_load_parent_menu_field($field) {
