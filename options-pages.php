@@ -103,9 +103,7 @@
                                                    'instructions' => '',
                                                    'required' => 0,
                                                    'conditional_logic' => 0,
-                                                   'message' => 'Title above is the title that will '.
-                                                                'appear on the page. Enter other '.
-                                                                'details as needed'),
+                                                   'message' => 'Title above is the title that will appear on the page. Enter other details as needed.<br />For more information see the ACF documentation for <a href="http://www.advancedcustomfields.com/resources/acf_add_options_page/" target="_blank">acf_add_options_page()</a> and <a href="" target="_blank">acf_add_options_sub_page()</a>.'),
                                             
                                              array('key' => 'field_acf_key_acfop_menu',
                                                    'label' => 'Menu Text',
@@ -142,9 +140,7 @@
                                                    'name' => '_acfop_parent',
                                                    'prefix' => '',
                                                    'type' => 'select',
-                                                   'instructions' => 'Select the menu this options '.
-                                                                     'page will appear under. Will '.
-                                                                     'default to Appearance Menu.',
+                                                   'instructions' => 'Select the menu this options page will appear under. Will default to None.',
                                                    'required' => 0,
                                                    'conditional_logic' => 0,
                                                    'choices' => array(), // dynamic populate
@@ -161,9 +157,7 @@
                                                    'name' => '_acfop_capability',
                                                    'prefix' => '',
                                                    'type' => 'select',
-                                                   'instructions' => 'The user capability to view '.
-                                                                     'this options page. Will default '.
-                                                                     'to manage_options.',
+                                                   'instructions' => 'The user capability to view this options page. Will default to manage_options.',
                                                    'required' => 0,
                                                    'conditional_logic' => 0,
                                                    'choices' => array(), // dynamic populate
@@ -174,7 +168,8 @@
                                                    'ajax' => 0,
                                                    'placeholder' => '',
                                                    'disabled' => 0,
-                                                   'readonly' => 0)),
+                                                   'readonly' => 0),
+																							),
                            'location' => array(array(array('param' => 'post_type',
                                                            'operator' => '==',
                                                            'value' => $this->post_type))),

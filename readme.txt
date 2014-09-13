@@ -27,6 +27,13 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 2.0.0 =
+* Corrected bug in adding top level option page
+* Corrected bug in display of location
+* Corrected bug in options page slugs not being saved correctly
+* Removed support for ACF4
+* Changed default value of location to "None"
+
 = 1.1.1 =
 * Removed $post global in function admin_columns_content(), not needed, post_id is passed by hook.
 * Added code to prevent plugin from running if not included by WP.
