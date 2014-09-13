@@ -2,21 +2,22 @@
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 2.0.0
+Tested up to: 4.0
+Stable tag: 2.1.0
 Donate link: 
 License: 
 License URI: 
 
-Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
+Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF5 Pro is installed.
 
 == Description ==
 
 
 == Installation ==
 
-1. Upload the Advanced Custom Fields: Options Page Adder plugin to the plugin folder of your site
-2. Activate it from the Plugins Page
+1. Extract files to folder named acf-options-page-adder in your plugin folder (usually /wp-content/plugins/acf-options-page-adder)
+2. Upload files
+3. Activate it from the Plugins Page
 
 
 == Screenshots ==
@@ -26,6 +27,13 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 
 == Changelog ==
+
+= 2.1.0 =
+* Added support for redirect
+* Added support for menu position
+* Added support for icon (dashicons)
+* Added sorting of sub options pages
+
 
 = 2.0.0 =
 * Corrected bug in adding top level option page
