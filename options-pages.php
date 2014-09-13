@@ -3,7 +3,7 @@
   /*
     Plugin Name: Advanced Custom Fields: Options Page Adder
     Plugin URI: https://github.com/Hube2/acf-options-page-adder
-    Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF-Pro is installed (or ACF4 & ACF Options Page).
+    Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
     Author: John A. Huebner II
     Author URI: https://github.com/Hube2
     Version: 2.1.0
