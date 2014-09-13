@@ -241,10 +241,10 @@
                                                    'type' => 'select',
                                                    'instructions' => 'Select the menu this options '.
                                                                      'page will appear under. Will '.
-                                                                     'default to Appearance Menu.',
+                                                                     'default to None.',
                                                    'required' => 0,
                                                    'choices' => array(), // dynamic populate
-                                                   'default_value' => 'themes.php',
+                                                   'default_value' => 'none',
                                                    'allow_null' => 1,
                                                    'multiple' => 0),
                                              array('key' => '_acf_key_acfop_capability',
