@@ -3,7 +3,7 @@ Advanced Custom Fields: Options Page Adder
 
 Allows easy creation of options pages using Advanced Custom Fields Pro needing to do any PHP coding.
 
-**Requires ACF-Pro**
+**Requires that ACF5 Pro is installed.**
 
 Please see readme.txt for more information
 
