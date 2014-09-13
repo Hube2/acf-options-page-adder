@@ -198,10 +198,11 @@
       foreach ($columns as $index => $column) {
         if ($index == 'title') {
           $new_columns[$index] = $column;
-          $new_columns['menu_text'] = __('Menu Text');
-          $new_columns['slug'] = __('Slug');
-          $new_columns['location'] = __('Location (Parent)');
-          $new_columns['capability'] = __('Capability');
+          $new_columns['menu_text'] = 'Menu Text';
+          $new_columns['slug'] = 'Slug';
+          $new_columns['location'] = 'Location (Parent)';
+					$new_columns['order'] = 'Order';
+          $new_columns['capability'] = 'Capability';
         } else {
           if (strtolower($column) != 'date') {
             $new_columns[$index] = $column;
@@ -254,6 +255,9 @@
 					echo $value;
           //the_field('_acfop_capability', $post_id);
           break;
+				case 'order':
+					
+					break;
         default:
           // do nothing
           break;
@@ -337,6 +341,7 @@
                     'query_var' => true,
                     'exclude_from_search' => true,
                     'menu_position' => 100,
+										'menu_icon' => 'dashicons-admin-generic',
                     'supports' => array('title','custom-fields','revisions'),
                     'labels' => array ('name' => $this->label.'s',
                                        'singular_name' => $this->label,
