@@ -23,9 +23,7 @@
 		
 		private $version = '2.1.0';
 		private $post_type = 'acf-options-page';
-		private $label = 'Options Page';
 		private $parent_menus = array();
-		private $prefix = 'acf-op-';
 		private $exclude_locations = array('',
 																			 'cpt_main_menu',
 																			 'edit.php?post_type=acf-field-group',
@@ -34,6 +32,7 @@
 																			 'edit-tags.php?taxonomy=link_category',
 																			 'edit.php?post_type=acf-options-page',
 																			 );
+		private $text_domain = 'acf-options-page-adder';
 		
 		public function __construct() {
 			register_activation_hook(__FILE__, array($this, 'activate'));
@@ -521,20 +520,20 @@
 										'menu_position' => 100,
 										'menu_icon' => 'dashicons-admin-generic',
 										'supports' => array('title','custom-fields','revisions'),
-										'labels' => array('name' => $this->label.'s',
-																			'singular_name' => $this->label,
-																			'menu_name' =>	$this->label.'s',
-																			'add_new' => 'Add '.$this->label,
-																			'add_new_item' => 'Add New '.$this->label,
+										'labels' => array('name' => 'Options Pages',
+																			'singular_name' => 'Options Page',
+																			'menu_name' =>	'Options Pages',
+																			'add_new' => 'Add Options Page',
+																			'add_new_item' => 'Add New Options Page',
 																			'edit' => 'Edit',
-																			'edit_item' => 'Edit '.$this->label,
-																			'new_item' => 'New '.$this->label,
-																			'view' => 'View '.$this->label,
-																			'view_item' => 'View '.$this->label,
-																			'search_items' => 'Search '.$this->label.'s',
-																			'not_found' => 'No '.$this->label.'s Found',
-																			'not_found_in_trash' => 'No '.$this->label.'s Found in Trash',
-																			'parent' => 'Parent '.$this->label));
+																			'edit_item' => 'Edit Options Page',
+																			'new_item' => 'New Options Page',
+																			'view' => 'View Options Page',
+																			'view_item' => 'View Options Page',
+																			'search_items' => 'Search Options Pages',
+																			'not_found' => 'No Options Pages Found',
+																			'not_found_in_trash' => 'No Options Pages Found in Trash',
+																			'parent' => 'Parent Options Page'));
 			register_post_type($this->post_type, $args);
 		} // end public function register_post_type
 		
