@@ -37,6 +37,7 @@
 		public function __construct() {
 			register_activation_hook(__FILE__, array($this, 'activate'));
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('init', array($this, 'register_post_type'));
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
@@ -150,26 +151,26 @@
 			}
 			$field_group = array(
 				'key' => 'acf_options-page-details',
-				'title' => 'Options Page Details',
+				'title' => __('Options Page Details', $this->text_domain),
 				'fields' => array(
 					array(
 						'key' => 'field_acf_key_acfop_message',
-						'label' => 'Options Page Message',
+						'label' => __('Options Page Message', $this->text_domain),
 						'name' => '',
 						'prefix' => '',
 						'type' => 'message',
 						'instructions' => '',
 						'required' => 0,
 						'conditional_logic' => 0,
-						'message' => 'Title above is the title that will appear on the page. Enter other details as needed.<br />For more information see the ACF documentation for <a href="http://www.advancedcustomfields.com/resources/acf_add_options_page/" target="_blank">acf_add_options_page()</a> and <a href="" target="_blank">acf_add_options_sub_page()</a>.'
+						'message' => __('Title above is the title that will appear on the page. Enter other details as needed.<br />For more information see the ACF documentation for <a href="http://www.advancedcustomfields.com/resources/acf_add_options_page/" target="_blank">acf_add_options_page()</a> and <a href="" target="_blank">acf_add_options_sub_page()</a>.', $this->text_domain)
 					),
 					array(
 						'key' => 'field_acf_key_acfop_menu',
-						'label' => 'Menu Text',
+						'label' => __('Menu Text', $this->text_domain),
 						'name' => '_acfop_menu',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => 'Will default to title if left blank.',
+						'instructions' => __('Will default to title if left blank.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -182,11 +183,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_slug',
-						'label' => 'Slug',
+						'label' => __('Slug', $this->text_domain),
 						'name' => '_acfop_slug',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => 'Will default to sanitized title.',
+						'instructions' => __('Will default to sanitized title.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -199,11 +200,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_parent',
-						'label' => 'Menu Location (Parent)',
+						'label' => __('Menu Location (Parent)', $this->text_domain),
 						'name' => '_acfop_parent',
 						'prefix' => '',
 						'type' => 'select',
-						'instructions' => 'Select the menu this options page will appear under. Will default to None.',
+						'instructions' => __('Select the menu this options page will appear under. Will default to None.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'choices' => array(), // dynamic populate
@@ -218,11 +219,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_capability',
-						'label' => 'Capability',
+						'label' => __('Capability', $this->text_domain),
 						'name' => '_acfop_capability',
 						'prefix' => '',
 						'type' => 'select',
-						'instructions' => 'The user capability to view this options page. Will default to manage_options.',
+						'instructions' => __('The user capability to view this options page. Will default to manage_options.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'choices' => array(), // dynamic populate
@@ -237,11 +238,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_position',
-						'label' => 'Menu Position',
+						'label' => __('Menu Position', $this->text_domain),
 						'name' => '_acfop_position',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => 'The position in the menu order this menu should appear. WARNING: if two menu items use the same position attribute, one of the items may be overwritten so that only one item displays! Risk of conflict can be reduced by using decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to bottom of utility menu items.<br /><em>Core Menu Item Positions: 2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, 25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, 80=Settings, 99=Separator</em>',
+						'instructions' => __('The position in the menu order this menu should appear. WARNING: if two menu items use the same position attribute, one of the items may be overwritten so that only one item displays! Risk of conflict can be reduced by using decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to bottom of utility menu items.<br /><em>Core Menu Item Positions: 2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, 25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, 80=Settings, 99=Separator</em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -268,7 +269,7 @@
 						'name' => '_acfop_icon',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => 'The icon url for this menu. Defaults to default WordPress gear.',
+						'instructions' => __('The icon url for this menu. Defaults to default WordPress gear.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -289,11 +290,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_redirect',
-						'label' => 'Redirect',
+						'label' => __('Redirect', $this->text_domain),
 						'name' => '_acfop_redirect',
 						'prefix' => '',
 						'type' => 'radio',
-						'instructions' => 'If set to true, this options page will redirect to the first child page (if a child page exists). If set to false, this parent page will appear alongside any child pages. Defaults to true.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>',
+						'instructions' => __('If set to true, this options page will redirect to the first child page (if a child page exists). If set to false, this parent page will appear alongside any child pages. Defaults to true.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -315,11 +316,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_order',
-						'label' => 'Order',
+						'label' => __('Order', $this->text_domain),
 						'name' => '_acfop_order',
 						'prefix' => '',
 						'type' => 'number',
-						'instructions' => 'The order that this child menu should appear under its parent menu.',
+						'instructions' => __('The order that this child menu should appear under its parent menu.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -506,7 +507,7 @@
 		
 		public function register_post_type() {
 			// register the post type
-			$args = array('label' => 'Options Pages',
+			$args = array('label' => __('Options Pages', $this->text_domain),
 										'description' => '',
 										'public' => false,
 										'show_ui' => true,
@@ -520,22 +521,26 @@
 										'menu_position' => 100,
 										'menu_icon' => 'dashicons-admin-generic',
 										'supports' => array('title','custom-fields','revisions'),
-										'labels' => array('name' => 'Options Pages',
-																			'singular_name' => 'Options Page',
-																			'menu_name' =>	'Options Pages',
-																			'add_new' => 'Add Options Page',
-																			'add_new_item' => 'Add New Options Page',
-																			'edit' => 'Edit',
-																			'edit_item' => 'Edit Options Page',
-																			'new_item' => 'New Options Page',
-																			'view' => 'View Options Page',
-																			'view_item' => 'View Options Page',
-																			'search_items' => 'Search Options Pages',
-																			'not_found' => 'No Options Pages Found',
-																			'not_found_in_trash' => 'No Options Pages Found in Trash',
-																			'parent' => 'Parent Options Page'));
+										'labels' => array('name' => __('Options Pages', $this->text_domain),
+																			'singular_name' => __('Options Page', $this->text_domain),
+																			'menu_name' =>	__('Options Pages', $this->text_domain),
+																			'add_new' => __('Add Options Page', $this->text_domain),
+																			'add_new_item' => __('Add New Options Page', $this->text_domain),
+																			'edit' => __('Edit', $this->text_domain),
+																			'edit_item' => __('Edit Options Page', $this->text_domain),
+																			'new_item' => __('New Options Page', $this->text_domain),
+																			'view' => __('View Options Page', $this->text_domain),
+																			'view_item' => __('View Options Page', $this->text_domain),
+																			'search_items' => __('Search Options Pages', $this->text_domain),
+																			'not_found' => __('No Options Pages Found', $this->text_domain),
+																			'not_found_in_trash' => __('No Options Pages Found in Trash', $this->text_domain),
+																			'parent' => __('Parent Options Page', $this->text_domain)));
 			register_post_type($this->post_type, $args);
 		} // end public function register_post_type
+		
+		public function load_text_domain() {
+			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/'); 
+		} // end public function load_text_domain
 		
 		public function activate() {
 			// just in case I want to do anything on activate
