@@ -11,12 +11,12 @@
 	
 	// If this file is called directly, abort.
 	if (!defined('WPINC')) {die;}
-	/*
+	
 	$duplicator = dirname(__FILE__).'/fieldset-duplicator.php';
 	if (file_exists($duplicator)) {
 		include($duplicator);
 	}
-	*/
+	
 	new acfOptionsPageAdder();
 	
 	class acfOptionsPageAdder {
