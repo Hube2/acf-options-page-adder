@@ -38,111 +38,30 @@
 			register_activation_hook(__FILE__, array($this, 'activate'));
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
-			add_action('init', array($this, 'register_post_type'));
+			add_action('init', array($this, 'init'));
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
 			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );
 			add_action('acf/include_fields', array($this, 'acf_include_fields')); // ACF5
-			add_action('init', array($this, 'acf_add_options_sub_page'));
+			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
+			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
 		} // end public function __construct
 		
-		public function acf_add_options_sub_page() {
-			if (!function_exists('acf_add_options_sub_page')) {
-				return;
-			}
-			// get all the options pages and add them
-			$options_pages = array('top' => array(), 'sub' => array());
-			$args = array('post_type' => $this->post_type,
-										'post_status' => 'publish',
-										'posts_per_page' => -1,
-										'order' => 'ASC');
-			$page_query = new WP_Query($args);
-			if (count($page_query->posts)) {
-				foreach ($page_query->posts as $post) {
-					$id = $post->ID;
-					$title = get_the_title($id);
-					$menu_text = trim(get_post_meta($id, '_acfop_menu', true));
-					if (!$menu_text) {
-						$menu_text = $title;
-					}
-					$slug = trim(get_post_meta($id, '_acfop_slug', true));
-					if (!$slug) {
-						$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
-					}
-					$parent = get_post_meta($id, '_acfop_parent', true);
-					$capability = get_post_meta($id, '_acfop_capability', true);
-					if ($parent == 'none') {
-						$options_page = array('page_title' =>	$title,
-																	'menu_title' => $menu_text,
-																	'menu_slug' => $slug,
-																	'capability' => $capability);
-						$redirect = true;
-						$value = get_post_meta($id, '_acfop_redirect', true);
-						if ($value == '0') {
-							$redirect = false;
-						}
-						$options_page['redirect'] = $redirect;
-						
-						$icon = '';
-						$value = get_post_meta($id, '_acfop_icon', true);
-						if ($value != '') {
-							$icon = $value;
-						}
-						if ($icon) {
-							$options_page['icon_url'] = $icon;
-						}
-						
-						$menu_position = '';
-						$value = get_post_meta($id, '_acfop_position', true);
-						if ($value != '') {
-							$menu_position = $value;
-						}
-						if ($menu_position) {
-							$options_page['position'] = $menu_position;
-						}
-						
-						$options_pages['top'][] = $options_page;
-					} else {
-						$order = 0;
-						$value = get_post_meta($id, '_acfop_order', true);
-						if ($value) {
-							$order = $value;
-						}
-						$options_pages['sub'][] = array('title' => $title,
-																						'menu' => $menu_text,
-																						'parent' => $parent,
-																						'slug' => $slug,
-																						'capability' => $capability,
-																						'order' => $order);
-					}
-				} // end foreach $post;
-			} // end if have_posts
-			wp_reset_query();
-			//echo '<pre>'; print_r($options_pages); die;
-			if (count($options_pages['top'])) {
-				foreach ($options_pages['top'] as $options_page) {
-					acf_add_options_page($options_page);
-				}
-			}
-			if (count($options_pages['sub'])) {
-				usort($options_pages['sub'], array($this, 'sort_by_order'));
-				foreach ($options_pages['sub'] as $options_page) {
-					acf_add_options_sub_page($options_page);
-				}
-			}
-		} // end public function acf_add_options_sub_page
+		public function init() {
+			$this->register_post_type();
+			$this->acf_add_options_pages();
+			do_action('acf_options_page/init');
+		} // end public function init
 		
-		public function sort_by_order($a, $b) {
-			if ($a['order'] == $b['order']) {
-				return 0;
-			} elseif ($a['order'] < $b['order']) {
-				return -1;
-			} else {
-				return 1;
-			}
-		} // end public function sort_by_order
+		public function get_post_type($value='') {
+			return $this->post_type;
+		} // end public function get_post_type
+		
+		public function get_text_domain($value='') {
+			return $this->text_domain;
+		} // end public function get_text_domain
 		
 		public function acf_include_fields() {
 			// this function is called when ACF5 is installed
@@ -372,6 +291,33 @@
 			register_field_group($field_group);
 		} // end public function acf_include_fields
 		
+		public function acf_load_parent_menu_field($field) {
+			$field['choices'] = $this->parent_menus;
+			return $field;
+		} // end public function acf_load_parent_menu_field
+		
+		public function acf_load_capabilities_field($field) {
+			global $wp_roles;
+			if (!$wp_roles || !count($wp_roles->roles)) {
+				return $field;
+			}
+			$sorted_caps = array();
+			$caps = array();
+			foreach ($wp_roles->roles as $role) {
+				foreach ($role['capabilities'] as $cap => $value) {
+					if (!in_array($cap, $sorted_caps)) {
+						$sorted_caps[] = $cap;
+					}
+				} // end foreach cap
+			} // end foreach role
+			sort($sorted_caps);
+			foreach ($sorted_caps as $cap) {
+				$caps[$cap] = $cap;
+			} // end foreach sorted_caps
+			$field['choices'] = $caps;
+			return $field;
+		} // end public function 
+		
 		public function admin_columns($columns) {
 			$new_columns = array();
 			foreach ($columns as $index => $column) {
@@ -476,36 +422,31 @@
 				} // end if good parent menu
 			} // end foreach menu
 			$this->parent_menus = $parent_menus;
-		} // end public function build_admin_menu_list
+		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
-		public function acf_load_parent_menu_field($field) {
-			$field['choices'] = $this->parent_menus;
-			return $field;
-		} // end public function acf_load_parent_menu_field
+		public function load_text_domain() {
+			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/'); 
+		} // end public function load_text_domain
 		
-		public function acf_load_capabilities_field($field) {
-			global $wp_roles;
-			if (!$wp_roles || !count($wp_roles->roles)) {
-				return $field;
+		public function sort_by_order($a, $b) {
+			if ($a['order'] == $b['order']) {
+				return 0;
+			} elseif ($a['order'] < $b['order']) {
+				return -1;
+			} else {
+				return 1;
 			}
-			$sorted_caps = array();
-			$caps = array();
-			foreach ($wp_roles->roles as $role) {
-				foreach ($role['capabilities'] as $cap => $value) {
-					if (!in_array($cap, $sorted_caps)) {
-						$sorted_caps[] = $cap;
-					}
-				} // end foreach cap
-			} // end foreach role
-			sort($sorted_caps);
-			foreach ($sorted_caps as $cap) {
-				$caps[$cap] = $cap;
-			} // end foreach sorted_caps
-			$field['choices'] = $caps;
-			return $field;
-		} // end public function acf_load_capabilities_field
+		} // end public function sort_by_order
 		
-		public function register_post_type() {
+		public function activate() {
+			// just in case I want to do anything on activate
+		} // end public function activate
+		
+		public function deactivate() {
+			// just in case I want to do anyting on deactivate
+		} // end public function deactivate
+		
+		private function register_post_type() {
 			// register the post type
 			$args = array('label' => __('Options Pages', $this->text_domain),
 										'description' => '',
@@ -536,19 +477,93 @@
 																			'not_found_in_trash' => __('No Options Pages Found in Trash', $this->text_domain),
 																			'parent' => __('Parent Options Page', $this->text_domain)));
 			register_post_type($this->post_type, $args);
-		} // end public function register_post_type
+		} // end private function register_post_type
 		
-		public function load_text_domain() {
-			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/'); 
-		} // end public function load_text_domain
-		
-		public function activate() {
-			// just in case I want to do anything on activate
-		} // end public function activate
-		
-		public function deactivate() {
-			// just in case I want to do anyting on deactivate
-		} // end public function deactivate
+		private function acf_add_options_pages() {
+			if (!function_exists('acf_add_options_sub_page')) {
+				return;
+			}
+			// get all the options pages and add them
+			$options_pages = array('top' => array(), 'sub' => array());
+			$args = array('post_type' => $this->post_type,
+										'post_status' => 'publish',
+										'posts_per_page' => -1,
+										'order' => 'ASC');
+			$page_query = new WP_Query($args);
+			if (count($page_query->posts)) {
+				foreach ($page_query->posts as $post) {
+					$id = $post->ID;
+					$title = get_the_title($id);
+					$menu_text = trim(get_post_meta($id, '_acfop_menu', true));
+					if (!$menu_text) {
+						$menu_text = $title;
+					}
+					$slug = trim(get_post_meta($id, '_acfop_slug', true));
+					if (!$slug) {
+						$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
+					}
+					$parent = get_post_meta($id, '_acfop_parent', true);
+					$capability = get_post_meta($id, '_acfop_capability', true);
+					if ($parent == 'none') {
+						$options_page = array('page_title' =>	$title,
+																	'menu_title' => $menu_text,
+																	'menu_slug' => $slug,
+																	'capability' => $capability);
+						$redirect = true;
+						$value = get_post_meta($id, '_acfop_redirect', true);
+						if ($value == '0') {
+							$redirect = false;
+						}
+						$options_page['redirect'] = $redirect;
+						
+						$icon = '';
+						$value = get_post_meta($id, '_acfop_icon', true);
+						if ($value != '') {
+							$icon = $value;
+						}
+						if ($icon) {
+							$options_page['icon_url'] = $icon;
+						}
+						
+						$menu_position = '';
+						$value = get_post_meta($id, '_acfop_position', true);
+						if ($value != '') {
+							$menu_position = $value;
+						}
+						if ($menu_position) {
+							$options_page['position'] = $menu_position;
+						}
+						
+						$options_pages['top'][] = $options_page;
+					} else {
+						$order = 0;
+						$value = get_post_meta($id, '_acfop_order', true);
+						if ($value) {
+							$order = $value;
+						}
+						$options_pages['sub'][] = array('title' => $title,
+																						'menu' => $menu_text,
+																						'parent' => $parent,
+																						'slug' => $slug,
+																						'capability' => $capability,
+																						'order' => $order);
+					}
+				} // end foreach $post;
+			} // end if have_posts
+			wp_reset_query();
+			//echo '<pre>'; print_r($options_pages); die;
+			if (count($options_pages['top'])) {
+				foreach ($options_pages['top'] as $options_page) {
+					acf_add_options_page($options_page);
+				}
+			}
+			if (count($options_pages['sub'])) {
+				usort($options_pages['sub'], array($this, 'sort_by_order'));
+				foreach ($options_pages['sub'] as $options_page) {
+					acf_add_options_sub_page($options_page);
+				}
+			}
+		} // end private function acf_add_options_pages
 		
 	} // end class acfOptionsPageAdder
 
