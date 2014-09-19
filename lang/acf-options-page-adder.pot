@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2014-09-17 18:03-0500\n"
+"POT-Creation-Date: 2014-09-18 21:55-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: John Huebner <johnhuebner@site-seeker.com>\n"
 "Language-Team: \n"
@@ -22,15 +22,67 @@ msgstr ""
 "X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: options-pages.php:154
+#: fieldset-duplicator.php:26 fieldset-duplicator.php:44
+msgid "Field Group Duplicators"
+msgstr ""
+
+#: fieldset-duplicator.php:27 fieldset-duplicator.php:43
+msgid "Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:42
+msgid "Options Page Field Group Duplicators"
+msgstr ""
+
+#: fieldset-duplicator.php:45
+msgid "Add Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:46
+msgid "Add New Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:47 options-pages.php:470
+msgid "Edit"
+msgstr ""
+
+#: fieldset-duplicator.php:48
+msgid "Edit Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:49
+msgid "New Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:50 fieldset-duplicator.php:51
+msgid "View Field Group Duplicator"
+msgstr ""
+
+#: fieldset-duplicator.php:52
+msgid "Search Field Group Duplicators"
+msgstr ""
+
+#: fieldset-duplicator.php:53
+msgid "No Field Group Duplicators Found"
+msgstr ""
+
+#: fieldset-duplicator.php:54
+msgid "No Field Group Duplicators Found in Trash"
+msgstr ""
+
+#: fieldset-duplicator.php:55
+msgid "Parent Field Group Duplicators"
+msgstr ""
+
+#: options-pages.php:73
 msgid "Options Page Details"
 msgstr ""
 
-#: options-pages.php:158
+#: options-pages.php:77
 msgid "Options Page Message"
 msgstr ""
 
-#: options-pages.php:165
+#: options-pages.php:84
 msgid ""
 "Title above is the title that will appear on the page. Enter other details "
 "as needed.<br />For more information see the ACF documentation for <a href="
@@ -39,46 +91,46 @@ msgid ""
 "\">acf_add_options_sub_page()</a>."
 msgstr ""
 
-#: options-pages.php:169
+#: options-pages.php:88
 msgid "Menu Text"
 msgstr ""
 
-#: options-pages.php:173
+#: options-pages.php:92
 msgid "Will default to title if left blank."
 msgstr ""
 
-#: options-pages.php:186
+#: options-pages.php:105
 msgid "Slug"
 msgstr ""
 
-#: options-pages.php:190
+#: options-pages.php:109
 msgid "Will default to sanitized title."
 msgstr ""
 
-#: options-pages.php:203
+#: options-pages.php:122
 msgid "Menu Location (Parent)"
 msgstr ""
 
-#: options-pages.php:207
+#: options-pages.php:126
 msgid ""
 "Select the menu this options page will appear under. Will default to None."
 msgstr ""
 
-#: options-pages.php:222
+#: options-pages.php:141
 msgid "Capability"
 msgstr ""
 
-#: options-pages.php:226
+#: options-pages.php:145
 msgid ""
 "The user capability to view this options page. Will default to "
 "manage_options."
 msgstr ""
 
-#: options-pages.php:241
+#: options-pages.php:160
 msgid "Menu Position"
 msgstr ""
 
-#: options-pages.php:245
+#: options-pages.php:164
 msgid ""
 "The position in the menu order this menu should appear. WARNING: if two menu "
 "items use the same position attribute, one of the items may be overwritten "
@@ -90,15 +142,15 @@ msgid ""
 "80=Settings, 99=Separator</em>"
 msgstr ""
 
-#: options-pages.php:272
+#: options-pages.php:191
 msgid "The icon url for this menu. Defaults to default WordPress gear."
 msgstr ""
 
-#: options-pages.php:293
+#: options-pages.php:212
 msgid "Redirect"
 msgstr ""
 
-#: options-pages.php:297
+#: options-pages.php:216
 msgid ""
 "If set to true, this options page will redirect to the first child page (if "
 "a child page exists). If set to false, this parent page will appear "
@@ -107,58 +159,54 @@ msgid ""
 "currently associated with this options page.</strong></em>"
 msgstr ""
 
-#: options-pages.php:319
+#: options-pages.php:238
 msgid "Order"
 msgstr ""
 
-#: options-pages.php:323
+#: options-pages.php:242
 msgid "The order that this child menu should appear under its parent menu."
 msgstr ""
 
-#: options-pages.php:510 options-pages.php:524 options-pages.php:526
+#: options-pages.php:451 options-pages.php:465 options-pages.php:467
 msgid "Options Pages"
 msgstr ""
 
-#: options-pages.php:525
+#: options-pages.php:466
 msgid "Options Page"
 msgstr ""
 
-#: options-pages.php:527
+#: options-pages.php:468
 msgid "Add Options Page"
 msgstr ""
 
-#: options-pages.php:528
+#: options-pages.php:469
 msgid "Add New Options Page"
 msgstr ""
 
-#: options-pages.php:529
-msgid "Edit"
-msgstr ""
-
-#: options-pages.php:530
+#: options-pages.php:471
 msgid "Edit Options Page"
 msgstr ""
 
-#: options-pages.php:531
+#: options-pages.php:472
 msgid "New Options Page"
 msgstr ""
 
-#: options-pages.php:532 options-pages.php:533
+#: options-pages.php:473 options-pages.php:474
 msgid "View Options Page"
 msgstr ""
 
-#: options-pages.php:534
+#: options-pages.php:475
 msgid "Search Options Pages"
 msgstr ""
 
-#: options-pages.php:535
+#: options-pages.php:476
 msgid "No Options Pages Found"
 msgstr ""
 
-#: options-pages.php:536
+#: options-pages.php:477
 msgid "No Options Pages Found in Trash"
 msgstr ""
 
-#: options-pages.php:537
+#: options-pages.php:478
 msgid "Parent Options Page"
 msgstr ""
