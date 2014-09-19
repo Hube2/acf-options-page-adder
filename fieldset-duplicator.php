@@ -20,7 +20,7 @@
 		private function register_post_type() {
 			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
 			$text_domain = apply_filters('acf_options_page/text_domain', false);
-			if (!$options_page_post_type === false || !$text_domain === false) {
+			if ($options_page_post_type === false || $text_domain === false) {
 				return;
 			}
       $args = array('label' => __('Field Group Duplicators', $text_domain),
@@ -53,7 +53,7 @@
                                       'not_found' => __('No Field Group Duplicators Found', $text_domain),
                                       'not_found_in_trash' => __('No Field Group Duplicators Found in Trash', $text_domain),
                                       'parent' => __('Parent Field Group Duplicators', $text_domain)));
-			register_post_type($this->post_type, $args);
+			$post_type = register_post_type($this->post_type, $args);
 		} // end private function register_post_type
 		
 	} // end class acfOptionsPagefieldsetDuplicator
