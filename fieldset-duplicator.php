@@ -17,11 +17,45 @@
 			
 			add_filter('acf/location/rule_values/post_type', array($this, 'acf_location_rules_values_post_type'));
 			add_filter('acf/location/rule_match/post_type', array($this, 'acf_location_rules_match_none'), 10, 3);
+			add_filter('acf/load_field/name=_acf_field_grp_dup_group', array($this, 'load_acf_field_grp_dup_group'));
+			add_filter('acf/load_field/name=_acf_field_grp_dup_page', array($this, 'load_acf_field_grp_dup_page'));
 		} // end public function __construct
 		
 		public function init() {
 			$this->register_post_type();
 		} // end public funtion init
+		
+		public function load_acf_field_grp_dup_group($field) {
+			// doing query posts so that this only shows field groups
+			// created in the ACF editor and not field groups create with code
+			$choices = array();
+			$args = array('post_type' => 'acf-field-group',
+										'status' => 'publish',
+										'posts_per_page' => -1);
+			$query = new WP_Query($args);
+			if (count($query->posts)) {
+				foreach ($query->posts as $post) {
+					$choices[$post->ID] = $post->post_title;
+				}
+			}
+			$field['choices'] = $choices;
+			return $field;
+		} // end public function load_acf_field_grp_dup_group
+		
+		public function load_acf_field_grp_dup_page($field) {
+			global $acf_options_pages;
+			$choices = array();
+			if (count($acf_options_pages)) {
+				foreach ($acf_options_pages as $key => $page) {
+					if ((!isset($page['redirect']) || $page['redirect']) && !$page['parent_slug']) {
+						continue;
+					}
+					$choices[$key] = $page['page_title'];
+				}
+			}
+			$field['choices'] = $choices;
+			return $field;
+		} // end public function load_acf_field_grp_dup_page
 		
 		public function acf_location_rules_match_none($match, $rule, $options) {
 			$match = -1;
