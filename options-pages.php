@@ -43,7 +43,7 @@
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
-			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );
+			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2);
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
 			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
@@ -320,12 +320,12 @@
 			foreach ($columns as $index => $column) {
 				if ($index == 'title') {
 					$new_columns[$index] = $column;
-					$new_columns['menu_text'] = 'Menu Text';
-					$new_columns['slug'] = 'Slug';
-					$new_columns['location'] = 'Location (Parent)';
-					$new_columns['redirect'] = 'Redirect';
-					$new_columns['order'] = 'Order';
-					$new_columns['capability'] = 'Capability';
+					$new_columns['menu_text'] = __('Menu Text', $this->text_domain);
+					$new_columns['slug'] = __('Slug', $this->text_domain);
+					$new_columns['location'] = __('Location (Parent)', $this->text_domain);
+					$new_columns['redirect'] = __('Redirect', $this->text_domain);
+					$new_columns['order'] = __('Order', $this->text_domain);
+					$new_columns['capability'] = __('Capability', $this->text_domain);
 				} else {
 					if (strtolower($column) != 'date') {
 						$new_columns[$index] = $column;
@@ -422,7 +422,8 @@
 		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
 		public function load_text_domain() {
-			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/'); 
+			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/');
+			do_action('acf_options_page/load_text_domain'); 
 		} // end public function load_text_domain
 		
 		public function sort_by_order($a, $b) {
