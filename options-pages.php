@@ -44,7 +44,7 @@
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
 			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2 );
-			add_action('acf/include_fields', array($this, 'acf_include_fields')); // ACF5
+			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
 			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
 		} // end public function __construct
