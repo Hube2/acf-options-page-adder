@@ -8,8 +8,11 @@
 	class acfOptionsPagefieldsetDuplicator {
 		
 		private $post_type = 'acf-opt-grp-dup';
+		private $text_domain;
 		
 		public function __construct() {
+			add_action('admin_notices', array($this, 'admin_message'));
+			
 			add_action('acf_options_page/init', array($this, 'init'));
 			
 			add_filter('acf/location/rule_values/post_type', array($this, 'acf_location_rules_values_post_type'));
@@ -32,9 +35,34 @@
 			return $choices;
 		} // end public function acf_location_rules_values_user
 		
+		public function admin_message() {
+			// updated below-h2
+			$screen = get_current_screen();
+			if ($screen->id != 'edit-acf-opt-grp-dup') {
+				return;
+			}
+			?>
+				<div class="updated">
+					<p>
+						<strong>
+							<?php _e('Options Page Field Group Duplicators allow the use of the same ACF field group on
+							multiple options pages or to duplicate an ACF field group multiple times to the 
+							same options page.<br />
+							The duplication process automatically adds a prefix to all duplicated fields 
+							that you specify so that you do not need to duplicate a field group and manually 
+							modify each field name.<br />
+							In addition the option &quot;None (hidden)&quot; has been added to the Post Type
+							Location Rules in ACF so that you can create field groups that do not normally
+							appear anywhere.', $this->text_domain); ?>
+						</strong>
+					</p>
+				</div>
+			<?php 
+		} // end public function admin_message
+		
 		private function register_post_type() {
 			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
-			$text_domain = apply_filters('acf_options_page/text_domain', false);
+			$text_domain = $this->text_domain = apply_filters('acf_options_page/text_domain', false);
 			if ($options_page_post_type === false || $text_domain === false) {
 				return;
 			}
