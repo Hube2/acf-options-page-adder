@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2014-09-19 23:36-0500\n"
+"POT-Creation-Date: 2014-09-20 17:14-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: John Huebner <johnhuebner@site-seeker.com>\n"
 "Language-Team: \n"
@@ -22,7 +22,181 @@ msgstr ""
 "X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: fieldset-duplicator.php:82
+#: fieldset-duplicator.php:36
+msgid "Duplicator Settings"
+msgstr ""
+
+#: fieldset-duplicator.php:40 fieldset-duplicator.php:401
+msgid "Description"
+msgstr ""
+
+#: fieldset-duplicator.php:44
+msgid ""
+"Enter a description for your duplicator. This description will be shown on "
+"the admin page to remind you and others why it was created or what it does."
+msgstr ""
+
+#: fieldset-duplicator.php:57
+msgid "What do you want to duplicate?"
+msgstr ""
+
+#: fieldset-duplicator.php:61
+msgid ""
+"<em>Please note that this will not allow you to copy multiple field groups "
+"to the same options page multiple times. You will need to create another "
+"duplicator to accomplish this.</em>"
+msgstr ""
+
+#: fieldset-duplicator.php:65 fieldset-duplicator.php:423
+msgid "Duplicate a Field Group to Multiple Options Pages"
+msgstr ""
+
+#: fieldset-duplicator.php:66 fieldset-duplicator.php:425
+msgid "Duplicate a Field Group to the Same Options Page Multiple Times"
+msgstr ""
+
+#: fieldset-duplicator.php:75
+msgid "Tabs?"
+msgstr ""
+
+#: fieldset-duplicator.php:79
+msgid ""
+"Do you want to put the copies into tabs?<br />Selecting yes will add all of "
+"the duplicates to a single field group and each duplicate will be in its own "
+"tab.<br /><em>This could have unexpected results if your field groups "
+"already contain tab fields.</em>"
+msgstr ""
+
+#: fieldset-duplicator.php:91
+msgid "Yes"
+msgstr ""
+
+#: fieldset-duplicator.php:92
+msgid "No"
+msgstr ""
+
+#: fieldset-duplicator.php:101 fieldset-duplicator.php:173
+#: fieldset-duplicator.php:282
+msgid "Field Group Title"
+msgstr ""
+
+#: fieldset-duplicator.php:105
+msgid ""
+"Enter the Title for the new compound tabbed group that will be created. It "
+"this is left blank then the title of the duplicated field group will be used."
+msgstr ""
+
+#: fieldset-duplicator.php:131
+msgid "Field Group to Duplicate"
+msgstr ""
+
+#: fieldset-duplicator.php:135
+msgid "Select the field group that you want to duplicate."
+msgstr ""
+
+#: fieldset-duplicator.php:155
+msgid ""
+"Select the options pages that the duplicated field group should be applied."
+"<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values "
+"you must use the prefix you set here along with the field name set in the "
+"field group. For example if your field name is <strong>\"my_field\"</strong> "
+"and your prefix is <strong>\"my_prefix_\"</strong> then you would use the "
+"field name of <strong>\"my_prefix_my_field\"</strong> when getting the value."
+"<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique "
+"fields for each field group the ACF \"key\" value of each field must also be "
+"generated. The field key will be the same as the field name described above "
+"with the additional prefix of <strong>\"field_key_\"</strong>. Using the "
+"above example the field key for the field would be <strong>"
+"\"field_key_my_prefix_my_field\"</strong>."
+msgstr ""
+
+#: fieldset-duplicator.php:169 options-pages.php:466
+msgid "Add Options Page"
+msgstr ""
+
+#: fieldset-duplicator.php:177
+msgid ""
+"Use a different title for the field group on this options page.<br />If you "
+"do not specify a title for the field group it will default to the original "
+"field group title."
+msgstr ""
+
+#: fieldset-duplicator.php:191 options-pages.php:464
+msgid "Options Page"
+msgstr ""
+
+#: fieldset-duplicator.php:195
+msgid "Select the options page to duplicate the field groups to."
+msgstr ""
+
+#: fieldset-duplicator.php:212 fieldset-duplicator.php:344
+msgid "Field Name Prefix"
+msgstr ""
+
+#: fieldset-duplicator.php:216 fieldset-duplicator.php:348
+msgid ""
+"Enter the prefix to apply to all fields names in the field group. You must "
+"supply a unique prefix for each duplication."
+msgstr ""
+
+#: fieldset-duplicator.php:232
+msgid "Apply to Options Page"
+msgstr ""
+
+#: fieldset-duplicator.php:236
+msgid "Select the options page that this field group will be duplicated to."
+msgstr ""
+
+#: fieldset-duplicator.php:260
+msgid "Duplicates"
+msgstr ""
+
+#: fieldset-duplicator.php:264
+msgid ""
+"Set the values to be used for each duplication of the field group on this "
+"page."
+msgstr ""
+
+#: fieldset-duplicator.php:278
+msgid "Add Duplicate"
+msgstr ""
+
+#: fieldset-duplicator.php:286
+msgid ""
+"Enter the field group\ttitle to use for this duplicate.<br />If you do not "
+"supply a title then the title of the field group will be used.<br />Having "
+"the same field group title used multiple times could be confusing to the "
+"user."
+msgstr ""
+
+#: fieldset-duplicator.php:313
+msgid "Tab Label"
+msgstr ""
+
+#: fieldset-duplicator.php:317
+msgid ""
+"Enter the tab label to use for this duplicate.<br />If no value is given "
+"then the labels<strong>\"Tab 1\"</strong>, <strong>\"Tab 2\"</strong>, "
+"<strong>\"Tab 3\"</strong>, etc, will be used."
+msgstr ""
+
+#: fieldset-duplicator.php:402
+msgid "Duplication Type"
+msgstr ""
+
+#: fieldset-duplicator.php:403
+msgid "Field Group"
+msgstr ""
+
+#: fieldset-duplicator.php:404
+msgid "Options Page(s)"
+msgstr ""
+
+#: fieldset-duplicator.php:405
+msgid "Field Prefix(es)"
+msgstr ""
+
+#: fieldset-duplicator.php:536
 msgid ""
 "Options Page Field Group Duplicators allow the use of the same ACF field "
 "group on multiple options pages or to duplicate an ACF field group multiple "
@@ -34,67 +208,67 @@ msgid ""
 "normally appear anywhere."
 msgstr ""
 
-#: fieldset-duplicator.php:95 fieldset-duplicator.php:113
+#: fieldset-duplicator.php:553 fieldset-duplicator.php:571
 msgid "Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:96 fieldset-duplicator.php:112
+#: fieldset-duplicator.php:554 fieldset-duplicator.php:570
 msgid "Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:111
+#: fieldset-duplicator.php:569
 msgid "Options Page Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:114
+#: fieldset-duplicator.php:572
 msgid "Add Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:115
+#: fieldset-duplicator.php:573
 msgid "Add New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:116 options-pages.php:470
+#: fieldset-duplicator.php:574 options-pages.php:468
 msgid "Edit"
 msgstr ""
 
-#: fieldset-duplicator.php:117
+#: fieldset-duplicator.php:575
 msgid "Edit Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:118
+#: fieldset-duplicator.php:576
 msgid "New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:119 fieldset-duplicator.php:120
+#: fieldset-duplicator.php:577 fieldset-duplicator.php:578
 msgid "View Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:121
+#: fieldset-duplicator.php:579
 msgid "Search Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:122
+#: fieldset-duplicator.php:580
 msgid "No Field Group Duplicators Found"
 msgstr ""
 
-#: fieldset-duplicator.php:123
+#: fieldset-duplicator.php:581
 msgid "No Field Group Duplicators Found in Trash"
 msgstr ""
 
-#: fieldset-duplicator.php:124
+#: fieldset-duplicator.php:582
 msgid "Parent Field Group Duplicators"
 msgstr ""
 
-#: options-pages.php:73
+#: options-pages.php:70
 msgid "Options Page Details"
 msgstr ""
 
-#: options-pages.php:77
+#: options-pages.php:74
 msgid "Options Page Message"
 msgstr ""
 
-#: options-pages.php:84
+#: options-pages.php:81
 msgid ""
 "Title above is the title that will appear on the page. Enter other details "
 "as needed.<br />For more information see the ACF documentation for <a href="
@@ -103,46 +277,46 @@ msgid ""
 "\">acf_add_options_sub_page()</a>."
 msgstr ""
 
-#: options-pages.php:88
+#: options-pages.php:85 options-pages.php:323
 msgid "Menu Text"
 msgstr ""
 
-#: options-pages.php:92
+#: options-pages.php:89
 msgid "Will default to title if left blank."
 msgstr ""
 
-#: options-pages.php:105
+#: options-pages.php:102 options-pages.php:324
 msgid "Slug"
 msgstr ""
 
-#: options-pages.php:109
+#: options-pages.php:106
 msgid "Will default to sanitized title."
 msgstr ""
 
-#: options-pages.php:122
+#: options-pages.php:119
 msgid "Menu Location (Parent)"
 msgstr ""
 
-#: options-pages.php:126
+#: options-pages.php:123
 msgid ""
 "Select the menu this options page will appear under. Will default to None."
 msgstr ""
 
-#: options-pages.php:141
+#: options-pages.php:138 options-pages.php:328
 msgid "Capability"
 msgstr ""
 
-#: options-pages.php:145
+#: options-pages.php:142
 msgid ""
 "The user capability to view this options page. Will default to "
 "manage_options."
 msgstr ""
 
-#: options-pages.php:160
+#: options-pages.php:157
 msgid "Menu Position"
 msgstr ""
 
-#: options-pages.php:164
+#: options-pages.php:161
 msgid ""
 "The position in the menu order this menu should appear. WARNING: if two menu "
 "items use the same position attribute, one of the items may be overwritten "
@@ -154,15 +328,15 @@ msgid ""
 "80=Settings, 99=Separator</em>"
 msgstr ""
 
-#: options-pages.php:191
+#: options-pages.php:188
 msgid "The icon url for this menu. Defaults to default WordPress gear."
 msgstr ""
 
-#: options-pages.php:212
+#: options-pages.php:209 options-pages.php:326
 msgid "Redirect"
 msgstr ""
 
-#: options-pages.php:216
+#: options-pages.php:213
 msgid ""
 "If set to true, this options page will redirect to the first child page (if "
 "a child page exists). If set to false, this parent page will appear "
@@ -171,54 +345,50 @@ msgid ""
 "currently associated with this options page.</strong></em>"
 msgstr ""
 
-#: options-pages.php:238
+#: options-pages.php:235 options-pages.php:327
 msgid "Order"
 msgstr ""
 
-#: options-pages.php:242
+#: options-pages.php:239
 msgid "The order that this child menu should appear under its parent menu."
 msgstr ""
 
-#: options-pages.php:451 options-pages.php:465 options-pages.php:467
+#: options-pages.php:325
+msgid "Location (Parent)"
+msgstr ""
+
+#: options-pages.php:449 options-pages.php:463 options-pages.php:465
 msgid "Options Pages"
 msgstr ""
 
-#: options-pages.php:466
-msgid "Options Page"
-msgstr ""
-
-#: options-pages.php:468
-msgid "Add Options Page"
-msgstr ""
-
-#: options-pages.php:469
+#: options-pages.php:467
 msgid "Add New Options Page"
 msgstr ""
 
-#: options-pages.php:471
+#: options-pages.php:469
 msgid "Edit Options Page"
 msgstr ""
 
-#: options-pages.php:472
+#: options-pages.php:470
 msgid "New Options Page"
 msgstr ""
 
-#: options-pages.php:473 options-pages.php:474
+#: options-pages.php:471 options-pages.php:472
 msgid "View Options Page"
 msgstr ""
 
-#: options-pages.php:475
+#: options-pages.php:473
 msgid "Search Options Pages"
 msgstr ""
 
-#: options-pages.php:476
+#: options-pages.php:474
 msgid "No Options Pages Found"
 msgstr ""
 
-#: options-pages.php:477
+#: options-pages.php:475
 msgid "No Options Pages Found in Trash"
 msgstr ""
 
-#: options-pages.php:478
+#: options-pages.php:476
 msgid "Parent Options Page"
 msgstr ""
