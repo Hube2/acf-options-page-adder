@@ -11,11 +11,26 @@
 		
 		public function __construct() {
 			add_action('acf_options_page/init', array($this, 'init'));
+			
+			add_filter('acf/location/rule_values/post_type', array($this, 'acf_location_rules_values_post_type'));
+			add_filter('acf/location/rule_match/post_type', array($this, 'acf_location_rules_match_none'), 10, 3);
 		} // end public function __construct
 		
 		public function init() {
 			$this->register_post_type();
 		} // end public funtion init
+		
+		public function acf_location_rules_match_none($match, $rule, $options) {
+			$match = -1;
+			return $match;
+		} // end public function acf_location_rules_match_none
+		
+		public function acf_location_rules_values_post_type($choices) {
+			if (!isset($choices['none'])) {
+				$choices['none'] = 'None (hidden)';
+			}
+			return $choices;
+		} // end public function acf_location_rules_values_user
 		
 		private function register_post_type() {
 			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
