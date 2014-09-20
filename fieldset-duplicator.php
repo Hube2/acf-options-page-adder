@@ -12,18 +12,120 @@
 		
 		public function __construct() {
 			add_action('admin_notices', array($this, 'admin_message'));
+			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
+			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2);
 			
 			add_action('acf_options_page/init', array($this, 'init'));
+			add_action('acf_options_page/load_text_domain', array($this, 'load_text_domain'));
 			
 			add_filter('acf/location/rule_values/post_type', array($this, 'acf_location_rules_values_post_type'));
 			add_filter('acf/location/rule_match/post_type', array($this, 'acf_location_rules_match_none'), 10, 3);
 			add_filter('acf/load_field/name=_acf_field_grp_dup_group', array($this, 'load_acf_field_grp_dup_group'));
 			add_filter('acf/load_field/name=_acf_field_grp_dup_page', array($this, 'load_acf_field_grp_dup_page'));
+			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 		} // end public function __construct
 		
 		public function init() {
 			$this->register_post_type();
 		} // end public funtion init
+		
+		public function acf_include_fields() {
+			// this function is called when ACF5 is installed
+			// *******************************************************************************************
+			// *******************************************************************************************
+			// *******************************************************************************************
+			// *******************************************************************************************
+			return;
+			$text_domain = $this->text_domain;
+			$field_group = array();
+			register_field_group($field_group);
+		} // end public function acf_include_fields
+		
+		public function admin_columns($columns) {
+			$new_columns = array();
+			foreach ($columns as $index => $column) {
+				if ($index == 'title') {
+					$new_columns[$index] = $column;
+					$new_columns['description'] = __('Description', $this->text_domain);
+					$new_columns['method'] = __('Duplication Type', $this->text_domain);
+					$new_columns['field_group'] = __('Field Group', $this->text_domain);
+					$new_columns['options_pages'] = __('Options Page(s)', $this->text_domain);
+					$new_columns['field_prefixes'] = __('Field Prefix(es)', $this->text_domain);
+				} else {
+					if (strtolower($column) != 'date') {
+						$new_columns[$index] = $column;
+					}
+				}
+			}
+			return $new_columns;
+		} // end public function admin_columns
+		
+		public function admin_columns_content($column_name, $post_id) {
+			switch ($column_name) {
+				case 'description':
+					echo get_post_meta($post_id, '_acf_field_grp_dup_desc', true);
+					break;
+				case 'method':
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						_e('Duplicate a Field Group to Multiple Options Pages', $this->text_domain);
+					} elseif ($method == 'multiply') {
+						_e('Duplicate a Field Group to the Same Options Page Multiple Times', $this->text_domain);
+					}
+					break;
+				case 'field_group':
+					$field_group_id = intval(get_post_meta($post_id, '_acf_field_grp_dup_group', true));
+					echo get_the_title($field_group_id);
+					break;
+				case 'options_pages':
+					$options_pages = array();
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						$pages = intval(get_post_meta($post_id, '_acf_field_grp_dup_pages', true));
+						for ($i=0; $i<$pages; $i++) {
+							$key = '_acf_field_grp_dup_pages_'.$i.'__acf_field_grp_dup_page';
+							$options_pages[] = get_post_meta($post_id, $key, true);
+						}
+					} elseif ($method == 'multiply') {
+						$options_pages[] = get_post_meta($post_id, '_acf_field_grp_dup_page', true);
+					}
+					if (count($options_pages)) {
+						$list = '';
+						global $acf_options_pages;
+						foreach ($options_pages as $page) {
+							if (isset($acf_options_pages[$page])) {
+								if ($list != '') {
+									$list .= '<br />';
+								}
+								$list .= $acf_options_pages[$page]['page_title'];
+							}
+						}
+						echo $list;
+					}
+					break;
+				case 'field_prefixes':
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						$repeater = '_acf_field_grp_dup_pages';
+					} elseif ($method == 'multiply') {
+						$repeater = '_acf_field_grp_dups';
+					}
+					$prefixes = intval(get_post_meta($post_id, $repeater, true));
+					$list = '';
+					for ($i=0; $i<$prefixes; $i++) {
+						if ($list != '') {
+							$list .= '<br />';
+						}
+						$key = $repeater.'_'.$i.'__acf_field_grp_dup_prefix';
+						$list .= get_post_meta($post_id, $key, true);
+					}
+					echo $list;
+					break;
+				default:
+					// do nothing
+					break;
+			} // end switch
+		} // end public function admin_columns_content
 		
 		public function load_acf_field_grp_dup_group($field) {
 			// doing query posts so that this only shows field groups
@@ -86,9 +188,13 @@
 			<?php 
 		} // end public function admin_message
 		
+		public function load_text_domain() {
+			$this->text_domain = apply_filters('acf_options_page/text_domain', false);
+		} // end public function load_text_domain
+		
 		private function register_post_type() {
 			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
-			$text_domain = $this->text_domain = apply_filters('acf_options_page/text_domain', false);
+			$text_domain = $this->text_domain;
 			if ($options_page_post_type === false || $text_domain === false) {
 				return;
 			}
