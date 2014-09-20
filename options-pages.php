@@ -65,9 +65,6 @@
 		
 		public function acf_include_fields() {
 			// this function is called when ACF5 is installed
-			if (!function_exists('register_field_group')) {
-				return;
-			}
 			$field_group = array(
 				'key' => 'acf_options-page-details',
 				'title' => __('Options Page Details', $this->text_domain),
