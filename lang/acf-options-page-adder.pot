@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2014-09-18 21:55-0500\n"
+"POT-Creation-Date: 2014-09-19 21:36-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: John Huebner <johnhuebner@site-seeker.com>\n"
 "Language-Team: \n"
@@ -22,55 +22,67 @@ msgstr ""
 "X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: fieldset-duplicator.php:26 fieldset-duplicator.php:44
+#: fieldset-duplicator.php:48
+msgid ""
+"Options Page Field Group Duplicators allow the use of the same ACF field "
+"group on multiple options pages or to duplicate an ACF field group multiple "
+"times to the same options page.<br />The duplication process automatically "
+"adds a prefix to all duplicated fields that you specify so that you do not "
+"need to duplicate a field group and manually modify each field name.<br />In "
+"addition the option &quot;None (hidden)&quot; has been added to the Post "
+"Type Location Rules in ACF so that you can create field groups that do not "
+"normally appear anywhere."
+msgstr ""
+
+#: fieldset-duplicator.php:61 fieldset-duplicator.php:79
 msgid "Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:27 fieldset-duplicator.php:43
+#: fieldset-duplicator.php:62 fieldset-duplicator.php:78
 msgid "Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:42
+#: fieldset-duplicator.php:77
 msgid "Options Page Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:45
+#: fieldset-duplicator.php:80
 msgid "Add Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:46
+#: fieldset-duplicator.php:81
 msgid "Add New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:47 options-pages.php:470
+#: fieldset-duplicator.php:82 options-pages.php:470
 msgid "Edit"
 msgstr ""
 
-#: fieldset-duplicator.php:48
+#: fieldset-duplicator.php:83
 msgid "Edit Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:49
+#: fieldset-duplicator.php:84
 msgid "New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:50 fieldset-duplicator.php:51
+#: fieldset-duplicator.php:85 fieldset-duplicator.php:86
 msgid "View Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:52
+#: fieldset-duplicator.php:87
 msgid "Search Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:53
+#: fieldset-duplicator.php:88
 msgid "No Field Group Duplicators Found"
 msgstr ""
 
-#: fieldset-duplicator.php:54
+#: fieldset-duplicator.php:89
 msgid "No Field Group Duplicators Found in Trash"
 msgstr ""
 
-#: fieldset-duplicator.php:55
+#: fieldset-duplicator.php:90
 msgid "Parent Field Group Duplicators"
 msgstr ""
 

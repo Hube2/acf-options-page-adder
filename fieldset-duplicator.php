@@ -45,15 +45,7 @@
 				<div class="updated">
 					<p>
 						<strong>
-							<?php _e('Options Page Field Group Duplicators allow the use of the same ACF field group on
-							multiple options pages or to duplicate an ACF field group multiple times to the 
-							same options page.<br />
-							The duplication process automatically adds a prefix to all duplicated fields 
-							that you specify so that you do not need to duplicate a field group and manually 
-							modify each field name.<br />
-							In addition the option &quot;None (hidden)&quot; has been added to the Post Type
-							Location Rules in ACF so that you can create field groups that do not normally
-							appear anywhere.', $this->text_domain); ?>
+							<?php _e('Options Page Field Group Duplicators allow the use of the same ACF field group on multiple options pages or to duplicate an ACF field group multiple times to the same options page.<br />The duplication process automatically adds a prefix to all duplicated fields that you specify so that you do not need to duplicate a field group and manually modify each field name.<br />In addition the option &quot;None (hidden)&quot; has been added to the Post Type Location Rules in ACF so that you can create field groups that do not normally appear anywhere.', $this->text_domain); ?>
 						</strong>
 					</p>
 				</div>
