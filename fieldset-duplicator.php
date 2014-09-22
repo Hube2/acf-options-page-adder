@@ -9,6 +9,48 @@
 		
 		private $post_type = 'acf-opt-grp-dup';
 		private $text_domain;
+		private $duplicators = array();
+		private $field_groups = array();				// will hold the dyamically generated field groups
+		private $acf_field_groups = array();		// will hold data for field groups to duplicate ??? will see
+		private $options_pages = array();				// will hold all data for options pages ??? will see
+		
+		/*
+				$duplicators = array(
+											   array(
+												   'duplicator_name' => '',		// duplicator name   NR
+													 'description' => '',				// description				NR
+													 'id' => '',								// duplicator id
+													 														//		post_id
+													 'slug' => '',							// ??? not sure could be useful in the future
+													 'type' => '',							// copy/multiply
+													 'tabs' => '',							// true/false
+													 														//		used for multiply
+													 'field_group' => '',				// can be any valid field group
+													 														// 		not just what is created using this plugin
+																											// 		will allow adding duplicated through code
+													 'title' => '',							// field group title
+													 														// 		the title for the field group copy
+																											//		used for copy
+																											//		if blank it will default to the title 
+																											//		of the field group being duplicated
+													 'options_page' => '',			// options page id
+													 														// 		any valid options page
+																											//		this one is used for multiply
+													 'duplicates' => array(			// array of duplicate information
+													 														//		array for each duplicate
+													 								   array(
+																						   'title' => '',					// title or tab label
+																							 'prefix' => '',				// feild prefix for duplicate
+																							 'options_page' => '',	// options page id
+																							 												// 		used for copy only
+																						 ),
+																					 
+																					 ),
+													 
+												 ),
+											 );
+		
+		*/
 		
 		public function __construct() {
 			add_action('admin_notices', array($this, 'admin_message'));
@@ -23,13 +65,256 @@
 			add_filter('acf/load_field/name=_acf_field_grp_dup_group', array($this, 'load_acf_field_grp_dup_group'));
 			add_filter('acf/load_field/name=_acf_field_grp_dup_page', array($this, 'load_acf_field_grp_dup_page'));
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
+			// second hook for acf/include_fields with and insanely high priorty
+			add_action('acf/include_fields', array($this, 'add_duplicates'), 999);
 		} // end public function __construct
 		
 		public function init() {
 			$this->register_post_type();
+			$this->build_duplicators();
 		} // end public funtion init
 		
 		public function acf_include_fields() {
+			$this->register_duplicator_field_group();
+		} // end public function acf_include_fields
+		
+		public function add_duplicates() {
+			// build duplicated field groups and register them
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			// get all registered field groups and field
+			// get all options pages
+			// build duplicate field groups and register to the correct options page
+			
+		} // end public function add_duplicates
+		
+		public function admin_columns($columns) {
+			$new_columns = array();
+			foreach ($columns as $index => $column) {
+				if ($index == 'title') {
+					$new_columns[$index] = $column;
+					$new_columns['description'] = __('Description', $this->text_domain);
+					$new_columns['method'] = __('Duplication Type', $this->text_domain);
+					$new_columns['field_group'] = __('Field Group', $this->text_domain);
+					$new_columns['options_pages'] = __('Options Page(s)', $this->text_domain);
+					$new_columns['field_prefixes'] = __('Field Prefix(es)', $this->text_domain);
+				} else {
+					if (strtolower($column) != 'date') {
+						$new_columns[$index] = $column;
+					}
+				}
+			}
+			return $new_columns;
+		} // end public function admin_columns
+		
+		public function admin_columns_content($column_name, $post_id) {
+			switch ($column_name) {
+				case 'description':
+					echo get_post_meta($post_id, '_acf_field_grp_dup_desc', true);
+					break;
+				case 'method':
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						_e('Duplicate a Field Group to Multiple Options Pages', $this->text_domain);
+					} elseif ($method == 'multiply') {
+						_e('Duplicate a Field Group to the Same Options Page Multiple Times', $this->text_domain);
+					}
+					break;
+				case 'field_group':
+					$field_group_id = intval(get_post_meta($post_id, '_acf_field_grp_dup_group', true));
+					echo get_the_title($field_group_id);
+					break;
+				case 'options_pages':
+					$options_pages = array();
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						$pages = intval(get_post_meta($post_id, '_acf_field_grp_dup_pages', true));
+						for ($i=0; $i<$pages; $i++) {
+							$key = '_acf_field_grp_dup_pages_'.$i.'__acf_field_grp_dup_page';
+							$options_pages[] = get_post_meta($post_id, $key, true);
+						}
+					} elseif ($method == 'multiply') {
+						$options_pages[] = get_post_meta($post_id, '_acf_field_grp_dup_page', true);
+					}
+					if (count($options_pages)) {
+						$list = '';
+						global $acf_options_pages;
+						foreach ($options_pages as $page) {
+							if (isset($acf_options_pages[$page])) {
+								if ($list != '') {
+									$list .= '<br />';
+								}
+								$list .= $acf_options_pages[$page]['page_title'];
+							}
+						}
+						echo $list;
+					}
+					break;
+				case 'field_prefixes':
+					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
+					if ($method == 'copy') {
+						$repeater = '_acf_field_grp_dup_pages';
+					} elseif ($method == 'multiply') {
+						$repeater = '_acf_field_grp_dups';
+					}
+					$prefixes = intval(get_post_meta($post_id, $repeater, true));
+					$list = '';
+					for ($i=0; $i<$prefixes; $i++) {
+						if ($list != '') {
+							$list .= '<br />';
+						}
+						$key = $repeater.'_'.$i.'__acf_field_grp_dup_prefix';
+						$list .= get_post_meta($post_id, $key, true);
+					}
+					echo $list;
+					break;
+				default:
+					// do nothing
+					break;
+			} // end switch
+		} // end public function admin_columns_content
+		
+		public function load_acf_field_grp_dup_group($field) {
+			// doing query posts so that this only shows field groups
+			// created in the ACF editor and not field groups create with code
+			$choices = array();
+			$args = array('post_type' => 'acf-field-group',
+										'status' => 'publish',
+										'posts_per_page' => -1);
+			$query = new WP_Query($args);
+			if (count($query->posts)) {
+				foreach ($query->posts as $post) {
+					$choices[$post->ID] = $post->post_title;
+				}
+			}
+			$field['choices'] = $choices;
+			return $field;
+		} // end public function load_acf_field_grp_dup_group
+		
+		public function load_acf_field_grp_dup_page($field) {
+			global $acf_options_pages;
+			$choices = array();
+			if (count($acf_options_pages)) {
+				foreach ($acf_options_pages as $key => $page) {
+					if ((!isset($page['redirect']) || $page['redirect']) && !$page['parent_slug']) {
+						continue;
+					}
+					$choices[$key] = $page['page_title'];
+				}
+			}
+			$field['choices'] = $choices;
+			return $field;
+		} // end public function load_acf_field_grp_dup_page
+		
+		public function acf_location_rules_match_none($match, $rule, $options) {
+			$match = -1;
+			return $match;
+		} // end public function acf_location_rules_match_none
+		
+		public function acf_location_rules_values_post_type($choices) {
+			if (!isset($choices['none'])) {
+				$choices['none'] = 'None (hidden)';
+			}
+			return $choices;
+		} // end public function acf_location_rules_values_user
+		
+		public function admin_message() {
+			// updated below-h2
+			$screen = get_current_screen();
+			if ($screen->id != 'edit-acf-opt-grp-dup') {
+				return;
+			}
+			?>
+				<div class="updated">
+					<p>
+						<strong>
+							<?php _e('Options Page Field Group Duplicators allow the use of the same ACF field group on multiple options pages or to duplicate an ACF field group multiple times to the same options page.<br />The duplication process automatically adds a prefix to all duplicated fields that you specify so that you do not need to duplicate a field group and manually modify each field name.<br />In addition the option &quot;None (hidden)&quot; has been added to the Post Type Location Rules in ACF so that you can create field groups that do not normally appear anywhere.', $this->text_domain); ?>
+						</strong>
+					</p>
+				</div>
+			<?php 
+		} // end public function admin_message
+		
+		public function load_text_domain() {
+			$this->text_domain = apply_filters('acf_options_page/text_domain', false);
+		} // end public function load_text_domain
+		
+		private function build_duplicators() {
+			// get duplicators and build $this->duplicators array
+			$args = array('post_type' => $this->post_type,
+										'status' => 'publish',
+										'posts_per_page' => -1);
+			$query = new WP_Query($args);
+			if (count($query->posts)) {
+				foreach ($query->posts as $post) {
+					$args = $this->build_duplicator($post->ID);
+					$this->add_duplicator($args);
+				}
+			}
+		} // end private function build_duplicators
+		
+		private function build_duplicator($id) {
+			// get the fields for the duplicator and create $args;
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			
+			return $args;
+		} // end private function build_duplicator
+		
+		public function add_duplicator($args) {
+			// add duplicator to $this->duplicators;
+			// eventually this will be callable to add duplicators through code only
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			
+		} // end public function add_duplicator
+		
+		private function register_post_type() {
+			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
+			$text_domain = $this->text_domain;
+			if ($options_page_post_type === false || $text_domain === false) {
+				return;
+			}
+      $args = array('label' => __('Field Group Duplicators', $text_domain),
+										'singular_label' => __('Field Group Duplicator', $text_domain),
+                    'description' => '',
+                    'public' => false,
+										'has_archive' => false,
+                    'show_ui' => true,
+                    'show_in_menu' => 'edit.php?post_type='.$options_page_post_type,
+                    'capability_type' => 'post',
+                    'map_meta_cap' => true,
+                    'hierarchical' => false,
+                    'rewrite' => array('slug' => $this->post_type, 'with_front' => true),
+                    'query_var' => $this->post_type,
+                    'exclude_from_search' => true,
+                    'menu_position' => false,
+										//'menu_icon' => 'dashicons-admin-generic',
+                    'supports' => array('title','custom-fields','revisions'),
+                    'labels' => array('name' => __('Options Page Field Group Duplicators', $text_domain),
+                                      'singular_name' => __('Field Group Duplicator', $text_domain),
+                                      'menu_name' =>  __('Field Group Duplicators', $text_domain),
+                                      'add_new' => __('Add Field Group Duplicator', $text_domain),
+                                      'add_new_item' => __('Add New Field Group Duplicator', $text_domain),
+                                      'edit' => __('Edit', $text_domain),
+                                      'edit_item' => __('Edit Field Group Duplicator', $text_domain),
+                                      'new_item' => __('New Field Group Duplicator', $text_domain),
+                                      'view' => __('View Field Group Duplicator', $text_domain),
+                                      'view_item' => __('View Field Group Duplicator', $text_domain),
+                                      'search_items' => __('Search Field Group Duplicators', $text_domain),
+                                      'not_found' => __('No Field Group Duplicators Found', $text_domain),
+                                      'not_found_in_trash' => __('No Field Group Duplicators Found in Trash', $text_domain),
+                                      'parent' => __('Parent Field Group Duplicators', $text_domain)));
+			$post_type = register_post_type($this->post_type, $args);
+		} // end private function register_post_type
+		
+		private function register_duplicator_field_group() {
 			$text_domain = $this->text_domain;
 			$field_group = array(
 				'key' => 'group_acf_opt_grp_dup',
@@ -391,197 +676,7 @@
 					13 => 'send-trackbacks',
 				),);
 			register_field_group($field_group);
-		} // end public function acf_include_fields
-		
-		public function admin_columns($columns) {
-			$new_columns = array();
-			foreach ($columns as $index => $column) {
-				if ($index == 'title') {
-					$new_columns[$index] = $column;
-					$new_columns['description'] = __('Description', $this->text_domain);
-					$new_columns['method'] = __('Duplication Type', $this->text_domain);
-					$new_columns['field_group'] = __('Field Group', $this->text_domain);
-					$new_columns['options_pages'] = __('Options Page(s)', $this->text_domain);
-					$new_columns['field_prefixes'] = __('Field Prefix(es)', $this->text_domain);
-				} else {
-					if (strtolower($column) != 'date') {
-						$new_columns[$index] = $column;
-					}
-				}
-			}
-			return $new_columns;
-		} // end public function admin_columns
-		
-		public function admin_columns_content($column_name, $post_id) {
-			switch ($column_name) {
-				case 'description':
-					echo get_post_meta($post_id, '_acf_field_grp_dup_desc', true);
-					break;
-				case 'method':
-					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
-					if ($method == 'copy') {
-						_e('Duplicate a Field Group to Multiple Options Pages', $this->text_domain);
-					} elseif ($method == 'multiply') {
-						_e('Duplicate a Field Group to the Same Options Page Multiple Times', $this->text_domain);
-					}
-					break;
-				case 'field_group':
-					$field_group_id = intval(get_post_meta($post_id, '_acf_field_grp_dup_group', true));
-					echo get_the_title($field_group_id);
-					break;
-				case 'options_pages':
-					$options_pages = array();
-					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
-					if ($method == 'copy') {
-						$pages = intval(get_post_meta($post_id, '_acf_field_grp_dup_pages', true));
-						for ($i=0; $i<$pages; $i++) {
-							$key = '_acf_field_grp_dup_pages_'.$i.'__acf_field_grp_dup_page';
-							$options_pages[] = get_post_meta($post_id, $key, true);
-						}
-					} elseif ($method == 'multiply') {
-						$options_pages[] = get_post_meta($post_id, '_acf_field_grp_dup_page', true);
-					}
-					if (count($options_pages)) {
-						$list = '';
-						global $acf_options_pages;
-						foreach ($options_pages as $page) {
-							if (isset($acf_options_pages[$page])) {
-								if ($list != '') {
-									$list .= '<br />';
-								}
-								$list .= $acf_options_pages[$page]['page_title'];
-							}
-						}
-						echo $list;
-					}
-					break;
-				case 'field_prefixes':
-					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
-					if ($method == 'copy') {
-						$repeater = '_acf_field_grp_dup_pages';
-					} elseif ($method == 'multiply') {
-						$repeater = '_acf_field_grp_dups';
-					}
-					$prefixes = intval(get_post_meta($post_id, $repeater, true));
-					$list = '';
-					for ($i=0; $i<$prefixes; $i++) {
-						if ($list != '') {
-							$list .= '<br />';
-						}
-						$key = $repeater.'_'.$i.'__acf_field_grp_dup_prefix';
-						$list .= get_post_meta($post_id, $key, true);
-					}
-					echo $list;
-					break;
-				default:
-					// do nothing
-					break;
-			} // end switch
-		} // end public function admin_columns_content
-		
-		public function load_acf_field_grp_dup_group($field) {
-			// doing query posts so that this only shows field groups
-			// created in the ACF editor and not field groups create with code
-			$choices = array();
-			$args = array('post_type' => 'acf-field-group',
-										'status' => 'publish',
-										'posts_per_page' => -1);
-			$query = new WP_Query($args);
-			if (count($query->posts)) {
-				foreach ($query->posts as $post) {
-					$choices[$post->ID] = $post->post_title;
-				}
-			}
-			$field['choices'] = $choices;
-			return $field;
-		} // end public function load_acf_field_grp_dup_group
-		
-		public function load_acf_field_grp_dup_page($field) {
-			global $acf_options_pages;
-			$choices = array();
-			if (count($acf_options_pages)) {
-				foreach ($acf_options_pages as $key => $page) {
-					if ((!isset($page['redirect']) || $page['redirect']) && !$page['parent_slug']) {
-						continue;
-					}
-					$choices[$key] = $page['page_title'];
-				}
-			}
-			$field['choices'] = $choices;
-			return $field;
-		} // end public function load_acf_field_grp_dup_page
-		
-		public function acf_location_rules_match_none($match, $rule, $options) {
-			$match = -1;
-			return $match;
-		} // end public function acf_location_rules_match_none
-		
-		public function acf_location_rules_values_post_type($choices) {
-			if (!isset($choices['none'])) {
-				$choices['none'] = 'None (hidden)';
-			}
-			return $choices;
-		} // end public function acf_location_rules_values_user
-		
-		public function admin_message() {
-			// updated below-h2
-			$screen = get_current_screen();
-			if ($screen->id != 'edit-acf-opt-grp-dup') {
-				return;
-			}
-			?>
-				<div class="updated">
-					<p>
-						<strong>
-							<?php _e('Options Page Field Group Duplicators allow the use of the same ACF field group on multiple options pages or to duplicate an ACF field group multiple times to the same options page.<br />The duplication process automatically adds a prefix to all duplicated fields that you specify so that you do not need to duplicate a field group and manually modify each field name.<br />In addition the option &quot;None (hidden)&quot; has been added to the Post Type Location Rules in ACF so that you can create field groups that do not normally appear anywhere.', $this->text_domain); ?>
-						</strong>
-					</p>
-				</div>
-			<?php 
-		} // end public function admin_message
-		
-		public function load_text_domain() {
-			$this->text_domain = apply_filters('acf_options_page/text_domain', false);
-		} // end public function load_text_domain
-		
-		private function register_post_type() {
-			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
-			$text_domain = $this->text_domain;
-			if ($options_page_post_type === false || $text_domain === false) {
-				return;
-			}
-      $args = array('label' => __('Field Group Duplicators', $text_domain),
-										'singular_label' => __('Field Group Duplicator', $text_domain),
-                    'description' => '',
-                    'public' => false,
-										'has_archive' => false,
-                    'show_ui' => true,
-                    'show_in_menu' => 'edit.php?post_type='.$options_page_post_type,
-                    'capability_type' => 'post',
-                    'map_meta_cap' => true,
-                    'hierarchical' => false,
-                    'rewrite' => array('slug' => $this->post_type, 'with_front' => true),
-                    'query_var' => $this->post_type,
-                    'exclude_from_search' => true,
-                    'menu_position' => false,
-										//'menu_icon' => 'dashicons-admin-generic',
-                    'supports' => array('title','custom-fields','revisions'),
-                    'labels' => array('name' => __('Options Page Field Group Duplicators', $text_domain),
-                                      'singular_name' => __('Field Group Duplicator', $text_domain),
-                                      'menu_name' =>  __('Field Group Duplicators', $text_domain),
-                                      'add_new' => __('Add Field Group Duplicator', $text_domain),
-                                      'add_new_item' => __('Add New Field Group Duplicator', $text_domain),
-                                      'edit' => __('Edit', $text_domain),
-                                      'edit_item' => __('Edit Field Group Duplicator', $text_domain),
-                                      'new_item' => __('New Field Group Duplicator', $text_domain),
-                                      'view' => __('View Field Group Duplicator', $text_domain),
-                                      'view_item' => __('View Field Group Duplicator', $text_domain),
-                                      'search_items' => __('Search Field Group Duplicators', $text_domain),
-                                      'not_found' => __('No Field Group Duplicators Found', $text_domain),
-                                      'not_found_in_trash' => __('No Field Group Duplicators Found in Trash', $text_domain),
-                                      'parent' => __('Parent Field Group Duplicators', $text_domain)));
-			$post_type = register_post_type($this->post_type, $args);
-		} // end private function register_post_type
+		} // end private function register_duplicator_field_group
 		
 	} // end class acfOptionsPagefieldsetDuplicator
 	
