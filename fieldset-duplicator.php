@@ -79,16 +79,33 @@
 		} // end public function acf_include_fields
 		
 		public function add_duplicates() {
-			// build duplicated field groups and register them
+			// build duplicated field groups and register them with ACF
+			$this->acf_get_field_groups();
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
-			// get all registered field groups and field
+			// get all registered field groups and fields
 			// get all options pages
 			// build duplicate field groups and register to the correct options page
 			
 		} // end public function add_duplicates
+		
+		private function acf_get_field_groups() {
+			
+			
+			
+			$field_groups = acf_get_field_groups();
+			//echo '<pre>'; print_r($field_groups); die;
+			$count = count($field_groups);
+			for ($i=0; $i<$count; $i++) {
+				$fields = acf_get_fields($field_groups[$i]['key']);
+				$field_groups[$i]['fields'] = $fields;
+				$this->field_groups[$field_groups[$i]['key']] = $field_groups[$i];
+			}
+			//echo '<pre>'; print_r($this->field_groups); die;
+			//$this->acf_field_groups = $field_groups;
+		} // end public function acf_get_field_groups
 		
 		public function admin_columns($columns) {
 			$new_columns = array();
@@ -234,6 +251,13 @@
 						</strong>
 					</p>
 				</div>
+				<div class="error">
+					<p>
+						<strong>
+							<?php _e('A word of caution. Options page field names and keys are normally limited to 64 characters because the options_name field of the wp_options table is limited to 64 characters. Due to the way the ACF works, and the way that the duplication process works, it is possible for field names to exceed this maximum. This will casue a silent failure when saving values. When using options pages in ACF you should modify the database and increase this maximum to 255. The WP team has been talking about doing this for over 4 years.', $this->text_domain); ?>
+						</strong>
+					</p>
+				</div>
 			<?php 
 		} // end public function admin_message
 		
@@ -257,23 +281,24 @@
 		
 		private function build_duplicator($id) {
 			// get the fields for the duplicator and create $args;
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
+			$args = array();
 			
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
+			// **********************************************************************
 			return $args;
 		} // end private function build_duplicator
 		
-		public function add_duplicator($args) {
+		private function add_duplicator($args) {
 			// add duplicator to $this->duplicators;
-			// eventually this will be callable to add duplicators through code only
+			// eventually this will be callable to add duplicators through code
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
 			
-		} // end public function add_duplicator
+		} // end private function add_duplicator
 		
 		private function register_post_type() {
 			$options_page_post_type = apply_filters('acf_options_page/post_type', false);
@@ -437,7 +462,7 @@
 						'name' => '_acf_field_grp_dup_pages',
 						'prefix' => '',
 						'type' => 'repeater',
-						'instructions' => __('Select the options pages that the duplicated field group should be applied.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix_"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value.<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be generated. The field key will be the same as the field name described above with the additional prefix of <strong>"field_key_"</strong>. Using the above example the field key for the field would be <strong>"field_key_my_prefix_my_field"</strong>.', $text_domain),
+						'instructions' => __('Select the options pages that the duplicated field group should be applied to.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix_"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be generated. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix_"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix_"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -546,7 +571,7 @@
 						'name' => '_acf_field_grp_dups',
 						'prefix' => '',
 						'type' => 'repeater',
-						'instructions' => __('Set the values to be used for each duplication of the field group on this page.', $text_domain),
+						'instructions' => __('Set the values to be used for each duplication of the field group on this page.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix_"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be generated. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix_"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix_"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
