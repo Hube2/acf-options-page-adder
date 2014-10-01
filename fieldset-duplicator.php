@@ -92,19 +92,17 @@
 		} // end public function add_duplicates
 		
 		private function acf_get_field_groups() {
-			
-			
-			
 			$field_groups = acf_get_field_groups();
 			//echo '<pre>'; print_r($field_groups); die;
 			$count = count($field_groups);
 			for ($i=0; $i<$count; $i++) {
-				$fields = acf_get_fields($field_groups[$i]['key']);
-				$field_groups[$i]['fields'] = $fields;
-				$this->field_groups[$field_groups[$i]['key']] = $field_groups[$i];
+				if ($field_groups[$i]['key'] != 'group_acf_opt_grp_dup' && 
+						$field_groups[$i]['key'] != 'acf_options-page-details') {
+					$fields = acf_get_fields($field_groups[$i]['key']);
+					$field_groups[$i]['fields'] = $fields;
+					$this->field_groups[$field_groups[$i]['key']] = $field_groups[$i];
+				}
 			}
-			//echo '<pre>'; print_r($this->field_groups); die;
-			//$this->acf_field_groups = $field_groups;
 		} // end public function acf_get_field_groups
 		
 		public function admin_columns($columns) {
