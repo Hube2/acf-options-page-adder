@@ -38,7 +38,7 @@
 			register_activation_hook(__FILE__, array($this, 'activate'));
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
-			add_action('init', array($this, 'init'));
+			add_action('init', array($this, 'init'), 0);
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
