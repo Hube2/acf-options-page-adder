@@ -79,23 +79,32 @@
 		} // end public function acf_include_fields
 		
 		public function add_duplicates() {
+			if (!count($this->duplicators)) {
+				return;
+			}
+			// get all registered field groups and fields
 			// build duplicated field groups and register them with ACF
 			$this->acf_get_field_groups();
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
 			// **********************************************************************
-			// get all registered field groups and fields
-			// get all options pages
+			// get all options pages, does it matter if the options page exists?
 			// build duplicate field groups and register to the correct options page
+			echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
 			
 		} // end public function add_duplicates
+		
+		private function duplicate($args) {
+			
+		} // end private function duplicate
 		
 		private function acf_get_field_groups() {
 			$field_groups = acf_get_field_groups();
 			//echo '<pre>'; print_r($field_groups); die;
 			$count = count($field_groups);
 			for ($i=0; $i<$count; $i++) {
+				// skip field group of this plugin
 				if ($field_groups[$i]['key'] != 'group_acf_opt_grp_dup' && 
 						$field_groups[$i]['key'] != 'acf_options-page-details') {
 					$fields = acf_get_fields($field_groups[$i]['key']);
@@ -138,8 +147,19 @@
 					}
 					break;
 				case 'field_group':
-					$field_group_id = intval(get_post_meta($post_id, '_acf_field_grp_dup_group', true));
-					echo get_the_title($field_group_id);
+					$group_title = '';
+					$slug = get_post_meta($post_id, '_acf_field_grp_dup_group', true);
+					$args=array(
+						'name' => $slug,
+						'post_type' => 'acf-field-group',
+						'post_status' => 'publish',
+						'posts_per_page' => 1
+					);
+					$query = new WP_Query($args);
+					if (count($query->posts)) {
+						$group_title = get_the_title($query->posts[0]->ID);
+					}
+					echo $group_title;
 					break;
 				case 'options_pages':
 					$options_pages = array();
@@ -199,9 +219,10 @@
 										'status' => 'publish',
 										'posts_per_page' => -1);
 			$query = new WP_Query($args);
+			//echo '<pre>'; print_r($query->posts); echo '</pre>';
 			if (count($query->posts)) {
 				foreach ($query->posts as $post) {
-					$choices[$post->ID] = $post->post_title;
+					$choices[$post->post_name] = $post->post_title;
 				}
 			}
 			$field['choices'] = $choices;
@@ -275,27 +296,46 @@
 					$this->add_duplicator($args);
 				}
 			}
+			//echo '<pre>'; print_r($this->duplicators); die;
 		} // end private function build_duplicators
 		
 		private function build_duplicator($id) {
 			// get the fields for the duplicator and create $args;
 			$args = array();
+			$args['duplicator_name'] = get_the_title($id);
+			$args['description'] = get_post_meta($id, '_acf_field_grp_dup_desc', true);
+			$args['id'] = $id;
+			$args['slug'] = '';
+			$args['type'] = get_post_meta($id, '_acf_field_grp_dup_method', true);
+			$args['tabs'] = intval(get_post_meta($id, '_acf_field_grp_dup_tabs', true));
+			$args['field_group'] = get_post_meta($id, '_acf_field_grp_dup_group', true);
+			$args['title'] = trim(get_post_meta($id, '_acf_field_grp_dup_title', true));
 			
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
+			$args['options_page'] = '';
+			if ($args['type'] == 'multiply') {
+				$args['options_page'] = get_post_meta($id, '_acf_field_grp_dup_page', true);
+				$repeater = '_acf_field_grp_dups';
+			} else {
+				// type = copy
+				$repeater = '_acf_field_grp_dup_pages';
+			}
+			$count = intval(get_post_meta($id, $repeater, true));
+			$duplicates = array();
+			for ($i=0; $i<$count; $i++) {
+				$duplicate = array();
+				$duplicate['title'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_title', true);
+				$duplicate['prefix'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_prefix', true);
+				$duplicate['options_page'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_page', true);
+				$duplicates[] = $duplicate;
+			} // end for
+			$args['duplicates'] = $duplicates;
 			return $args;
 		} // end private function build_duplicator
 		
 		private function add_duplicator($args) {
 			// add duplicator to $this->duplicators;
 			// eventually this will be callable to add duplicators through code
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			
+			$this->duplicators[] = $args;
 		} // end private function add_duplicator
 		
 		private function register_post_type() {
