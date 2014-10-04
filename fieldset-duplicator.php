@@ -91,7 +91,7 @@
 			// **********************************************************************
 			// get all options pages, does it matter if the options page exists?
 			// build duplicate field groups and register to the correct options page
-			echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
+			//echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
 			
 		} // end public function add_duplicates
 		
