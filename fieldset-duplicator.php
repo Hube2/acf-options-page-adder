@@ -13,6 +13,7 @@
 		private $field_groups = array();				// will hold the dyamically generated field groups
 		private $acf_field_groups = array();		// will hold data for field groups to duplicate ??? will see
 		private $options_pages = array();				// will hold all data for options pages ??? will see
+		private $collected_names = array();			// holds field names and field key changes
 		
 		/*
 				$duplicators = array(
@@ -82,20 +83,22 @@
 			if (!count($this->duplicators)) {
 				return;
 			}
-			// get all registered field groups and fields
 			// build duplicated field groups and register them with ACF
+			// get all registered field groups and fields
 			$this->acf_get_field_groups();
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			// **********************************************************************
-			// get all options pages, does it matter if the options page exists?
-			// build duplicate field groups and register to the correct options page
+			if (!count($this->field_groups)) {
+				return;
+			}
 			//echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
-			
+			foreach ($this->duplicators as $duplicator) {
+				if (isset($this->field_groups[$duplicator['field_group']])) {
+					$this->duplicate($duplicator);
+				}
+			}
 		} // end public function add_duplicates
 		
-		private function duplicate($args) {
+		private function duplicate($duplicator) {
+			// build duplicate field group and register
 			
 		} // end private function duplicate
 		
