@@ -28,8 +28,8 @@
 																			 'cpt_main_menu',
 																			 'edit.php?post_type=acf-field-group',
 																			 //'edit-comments.php',
-																			 'plugins.php',
-																			 'edit-tags.php?taxonomy=link_category',
+																			 //'plugins.php',
+																			 //'edit-tags.php?taxonomy=link_category',
 																			 'edit.php?post_type=acf-options-page',
 																			 );
 		private $text_domain = 'acf-options-page-adder';
