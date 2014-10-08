@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2014-10-08 11:18-0500\n"
+"POT-Creation-Date: 2014-10-08 11:31-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: John Huebner <johnhuebner@site-seeker.com>\n"
 "Language-Team: \n"
@@ -175,14 +175,14 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: fieldset-duplicator.php:468 fieldset-duplicator.php:540
-#: fieldset-duplicator.php:649
+#: fieldset-duplicator.php:468 fieldset-duplicator.php:539
+#: fieldset-duplicator.php:648
 msgid "Field Group Title"
 msgstr ""
 
 #: fieldset-duplicator.php:472
 msgid ""
-"Enter the Title for the new compound tabbed group that will be created. It "
+"Enter the Title for the new compound tabbed group that will be created. If "
 "this is left blank then the title of the duplicated field group will be used."
 msgstr ""
 
@@ -194,106 +194,108 @@ msgstr ""
 msgid "Select the field group that you want to duplicate."
 msgstr ""
 
-#: fieldset-duplicator.php:522
+#: fieldset-duplicator.php:521
 msgid ""
 "Select the options pages that the duplicated field group should be applied "
 "to.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field "
 "values you must use the prefix you set here along with the field name set in "
 "the field group. For example if your field name is <strong>\"my_field\"</"
-"strong> and your prefix is <strong>\"my_prefix_\"</strong> then you would "
-"use the field name of <strong>\"my_prefix_my_field\"</strong> when getting "
-"the value or for any other operation that requires the field name.<br /"
-">&nbsp;<br /><strong>New Field Key: </strong>In order to create unique "
-"fields for each field group the ACF \"key\" value of each field must also be "
-"generated. The field key will be the original field key appended with an "
-"underscore and your prefix. For example, if the original field key looked "
+"strong> and your prefix is <strong>\"my_prefix\"</strong> then you would use "
+"the field name of <strong>\"my_prefix_my_field\"</strong> when getting the "
+"value or for any other operation that requires the field name.<em>Please "
+"note the addition of the underscore between your prefix and field name.</"
+"em><br />&nbsp;<br /><strong>New Field Key: </strong>In order to create "
+"unique fields for each field group the ACF \"key\" value of each field must "
+"also be altered. The field key will be the original field key appended with "
+"an underscore and your prefix. For example, if the original field key looked "
 "somthing like <strong>\"field_541c4c1f8d1ab\"</strong> and your prefix is "
-"<strong>\"my_prefix_\"</strong> then the new field key will be <strong>"
-"\"field_541c4c1f8d1ab_my_prefix_\"</strong>. You would use this new field "
-"key anywhere you would normally use the original field key."
+"<strong>\"my_prefix\"</strong> then the new field key will be <strong>"
+"\"field_541c4c1f8d1ab_my_prefix\"</strong>. You would use this new field key "
+"anywhere you would normally use the original field key."
 msgstr ""
 
-#: fieldset-duplicator.php:536 options-pages.php:466
+#: fieldset-duplicator.php:535 options-pages.php:466
 msgid "Add Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:544
+#: fieldset-duplicator.php:543
 msgid ""
 "Use a different title for the field group on this options page.<br />If you "
 "do not specify a title for the field group it will default to the original "
 "field group title."
 msgstr ""
 
-#: fieldset-duplicator.php:558 options-pages.php:464
+#: fieldset-duplicator.php:557 options-pages.php:464
 msgid "Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:562
-msgid "Select the options page to duplicate the field groups to."
+#: fieldset-duplicator.php:561
+msgid "Select the options page to duplicate the field group to."
 msgstr ""
 
-#: fieldset-duplicator.php:579 fieldset-duplicator.php:711
+#: fieldset-duplicator.php:578 fieldset-duplicator.php:710
 msgid "Field Name Prefix"
 msgstr ""
 
-#: fieldset-duplicator.php:583 fieldset-duplicator.php:715
+#: fieldset-duplicator.php:582 fieldset-duplicator.php:714
 msgid ""
 "Enter the prefix to apply to all fields names in the field group. You must "
 "supply a unique prefix for each duplication."
 msgstr ""
 
-#: fieldset-duplicator.php:599
+#: fieldset-duplicator.php:598
 msgid "Apply to Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:603
+#: fieldset-duplicator.php:602
 msgid "Select the options page that this field group will be duplicated to."
 msgstr ""
 
-#: fieldset-duplicator.php:627
+#: fieldset-duplicator.php:626
 msgid "Duplicates"
 msgstr ""
 
-#: fieldset-duplicator.php:631
+#: fieldset-duplicator.php:630
 msgid ""
 "Set the values to be used for each duplication of the field group on this "
 "page.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field "
 "values you must use the prefix you set here along with the field name set in "
 "the field group. For example if your field name is <strong>\"my_field\"</"
-"strong> and your prefix is <strong>\"my_prefix_\"</strong> then you would "
-"use the field name of <strong>\"my_prefix_my_field\"</strong> when getting "
-"the value or for any other operation that requires the field name.<br /"
-">&nbsp;<br /><strong>New Field Key: </strong>In order to create unique "
-"fields for each field group the ACF \"key\" value of each field must also be "
-"generated. The field key will be the original field key appended with an "
-"underscore and your prefix. For example, if the original field key looked "
+"strong> and your prefix is <strong>\"my_prefix\"</strong> then you would use "
+"the field name of <strong>\"my_prefix_my_field\"</strong> when getting the "
+"value or for any other operation that requires the field name.<em>Please "
+"note the addition of the underscore between your prefix and field name.</"
+"em><br />&nbsp;<br /><strong>New Field Key: </strong>In order to create "
+"unique fields for each field group the ACF \"key\" value of each field must "
+"also be altered. The field key will be the original field key appended with "
+"an underscore and your prefix. For example, if the original field key looked "
 "somthing like <strong>\"field_541c4c1f8d1ab\"</strong> and your prefix is "
-"<strong>\"my_prefix_\"</strong> then the new field key will be <strong>"
-"\"field_541c4c1f8d1ab_my_prefix_\"</strong>. You would use this new field "
-"key anywhere you would normally use the original field key."
+"<strong>\"my_prefix\"</strong> then the new field key will be <strong>"
+"\"field_541c4c1f8d1ab_my_prefix\"</strong>. You would use this new field key "
+"anywhere you would normally use the original field key."
 msgstr ""
 
-#: fieldset-duplicator.php:645
+#: fieldset-duplicator.php:644
 msgid "Add Duplicate"
 msgstr ""
 
-#: fieldset-duplicator.php:653
+#: fieldset-duplicator.php:652
 msgid ""
 "Enter the field group\ttitle to use for this duplicate.<br />If you do not "
-"supply a title then the title of the field group will be used.<br />Having "
-"the same field group title used multiple times could be confusing to the "
-"user."
+"supply a title then the title of the original field group will be used.<br /"
+"><em>Having the same field group title used multiple times on the same "
+"options page could be confusing to the user.</em>"
 msgstr ""
 
-#: fieldset-duplicator.php:680
+#: fieldset-duplicator.php:679
 msgid "Tab Label"
 msgstr ""
 
-#: fieldset-duplicator.php:684
+#: fieldset-duplicator.php:683
 msgid ""
-"Enter the tab label to use for this duplicate.<br />If no value is given "
-"then the labels<strong>\"Tab 1\"</strong>, <strong>\"Tab 2\"</strong>, "
-"<strong>\"Tab 3\"</strong>, etc, will be used."
+"Enter the tab label to use for this duplicate.<br /><em>If no value is given "
+"then the labels<strong>&quot;Tab 1&quot;</strong>, <strong>&quot;Tab 2&quot;"
+"</strong>, <strong>&quot;Tab 3&quot;</strong>, etc, will be used.</em>"
 msgstr ""
 
 #: options-pages.php:70
