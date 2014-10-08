@@ -103,7 +103,9 @@
 			// 1 duplicate a group to muliple pages
 			// 2 duplicate a group to the same option page mulitple times
 			// 3 duplicate a group mulitple times with tabs inserted
-			// 1 and 2 are basically the same
+			// 		1 and 2 are basically the same except for:
+			//			- where the options page slug comes from
+			//			- where the option group title comes from
 			
 			
 		} // end private function duplicate
