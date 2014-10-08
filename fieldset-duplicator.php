@@ -250,15 +250,25 @@
 		
 		public function load_acf_field_grp_dup_page($field) {
 			global $acf_options_pages;
+			//echo '<pre>'; print_r($acf_options_pages); echo '</pre>';
 			$choices = array();
 			if (count($acf_options_pages)) {
 				foreach ($acf_options_pages as $key => $page) {
-					if ((!isset($page['redirect']) || $page['redirect']) && !$page['parent_slug']) {
-						continue;
-					}
+					if (!isset($page['redirect']) || $page['redirect']) {
+						// check for a child options page
+						$has_child = false;
+						foreach ($acf_options_pages as $child) {
+							if ($child['parent_slug'] == $key) {
+								$has_child = true;
+							}
+						} // end second foreach
+						if ($has_child) {
+							continue;
+						}
+					} // end if redirect
 					$choices[$key] = $page['page_title'];
-				}
-			}
+				} // end foreach options page
+			} // end if count options pages
 			$field['choices'] = $choices;
 			return $field;
 		} // end public function load_acf_field_grp_dup_page
