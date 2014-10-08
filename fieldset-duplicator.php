@@ -469,7 +469,7 @@
 						'name' => '_acf_field_grp_dup_title',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('Enter the Title for the new compound tabbed group that will be created. It this is left blank then the title of the duplicated field group will be used.', $text_domain),
+						'instructions' => __('Enter the Title for the new compound tabbed group that will be created. If this is left blank then the title of the duplicated field group will be used.', $text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -503,8 +503,7 @@
 						'required' => 0,
 						'conditional_logic' => 0,
 						'choices' => array(), // dynamically generated
-						'default_value' => array(
-						),
+						'default_value' => array(),
 						'allow_null' => 0,
 						'multiple' => 0,
 						'ui' => 0,
@@ -519,7 +518,7 @@
 						'name' => '_acf_field_grp_dup_pages',
 						'prefix' => '',
 						'type' => 'repeater',
-						'instructions' => __('Select the options pages that the duplicated field group should be applied to.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix_"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be generated. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix_"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix_"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
+						'instructions' => __('Select the options pages that the duplicated field group should be applied to.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<em>Please note the addition of the underscore between your prefix and field name.</em><br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be altered. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -559,7 +558,7 @@
 								'name' => '_acf_field_grp_dup_page',
 								'prefix' => '',
 								'type' => 'select',
-								'instructions' => __('Select the options page to duplicate the field groups to.', $text_domain),
+								'instructions' => __('Select the options page to duplicate the field group to.', $text_domain),
 								'required' => 0,
 								'conditional_logic' => 0,
 								'column_width' => '',
@@ -628,7 +627,7 @@
 						'name' => '_acf_field_grp_dups',
 						'prefix' => '',
 						'type' => 'repeater',
-						'instructions' => __('Set the values to be used for each duplication of the field group on this page.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix_"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be generated. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix_"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix_"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
+						'instructions' => __('Set the values to be used for each duplication of the field group on this page.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field values you must use the prefix you set here along with the field name set in the field group. For example if your field name is <strong>"my_field"</strong> and your prefix is <strong>"my_prefix"</strong> then you would use the field name of <strong>"my_prefix_my_field"</strong> when getting the value or for any other operation that requires the field name.<em>Please note the addition of the underscore between your prefix and field name.</em><br />&nbsp;<br /><strong>New Field Key: </strong>In order to create unique fields for each field group the ACF "key" value of each field must also be altered. The field key will be the original field key appended with an underscore and your prefix. For example, if the original field key looked somthing like <strong>"field_541c4c1f8d1ab"</strong> and your prefix is <strong>"my_prefix"</strong> then the new field key will be <strong>"field_541c4c1f8d1ab_my_prefix"</strong>. You would use this new field key anywhere you would normally use the original field key.', $text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -650,7 +649,7 @@
 								'name' => '_acf_field_grp_dup_title',
 								'prefix' => '',
 								'type' => 'text',
-								'instructions' => __('Enter the field group	title to use for this duplicate.<br />If you do not supply a title then the title of the field group will be used.<br />Having the same field group title used multiple times could be confusing to the user.', $text_domain),
+								'instructions' => __('Enter the field group	title to use for this duplicate.<br />If you do not supply a title then the title of the original field group will be used.<br /><em>Having the same field group title used multiple times on the same options page could be confusing to the user.</em>', $text_domain),
 								'required' => 0,
 								'conditional_logic' => array(
 									array(
@@ -681,7 +680,7 @@
 								'name' => '_acf_field_grp_dup_title',
 								'prefix' => '',
 								'type' => 'text',
-								'instructions' => __('Enter the tab label to use for this duplicate.<br />If no value is given then the labels<strong>"Tab 1"</strong>, <strong>"Tab 2"</strong>, <strong>"Tab 3"</strong>, etc, will be used.', $text_domain),
+								'instructions' => __('Enter the tab label to use for this duplicate.<br /><em>If no value is given then the labels<strong>&quot;Tab 1&quot;</strong>, <strong>&quot;Tab 2&quot;</strong>, <strong>&quot;Tab 3&quot;</strong>, etc, will be used.</em>', $text_domain),
 								'required' => 0,
 								'conditional_logic' => array(
 									array(
