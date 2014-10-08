@@ -99,10 +99,18 @@
 		
 		private function duplicate($duplicator) {
 			// build duplicate field group and register
-			
+			// there are three real types of duplicated
+			// 1 duplicate a group to muliple pages
+			// 2 duplicate a group to the same option page mulitple times
+			// 3 duplicate a group mulitple times with tabs inserted
+			// 1 and 2 are basically the same
 			
 			
 		} // end private function duplicate
+		
+		private function copy_fields($original, $duplicate=array()) {
+			
+		} // end private function copy_field_group
 		
 		private function acf_get_field_groups() {
 			$field_groups = acf_get_field_groups();
@@ -149,6 +157,12 @@
 						_e('Duplicate a Field Group to Multiple Options Pages', $this->text_domain);
 					} elseif ($method == 'multiply') {
 						_e('Duplicate a Field Group to the Same Options Page Multiple Times', $this->text_domain);
+						$sub_method = intval(get_post_meta($post_id, '_acf_field_grp_dup_tabs', true));
+						if ($sub_method) {
+							_e(', with Tabs', $this->text_domain);
+						} else {
+							_e(', without Tabs', $this->text_domain);
+						}
 					}
 					break;
 				case 'field_group':
