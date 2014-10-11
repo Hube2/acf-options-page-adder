@@ -95,24 +95,139 @@
 					$this->duplicate($duplicator);
 				}
 			}
+			//die('line: '.__LINE__);
 		} // end public function add_duplicates
 		
 		private function duplicate($duplicator) {
 			// build duplicate field group and register
 			// there are three real types of duplicated
 			// 1 duplicate a group to muliple pages
-			// 2 duplicate a group to the same option page mulitple times
+			// 2 duplicate a group to the same option page mulitple times w/o tabs
 			// 3 duplicate a group mulitple times with tabs inserted
 			// 		1 and 2 are basically the same except for:
 			//			- where the options page slug comes from
 			//			- where the option group title comes from
+			//echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
+			//echo '<pre>'; print_r($duplicator); print_r($this->field_groups[$duplicator['field_group']]); die;
 			
-			
+			//$fields = $this->field_groups[$duplicator['field_group']]['fields'];
+			//$fields = $this->copy_fields($fields, 'TEST');
+			//echo '<pre>'; print_r($fields); die;
+			$group = $duplicator['field_group'];
+			$id = $duplicator['id'];
+			if ($duplicator['type'] == 'multiply' && !$duplicator['tabs']) {
+				// copy to same page mulitple times without tabs
+				$page = $duplicator['options_page'];
+				$copies = array();
+				$count = 0;
+				foreach ($duplicator['duplicates'] as $carbon) {
+					$copy = $carbon;
+					$copy['group_key'] = $group.'_'.$id.'_'.$carbon['prefix'];
+					$copy['opitons_page'] = $page;
+					$copy['order'] = $count; // will be added to existing order
+					$copies[] = $copy;
+				} // end foeach duplicate
+				$this->copy_no_tabs($group, $copies);
+			} elseif ($duplicator['type'] == 'multiply') {
+				// copy to same page multiple times with tabs
+				$carbon_group_key = $group;
+				$copy_group_key = $group.'_'.$id;
+				$title = $duplicator['title'];
+				$options_page = $duplicator['options_page'];
+				$tabs = array();
+				foreach ($duplicator['duplicates'] as $carbon) {
+					$tab = $carbon;
+					$tab['label'] = $tab['title'];
+					unset($tab['options_page']);
+					unset($tab['title']);
+					$tabs[] = $tab;
+				}
+				$this->copy_tabs($carbon_group_key, $copy_group_key, $title, $options_page, $tabs);
+			} else {
+				// type = copy
+				// copy to muiltiple pages
+				$copies = array();
+				foreach ($duplicator['duplicates'] as $carbon) {
+					$copy = $carbon;
+					$copy['group_key'] = $group.'_'.$id.'_'.$carbon['prefix'];
+					$copy['order'] = 0;
+					$copies[] = $copy;
+				} // end foeach duplicate
+				$this->copy_no_tabs($group, $copies);
+			} // end if elseif else block
 		} // end private function duplicate
 		
-		private function copy_fields($original, $duplicate=array()) {
+		private function copy_no_tabs($carbon_group_key, $copies) {
 			
+		} // end private function no_tabs
+		
+		private function copy_tabs($carbon_group_key, $copy_group_key, $title, $options_page, $tabs) {
+			
+		} // end private function copy_tabs
+		
+		private function copy_fields($fields, $prefix, $subfields=false) {
+			// walk through fields and alter field names and feild keys
+			// this is a recursive function
+			$copied_fields = array();
+			if (!$subfields) {
+				$this->collected_names = array();
+			}
+			if (count($fields)) {
+				foreach ($fields as $index => $field) {
+					$copied_fields[$index] = array();
+					foreach ($field as $key => $value) {
+						if (substr($key, 0, 1) == '_' || 
+								$key == 'ID' || 
+								$key == 'parent' ||
+								$key == 'menu_order' ||
+								$key == 'id' ||
+								$key == 'class' ||
+								$key == 'parent_layout') {
+							// skip these
+							continue;
+						} elseif ($key == 'sub_fields') {
+							// sub fields
+							// recursive call here
+							$copied_fields[$index][$key] = $this->copy_fields($value, $prefix, true);
+						} elseif ($key == 'key') {
+							// alter key value and add
+							$new_value = $value.'_'.$prefix;
+							$this->collected_names[$value] = $new_value;
+							$copied_fields[$index][$key] = $new_value;
+						} elseif ($key == 'name' && $value != '') {
+							// alter name value and add
+							$new_value = $prefix.'_'.$value;
+							$copied_fields[$index][$key] = $new_value;
+						} else {
+							$copied_fields[$index][$key] = $value;
+						} // end if elseif else block
+					} // end foreach field key => value
+				} // end foreach $field
+			} // end if count $fields
+			$copied_fields = $this->replace_keys($copied_fields);
+			return $copied_fields;
 		} // end private function copy_field_group
+		
+		private function replace_keys($array) {
+			// this is called after the copy process to replace the altered field keys
+			// in things like coditional logic and such
+			// this is a recuresive function
+			$copied_array = array();
+			if (count($array)) {
+				foreach ($array as $key => $value) {
+					if (is_array($value)) {
+						// recursive call here
+						$copied_array[$key] = $this->replace_keys($value);
+					} else {
+						if (isset($this->collected_names[$value])) {
+							$value = $this->collected_names[$value];
+						}
+						$copied_array[$key] = $value;
+					} // end if else
+				} // end foreach field
+			} // end if count fields
+			return $copied_array;
+		} // end private function replace_keys
 		
 		private function acf_get_field_groups() {
 			$field_groups = acf_get_field_groups();
