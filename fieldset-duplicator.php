@@ -54,6 +54,7 @@
 		*/
 		
 		public function __construct() {
+			
 			add_action('admin_notices', array($this, 'admin_message'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
 			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2);
@@ -63,6 +64,7 @@
 			
 			add_filter('acf/location/rule_values/post_type', array($this, 'acf_location_rules_values_post_type'));
 			add_filter('acf/location/rule_match/post_type', array($this, 'acf_location_rules_match_none'), 10, 3);
+			
 			add_filter('acf/load_field/name=_acf_field_grp_dup_group', array($this, 'load_acf_field_grp_dup_group'));
 			add_filter('acf/load_field/name=_acf_field_grp_dup_page', array($this, 'load_acf_field_grp_dup_page'));
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
@@ -95,6 +97,7 @@
 					$this->duplicate($duplicator);
 				}
 			}
+			//echo 'LINE: '.__LINE__.'<pre>'; print_r(acf_get_field_groups()); die;
 			//die('line: '.__LINE__);
 		} // end public function add_duplicates
 		
@@ -122,8 +125,10 @@
 				$count = 0;
 				foreach ($duplicator['duplicates'] as $carbon) {
 					$copy = $carbon;
-					$copy['group_key'] = $group.'_'.$id.'_'.$carbon['prefix'];
-					$copy['opitons_page'] = $page;
+					$count++;
+					$new_group = 'group_duplicator_'.$id.'_'.$carbon['prefix'];
+					$copy['group_key'] = $new_group;
+					$copy['options_page'] = $page;
 					$copy['order'] = $count; // will be added to existing order
 					$copies[] = $copy;
 				} // end foeach duplicate
@@ -131,7 +136,7 @@
 			} elseif ($duplicator['type'] == 'multiply') {
 				// copy to same page multiple times with tabs
 				$carbon_group_key = $group;
-				$copy_group_key = $group.'_'.$id;
+				$copy_group_key = 'group_duplicator_'.$id;
 				$title = $duplicator['title'];
 				$options_page = $duplicator['options_page'];
 				$tabs = array();
@@ -149,7 +154,7 @@
 				$copies = array();
 				foreach ($duplicator['duplicates'] as $carbon) {
 					$copy = $carbon;
-					$copy['group_key'] = $group.'_'.$id.'_'.$carbon['prefix'];
+					$copy['group_key'] = 'group_duplicator_'.$id.'_'.$carbon['prefix'];
 					$copy['order'] = 0;
 					$copies[] = $copy;
 				} // end foeach duplicate
@@ -158,11 +163,116 @@
 		} // end private function duplicate
 		
 		private function copy_no_tabs($carbon_group_key, $copies) {
-			
+			//echo '<pre>'; print_r($copies); echo '</pre>';
+			$field_group = $this->field_groups[$carbon_group_key];
+			$original_fields = $field_group['fields'];
+			unset($field_group['fields']);
+			foreach ($copies as $copy) {
+				$new_field_group = array();
+				foreach ($field_group as $key => $value) {
+					switch ($key) {
+						case 'key':
+							$new_field_group[$key] = $copy['group_key'];
+							break;
+						case 'title';
+							if ($copy['title'] != '') {
+								$value = $copy['title'];
+							}
+							$new_field_group[$key] = $value;
+							break;
+						case 'location':
+							$new_field_group[$key] = array(array(array('param' => 'options_page',
+							                                           'operator' => '==',
+																												 'value' => $copy['options_page'])));
+							break;
+						case 'menu_order':
+							$new_field_group[$key] = intval($value) + $copy['order'];
+							break;
+						case 'position':
+						case 'style':
+						case 'label_placement':
+						case 'instruction_placement':
+						case 'hide_on_screen':
+							$new_field_group[$key] = $value;
+							break;
+						case 'ID':
+							// do nothing
+							break;
+						default:
+							// do nothin
+							break;
+					} // end switch key
+					$new_field_group['fields'] = $this->copy_fields($original_fields, $copy['prefix']);
+				} // end foreach field_group key => value
+				//echo 'LINE: '.__LINE__.':<pre>'; print_r($new_field_group); echo '</pre>';
+				register_field_group($new_field_group);
+			} // end foreach copy
 		} // end private function no_tabs
 		
 		private function copy_tabs($carbon_group_key, $copy_group_key, $title, $options_page, $tabs) {
+			$field_group = $this->field_groups[$carbon_group_key];
+			$original_fields = $field_group['fields'];
+			$new_field_group = array();
+			$new_fields = array();
+			unset($field_group['fields']);
+			foreach ($field_group as $key => $value) {
+				switch ($key) {
+					case 'key':
+						$new_field_group[$key] = $copy_group_key;
+						break;
+					case 'title';
+						if ($title != '') {
+							$value = $title;
+						}
+						$new_field_group[$key] = $value;
+						break;
+					case 'location':
+						$new_field_group[$key] = array(array(array('param' => 'options_page',
+																																	'operator' => '==',
+																																	'value' => $options_page)));
+						break;
+					case 'menu_order':
+						$new_field_group[$key] = $value;
+						break;
+					case 'position':
+					case 'style':
+					case 'label_placement':
+					case 'instruction_placement':
+					case 'hide_on_screen':
+						$new_field_group[$key] = $value;
+						break;
+					case 'ID':
+						// do nothing
+						break;
+					default:
+						// do nothin
+						break;
+				} // end switch key
+			} // end foreach field_group key => value
 			
+			$count = 0;
+			foreach ($tabs as $tab) {
+				$count++;
+				$tab_label = $tab['label'];
+				if (!$tab_label) {
+					$tab_label = 'Tab '.$count;
+				}
+				$tab_field = array('key' => 'field_'.$copy_group_key.'_tab_'.$count,
+													 'label' => $tab_label,
+													 'name' => '',
+													 'prefix' => '',
+													 'type' => 'tab',
+													 'instructions' => '',
+													 'required' => 0,
+													 'conditional_logic' => 0);
+				$new_fields[] = $tab_field;
+				$new_fields = array_merge($new_fields, $this->copy_fields($original_fields, $tab['prefix']));
+			} // end foreach tab
+			$new_field_group['fields'] = $new_fields;
+			//echo 'LINE: '.__LINE__.':<pre>'; print_r($new_field_group); echo '</pre>';
+			
+			
+			register_field_group($new_field_group);
 		} // end private function copy_tabs
 		
 		private function copy_fields($fields, $prefix, $subfields=false) {
@@ -232,6 +342,10 @@
 		private function acf_get_field_groups() {
 			$field_groups = acf_get_field_groups();
 			//echo '<pre>'; print_r($field_groups); die;
+			// wp_cache_get( $key, $group, $force, $found ); 
+			// wp_cache_get( 'field_groups', 'acf', false, $found );
+			//wp_cache_delete( $key, $group )
+			wp_cache_delete('field_groups', 'acf');
 			$count = count($field_groups);
 			for ($i=0; $i<$count; $i++) {
 				// skip field group of this plugin
@@ -419,7 +533,7 @@
 				<div class="error">
 					<p>
 						<strong>
-							<?php _e('A word of caution. Options page field names and keys are normally limited to 64 characters because the options_name field of the wp_options table is limited to 64 characters. Due to the way the ACF works, and the way that the duplication process works, it is possible for field names to exceed this maximum. This will casue a silent failure when saving values. When using options pages in ACF you should modify the database and increase this maximum to 255. The WP team has been talking about doing this for over 4 years.', $this->text_domain); ?>
+							<?php _e('A word of caution. Options page field names and keys are normally limited to 64 characters because the options_name field of the wp_options table is limited to 64 characters. Due to the way the ACF works, and the way that the duplication process works, it is possible for field names to exceed this maximum. This will casue a silent failure when saving values. When using options pages in ACF you should modify the database and increase this maximum to 255. The WP team has been talking about doing this for over 4 years. Until they make it real you can use this plugin to prevent WP from changing the size of the DB field back to 64: <a href="https://github.com/Hube2/wp-update-prevent-db-changes" target="_blank">WP Update Prevent DB Changes</a>', $this->text_domain); ?>
 						</strong>
 					</p>
 				</div>
@@ -469,7 +583,13 @@
 			$duplicates = array();
 			for ($i=0; $i<$count; $i++) {
 				$duplicate = array();
-				$duplicate['title'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_title', true);
+				if ($args['tabs'] && $args['type'] == 'multiply') {
+					$duplicate['title'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_title_2', true);
+				} elseif ($args['type'] == 'multiply') {
+					$duplicate['title'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_title_1', true);
+				} else {
+					$duplicate['title'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_title', true);
+				}
 				$duplicate['prefix'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_prefix', true);
 				$duplicate['options_page'] = get_post_meta($id, $repeater.'_'.$i.'__acf_field_grp_dup_page', true);
 				$duplicates[] = $duplicate;
@@ -773,7 +893,7 @@
 							array(
 								'key' => 'field_acf_field_grp_dups_sub_title_1',
 								'label' => __('Field Group Title', $text_domain),
-								'name' => '_acf_field_grp_dup_title',
+								'name' => '_acf_field_grp_dup_title_1',
 								'prefix' => '',
 								'type' => 'text',
 								'instructions' => __('Enter the field group	title to use for this duplicate.<br />If you do not supply a title then the title of the original field group will be used.<br /><em>Having the same field group title used multiple times on the same options page could be confusing to the user.</em>', $text_domain),
@@ -804,7 +924,7 @@
 							array(
 								'key' => 'field_acf_field_grp_dups_sub_title_2',
 								'label' => __('Tab Label', $text_domain),
-								'name' => '_acf_field_grp_dup_title',
+								'name' => '_acf_field_grp_dup_title_2',
 								'prefix' => '',
 								'type' => 'text',
 								'instructions' => __('Enter the tab label to use for this duplicate.<br /><em>If no value is given then the labels<strong>&quot;Tab 1&quot;</strong>, <strong>&quot;Tab 2&quot;</strong>, <strong>&quot;Tab 3&quot;</strong>, etc, will be used.</em>', $text_domain),
