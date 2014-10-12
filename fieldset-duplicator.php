@@ -430,7 +430,8 @@
 					$method = get_post_meta($post_id, '_acf_field_grp_dup_method', true);
 					if ($method == 'copy') {
 						$repeater = '_acf_field_grp_dup_pages';
-					} elseif ($method == 'multiply') {
+					} else {
+						// method = multiply
 						$repeater = '_acf_field_grp_dups';
 					}
 					$prefixes = intval(get_post_meta($post_id, $repeater, true));
