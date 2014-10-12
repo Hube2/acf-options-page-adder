@@ -19,7 +19,7 @@ For more information see http://www.advancedcustomfields.com/resources/options-p
 
 ##Field Group Duplicator
 
-Automatically duoplicates field groups so that you can use the same field groups multiple 
+Automatically duplicates field groups so that you can use the same field groups multiple 
 times without the need to manually duplicate and modify all the field names in the group.
 
 * Copy a field group to muliple options pages
