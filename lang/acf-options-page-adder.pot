@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2014-10-11 15:40-0500\n"
+"POT-Creation-Date: 2014-10-16 15:40-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: John Huebner <johnhuebner@site-seeker.com>\n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Poedit 1.6.9\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: fieldset-duplicator.php:355 fieldset-duplicator.php:642
+#: fieldset-duplicator.php:355 fieldset-duplicator.php:643
 msgid "Description"
 msgstr ""
 
@@ -42,11 +42,11 @@ msgstr ""
 msgid "Field Prefix(es)"
 msgstr ""
 
-#: fieldset-duplicator.php:377 fieldset-duplicator.php:667
+#: fieldset-duplicator.php:377 fieldset-duplicator.php:668
 msgid "Duplicate a Field Group to Multiple Options Pages"
 msgstr ""
 
-#: fieldset-duplicator.php:379 fieldset-duplicator.php:668
+#: fieldset-duplicator.php:379 fieldset-duplicator.php:669
 msgid "Duplicate a Field Group to the Same Options Page Multiple Times"
 msgstr ""
 
@@ -58,11 +58,11 @@ msgstr ""
 msgid ", without Tabs"
 msgstr ""
 
-#: fieldset-duplicator.php:502
+#: fieldset-duplicator.php:503
 msgid "None (hidden)"
 msgstr ""
 
-#: fieldset-duplicator.php:517
+#: fieldset-duplicator.php:518
 msgid ""
 "Options Page Field Group Duplicators allow the use of the same ACF field "
 "group on multiple options pages or to duplicate an ACF field group multiple "
@@ -74,7 +74,7 @@ msgid ""
 "that do not normally appear anywhere."
 msgstr ""
 
-#: fieldset-duplicator.php:524
+#: fieldset-duplicator.php:525
 msgid ""
 "A word of caution. Options page field names and keys are normally limited to "
 "64 characters because the options_name field of the wp_options table is "
@@ -89,84 +89,84 @@ msgid ""
 "\"_blank\">WP Update Prevent DB Changes</a>"
 msgstr ""
 
-#: fieldset-duplicator.php:601 fieldset-duplicator.php:619
+#: fieldset-duplicator.php:602 fieldset-duplicator.php:620
 msgid "Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:602 fieldset-duplicator.php:618
+#: fieldset-duplicator.php:603 fieldset-duplicator.php:619
 msgid "Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:617
+#: fieldset-duplicator.php:618
 msgid "Options Page Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:620
+#: fieldset-duplicator.php:621
 msgid "Add Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:621
+#: fieldset-duplicator.php:622
 msgid "Add New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:622 options-pages.php:468
+#: fieldset-duplicator.php:623 options-pages.php:468
 msgid "Edit"
 msgstr ""
 
-#: fieldset-duplicator.php:623
+#: fieldset-duplicator.php:624
 msgid "Edit Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:624
+#: fieldset-duplicator.php:625
 msgid "New Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:625 fieldset-duplicator.php:626
+#: fieldset-duplicator.php:626 fieldset-duplicator.php:627
 msgid "View Field Group Duplicator"
 msgstr ""
 
-#: fieldset-duplicator.php:627
+#: fieldset-duplicator.php:628
 msgid "Search Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:628
+#: fieldset-duplicator.php:629
 msgid "No Field Group Duplicators Found"
 msgstr ""
 
-#: fieldset-duplicator.php:629
+#: fieldset-duplicator.php:630
 msgid "No Field Group Duplicators Found in Trash"
 msgstr ""
 
-#: fieldset-duplicator.php:630
+#: fieldset-duplicator.php:631
 msgid "Parent Field Group Duplicators"
 msgstr ""
 
-#: fieldset-duplicator.php:638
+#: fieldset-duplicator.php:639
 msgid "Duplicator Settings"
 msgstr ""
 
-#: fieldset-duplicator.php:646
+#: fieldset-duplicator.php:647
 msgid ""
 "Enter a description for your duplicator. This description will be shown on "
 "the admin page to remind you and others why it was created or what it does."
 msgstr ""
 
-#: fieldset-duplicator.php:659
+#: fieldset-duplicator.php:660
 msgid "What do you want to duplicate?"
 msgstr ""
 
-#: fieldset-duplicator.php:663
+#: fieldset-duplicator.php:664
 msgid ""
 "<em>Please note that this will not allow you to copy multiple field groups "
 "to the same options page multiple times. You will need to create another "
 "duplicator to accomplish this.</em>"
 msgstr ""
 
-#: fieldset-duplicator.php:677
+#: fieldset-duplicator.php:678
 msgid "Tabs?"
 msgstr ""
 
-#: fieldset-duplicator.php:681
+#: fieldset-duplicator.php:682
 msgid ""
 "Do you want to put the copies into tabs?<br />Selecting yes will add all of "
 "the duplicates to a single field group and each duplicate will be in its own "
@@ -174,34 +174,34 @@ msgid ""
 "already contain tab fields.</em>"
 msgstr ""
 
-#: fieldset-duplicator.php:693
+#: fieldset-duplicator.php:694
 msgid "Yes"
 msgstr ""
 
-#: fieldset-duplicator.php:694
+#: fieldset-duplicator.php:695
 msgid "No"
 msgstr ""
 
-#: fieldset-duplicator.php:703 fieldset-duplicator.php:774
-#: fieldset-duplicator.php:883
+#: fieldset-duplicator.php:704 fieldset-duplicator.php:775
+#: fieldset-duplicator.php:884
 msgid "Field Group Title"
 msgstr ""
 
-#: fieldset-duplicator.php:707
+#: fieldset-duplicator.php:708
 msgid ""
 "Enter the Title for the new compound tabbed group that will be created. If "
 "this is left blank then the title of the original field group will be used."
 msgstr ""
 
-#: fieldset-duplicator.php:733
+#: fieldset-duplicator.php:734
 msgid "Field Group to Duplicate"
 msgstr ""
 
-#: fieldset-duplicator.php:737
+#: fieldset-duplicator.php:738
 msgid "Select the field group that you want to duplicate."
 msgstr ""
 
-#: fieldset-duplicator.php:756
+#: fieldset-duplicator.php:757
 msgid ""
 "Select the options pages that the duplicated field group should be applied "
 "to.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field "
@@ -222,48 +222,48 @@ msgid ""
 "this new field key anywhere you would normally use the original field key."
 msgstr ""
 
-#: fieldset-duplicator.php:770 options-pages.php:466
+#: fieldset-duplicator.php:771 options-pages.php:466
 msgid "Add Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:778
+#: fieldset-duplicator.php:779
 msgid ""
 "Use a different title for the field group on this options page.<br />If you "
 "do not specify a title for the field group it will default to the original "
 "field group title."
 msgstr ""
 
-#: fieldset-duplicator.php:792 options-pages.php:464
+#: fieldset-duplicator.php:793 options-pages.php:464
 msgid "Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:796
+#: fieldset-duplicator.php:797
 msgid "Select the options page to duplicate the field group to."
 msgstr ""
 
-#: fieldset-duplicator.php:813 fieldset-duplicator.php:945
+#: fieldset-duplicator.php:814 fieldset-duplicator.php:946
 msgid "Field Name Prefix"
 msgstr ""
 
-#: fieldset-duplicator.php:817 fieldset-duplicator.php:949
+#: fieldset-duplicator.php:818 fieldset-duplicator.php:950
 msgid ""
 "Enter the prefix to apply to all fields names in the field group. You must "
 "supply a unique prefix for each duplication."
 msgstr ""
 
-#: fieldset-duplicator.php:833
+#: fieldset-duplicator.php:834
 msgid "Apply to Options Page"
 msgstr ""
 
-#: fieldset-duplicator.php:837
+#: fieldset-duplicator.php:838
 msgid "Select the options page that this field group will be duplicated to."
 msgstr ""
 
-#: fieldset-duplicator.php:861
+#: fieldset-duplicator.php:862
 msgid "Duplicates"
 msgstr ""
 
-#: fieldset-duplicator.php:865
+#: fieldset-duplicator.php:866
 msgid ""
 "Set the values to be used for each duplication of the field group on this "
 "page.<br />&nbsp;<br /><strong>New Field Name: </strong>When getting field "
@@ -284,11 +284,11 @@ msgid ""
 "this new field key anywhere you would normally use the original field key."
 msgstr ""
 
-#: fieldset-duplicator.php:879
+#: fieldset-duplicator.php:880
 msgid "Add Duplicate"
 msgstr ""
 
-#: fieldset-duplicator.php:887
+#: fieldset-duplicator.php:888
 msgid ""
 "Enter the field group\ttitle to use for this duplicate.<br />If you do not "
 "supply a title then the title of the original field group will be used.<br /"
@@ -296,11 +296,11 @@ msgid ""
 "options page could be confusing to the user.</em>"
 msgstr ""
 
-#: fieldset-duplicator.php:914
+#: fieldset-duplicator.php:915
 msgid "Tab Label"
 msgstr ""
 
-#: fieldset-duplicator.php:918
+#: fieldset-duplicator.php:919
 msgid ""
 "Enter the tab label to use for this duplicate.<br /><em>If no value is given "
 "then the labels<strong>&quot;Tab 1&quot;</strong>, <strong>&quot;Tab 2&quot;"
@@ -320,8 +320,9 @@ msgid ""
 "Title above is the title that will appear on the page. Enter other details "
 "as needed.<br />For more information see the ACF documentation for <a href="
 "\"http://www.advancedcustomfields.com/resources/acf_add_options_page/\" "
-"target=\"_blank\">acf_add_options_page()</a> and <a href=\"\" target=\"_blank"
-"\">acf_add_options_sub_page()</a>."
+"target=\"_blank\">acf_add_options_page()</a> and <a href=\"http://www."
+"advancedcustomfields.com/resources/acf_add_options_sub_page/\" target="
+"\"_blank\">acf_add_options_sub_page()</a>."
 msgstr ""
 
 #: options-pages.php:85 options-pages.php:323
