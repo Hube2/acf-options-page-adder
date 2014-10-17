@@ -1,10 +1,29 @@
 Advanced Custom Fields: Options Page Adder
 ==========================================
 
-Allows easy creation of options pages using Advanced Custom Fields Pro needing to do any PHP coding.
+Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any 
+PHP coding.
 
 **Requires that ACF5 Pro is installed.**
 
-Please see readme.txt for more information
+##Installation
 
-**For anyone that's following this, or using it. I have removed support for ACF 4. I have also corrected a slug error that makes it not backwards compatible with any previous version. Updating to version 2.0.0 will likely mean that any ACF field groups you had associated with options pages will no longer be associated with them and you will need to go into your field groups and reset the location rules.**
+* Download and decompess plugin
+* Create a folder in your plugins folder named "acf-options-page-adder"
+* Upload files to the folder you just created
+* Activate plugin
+
+##Options Pages
+
+Allows adding options pages though an admin interface. Supports all the features of 
+ACF Options Pages. For more information see 
+http://www.advancedcustomfields.com/resources/options-page/
+
+##Field Group Duplicators
+
+Automatically duplicates field groups so that you can use the same field groups multiple 
+times without the need to manually duplicate and modify all the field names in the group.
+
+* Copy a field group to muliple options pages
+* Copy a field group mulitple times to the same options page
+* Copy a field group to a compound, tabbed field group

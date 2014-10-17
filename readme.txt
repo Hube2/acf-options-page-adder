@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 Donate link: 
 License: 
 License URI: 
@@ -28,12 +28,14 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 2.2.0 =
+* Added field group duplicator
+
 = 2.1.0 =
 * Added support for redirect
 * Added support for menu position
 * Added support for icon (dashicons)
 * Added sorting of sub options pages
-
 
 = 2.0.0 =
 * Corrected bug in adding top level option page
