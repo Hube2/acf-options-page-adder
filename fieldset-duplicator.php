@@ -16,13 +16,14 @@
 		private $collected_names = array();			// temporary holds field names and field key changes
 		
 		/*
+			Notes on duplicators array
 				$duplicators = array(
-											   array(
-												   'duplicator_name' => '',		// duplicator name   NR
-													 'description' => '',				// description				NR
-													 'id' => '',								// duplicator id
-													 														//		post_id
-													 'slug' => '',							// ??? not sure could be useful in the future
+												 array(
+													 'duplicator_name' => '',  // duplicator name	 NR
+													 'description' => '',		   // description				NR
+													 'id' => '',               // duplicator id
+													 													 //		post_id
+													 'slug' => '',						 // ??? not sure could be useful in the future
 													 'type' => '',							// copy/multiply
 													 'tabs' => '',							// true/false
 													 														//		used for multiply
@@ -39,8 +40,8 @@
 																											//		this one is used for multiply
 													 'duplicates' => array(			// array of duplicate information
 													 														//		array for each duplicate
-													 								   array(
-																						   'title' => '',					// title or tab label
+													 									 array(
+																							 'title' => '',					// title or tab label
 																							 'prefix' => '',				// feild prefix for duplicate
 																							 'options_page' => '',	// options page id
 																							 												// 		used for copy only
@@ -70,7 +71,7 @@
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			
 			// second hook for acf/include_fields with and insanely high priorty
-			// to make sure it is the last one run
+			// to make sure it is the last one run and we can get all registered acf field groups
 			add_action('acf/include_fields', array($this, 'add_duplicates'), 9999);
 		} // end public function __construct
 		
@@ -93,7 +94,6 @@
 			if (!count($this->field_groups)) {
 				return;
 			}
-			//echo '<pre>'; print_r($this->duplicators); print_r($this->field_groups); die;
 			foreach ($this->duplicators as $duplicator) {
 				if (isset($this->field_groups[$duplicator['field_group']])) {
 					$this->duplicate($duplicator);
@@ -107,9 +107,9 @@
 			// 1 duplicate a group to muliple pages
 			// 2 duplicate a group to the same option page mulitple times w/o tabs
 			// 3 duplicate a group mulitple times with tabs inserted
-			// 		1 and 2 are basically the same except for:
-			//			- where the options page slug comes from
-			//			- where the option group title comes from
+			//    1 and 2 are basically the same except for:
+			//      - where the options page slug comes from
+			//      - where the option group title comes from
 			$group = $duplicator['field_group'];
 			$id = $duplicator['id'];
 			if ($duplicator['type'] == 'multiply' && !$duplicator['tabs']) {
@@ -149,7 +149,7 @@
 				foreach ($duplicator['duplicates'] as $carbon) {
 					$copy = $carbon;
 					$copy['group_key'] = 'group_duplicator_'.$id.'_'.$carbon['prefix'];
-					$copy['order'] = 0;
+					$copy['order'] = 0; // will be added to existing order, for consistancy
 					$copies[] = $copy;
 				} // end foeach duplicate
 				$this->copy_no_tabs($group, $copies);
@@ -175,7 +175,7 @@
 							break;
 						case 'location':
 							$new_field_group[$key] = array(array(array('param' => 'options_page',
-							                                           'operator' => '==',
+																												 'operator' => '==',
 																												 'value' => $copy['options_page'])));
 							break;
 						case 'menu_order':
@@ -265,7 +265,7 @@
 		} // end private function copy_tabs
 		
 		private function copy_fields($fields, $prefix, $subfields=false) {
-			// walk through fields and alter field names and feild keys
+			// walk through fields and alter field names and field keys
 			// this is a recursive function
 			$copied_fields = array();
 			if (!$subfields) {
@@ -303,7 +303,10 @@
 					} // end foreach field key => value
 				} // end foreach $field
 			} // end if count $fields
-			$copied_fields = $this->replace_keys($copied_fields);
+			if (!$subfields) {
+				// back at the top, call recursive funtion to replace altered key values
+				$copied_fields = $this->replace_keys($copied_fields);
+			}
 			return $copied_fields;
 		} // end private function copy_field_group
 		
@@ -330,14 +333,17 @@
 		
 		private function acf_get_field_groups() {
 			$field_groups = acf_get_field_groups();
-			// call wp_cache_delete on the field_groups cached added by ACF
+			// ************************************************************************
+			// call wp_cache_delete on the field_groups cache added by ACF
 			// fields groups added after a call to the function acf_get_field_groups
 			// will not appear unless that cache is cleared
 			// hoping that ACF will be corrected to handle this at some point
+			// will remove this when it is
 			wp_cache_delete('field_groups', 'acf');
+			// ************************************************************************
 			$count = count($field_groups);
 			for ($i=0; $i<$count; $i++) {
-				// skip field group of this plugin
+				// skip field group of it is a field group in this plugin
 				if ($field_groups[$i]['key'] != 'group_acf_opt_grp_dup' && 
 						$field_groups[$i]['key'] != 'acf_options-page-details') {
 					$fields = acf_get_fields($field_groups[$i]['key']);
@@ -459,7 +465,6 @@
 										'status' => 'publish',
 										'posts_per_page' => -1);
 			$query = new WP_Query($args);
-			//echo '<pre>'; print_r($query->posts); echo '</pre>';
 			if (count($query->posts)) {
 				foreach ($query->posts as $post) {
 					$choices[$post->post_name] = $post->post_title;
@@ -545,7 +550,6 @@
 					$this->add_duplicator($args);
 				}
 			}
-			//echo '<pre>'; print_r($this->duplicators); die;
 		} // end private function build_duplicators
 		
 		private function build_duplicator($id) {
@@ -559,7 +563,6 @@
 			$args['tabs'] = intval(get_post_meta($id, '_acf_field_grp_dup_tabs', true));
 			$args['field_group'] = get_post_meta($id, '_acf_field_grp_dup_group', true);
 			$args['title'] = trim(get_post_meta($id, '_acf_field_grp_dup_title', true));
-			
 			$args['options_page'] = '';
 			if ($args['type'] == 'multiply') {
 				$args['options_page'] = get_post_meta($id, '_acf_field_grp_dup_page', true);
@@ -589,7 +592,11 @@
 		
 		private function add_duplicator($args) {
 			// add duplicator to $this->duplicators;
-			// eventually this will be callable to add duplicators through code
+			// ************************************************************
+			// ************************************************************
+			// eventually this will be publically callable to allow adding duplicators through code
+			// ************************************************************
+			// ************************************************************
 			$this->duplicators[] = $args;
 		} // end private function add_duplicator
 		
@@ -599,36 +606,36 @@
 			if ($options_page_post_type === false || $text_domain === false) {
 				return;
 			}
-      $args = array('label' => __('Field Group Duplicators', $text_domain),
+			$args = array('label' => __('Field Group Duplicators', $text_domain),
 										'singular_label' => __('Field Group Duplicator', $text_domain),
-                    'description' => '',
-                    'public' => false,
+										'description' => '',
+										'public' => false,
 										'has_archive' => false,
-                    'show_ui' => true,
-                    'show_in_menu' => 'edit.php?post_type='.$options_page_post_type,
-                    'capability_type' => 'post',
-                    'map_meta_cap' => true,
-                    'hierarchical' => false,
-                    'rewrite' => array('slug' => $this->post_type, 'with_front' => true),
-                    'query_var' => $this->post_type,
-                    'exclude_from_search' => true,
-                    'menu_position' => false,
+										'show_ui' => true,
+										'show_in_menu' => 'edit.php?post_type='.$options_page_post_type,
+										'capability_type' => 'post',
+										'map_meta_cap' => true,
+										'hierarchical' => false,
+										'rewrite' => array('slug' => $this->post_type, 'with_front' => true),
+										'query_var' => $this->post_type,
+										'exclude_from_search' => true,
+										'menu_position' => false,
 										//'menu_icon' => 'dashicons-admin-generic',
-                    'supports' => array('title','custom-fields','revisions'),
-                    'labels' => array('name' => __('Options Page Field Group Duplicators', $text_domain),
-                                      'singular_name' => __('Field Group Duplicator', $text_domain),
-                                      'menu_name' =>  __('Field Group Duplicators', $text_domain),
-                                      'add_new' => __('Add Field Group Duplicator', $text_domain),
-                                      'add_new_item' => __('Add New Field Group Duplicator', $text_domain),
-                                      'edit' => __('Edit', $text_domain),
-                                      'edit_item' => __('Edit Field Group Duplicator', $text_domain),
-                                      'new_item' => __('New Field Group Duplicator', $text_domain),
-                                      'view' => __('View Field Group Duplicator', $text_domain),
-                                      'view_item' => __('View Field Group Duplicator', $text_domain),
-                                      'search_items' => __('Search Field Group Duplicators', $text_domain),
-                                      'not_found' => __('No Field Group Duplicators Found', $text_domain),
-                                      'not_found_in_trash' => __('No Field Group Duplicators Found in Trash', $text_domain),
-                                      'parent' => __('Parent Field Group Duplicators', $text_domain)));
+										'supports' => array('title','custom-fields','revisions'),
+										'labels' => array('name' => __('Options Page Field Group Duplicators', $text_domain),
+																			'singular_name' => __('Field Group Duplicator', $text_domain),
+																			'menu_name' =>	__('Field Group Duplicators', $text_domain),
+																			'add_new' => __('Add Field Group Duplicator', $text_domain),
+																			'add_new_item' => __('Add New Field Group Duplicator', $text_domain),
+																			'edit' => __('Edit', $text_domain),
+																			'edit_item' => __('Edit Field Group Duplicator', $text_domain),
+																			'new_item' => __('New Field Group Duplicator', $text_domain),
+																			'view' => __('View Field Group Duplicator', $text_domain),
+																			'view_item' => __('View Field Group Duplicator', $text_domain),
+																			'search_items' => __('Search Field Group Duplicators', $text_domain),
+																			'not_found' => __('No Field Group Duplicators Found', $text_domain),
+																			'not_found_in_trash' => __('No Field Group Duplicators Found in Trash', $text_domain),
+																			'parent' => __('Parent Field Group Duplicators', $text_domain)));
 			$post_type = register_post_type($this->post_type, $args);
 		} // end private function register_post_type
 		
