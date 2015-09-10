@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 2.2.0
+		Version: 3.0.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -21,7 +21,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '2.2.0';
+		private $version = '3.0.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -254,7 +254,25 @@
 						'maxlength' => '',
 						'readonly' => 0,
 						'disabled' => 0,
-					)
+					),
+					array(
+						'key' => 'field_acf_key_acfop_autoload',
+						'label' => __('Autoload Values', $this->text_domain),
+						'name' => '_acfop_autoload',
+						'prefix' => '',
+						'type' => 'radio',
+						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'choices' => array(
+							1 => 'True',
+							0 => 'False',
+						),
+						'other_choice' => 0,
+						'save_other_choice' => 0,
+						'default_value' => 1,
+						'layout' => 'horizontal',
+					),
 				),
 				'location' => array(
 					array(
@@ -502,11 +520,13 @@
 					}
 					$parent = get_post_meta($id, '_acfop_parent', true);
 					$capability = get_post_meta($id, '_acfop_capability', true);
+					$autoload = get_post_meta($id, '_acfop_autoload', true);
 					if ($parent == 'none') {
 						$options_page = array('page_title' =>	$title,
 																	'menu_title' => $menu_text,
 																	'menu_slug' => $slug,
-																	'capability' => $capability);
+																	'capability' => $capability,
+																	'autoload' => $autoload);
 						$redirect = true;
 						$value = get_post_meta($id, '_acfop_redirect', true);
 						if ($value == '0') {
@@ -544,7 +564,8 @@
 																						'parent' => $parent,
 																						'slug' => $slug,
 																						'capability' => $capability,
-																						'order' => $order);
+																						'order' => $order,
+																						'autoload' => $autoload);
 					}
 				} // end foreach $post;
 			} // end if have_posts
