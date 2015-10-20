@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.0.0
+		Version: 3.1.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -21,7 +21,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.0.0';
+		private $version = '3.1.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -255,6 +255,58 @@
 						'readonly' => 0,
 						'disabled' => 0,
 					),
+					array (
+						'key' => 'field_acf_key_acfop_save_to',
+						'label' => 'Save to',
+						'name' => '_acfop_save_to',
+						'type' => 'radio',
+						'instructions' => __('ACF v5,2,7 added the ability to save and load data to/from a post rather than options.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array (
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array (
+							'options' => __('Options', $this->text_domain),
+							'post' => __('Post Object', $this->text_domain),
+						),
+						'other_choice' => 0,
+						'save_other_choice' => 0,
+						'default_value' => 'options',
+						'layout' => 'horizontal',
+					),
+					array (
+						'key' => 'field_acf_key_acfop_post_page',
+						'label' => 'Post/Page',
+						'name' => '_acfop_post_page',
+						'type' => 'post_object',
+						'instructions' => __('Select the post object to save and load data to/from', $this->text_domain),
+						'required' => 1,
+						'conditional_logic' => array (
+							array (
+								array (
+									'field' => 'field_acf_key_acfop_save_to',
+									'operator' => '==',
+									'value' => 'post',
+								),
+							),
+						),
+						'wrapper' => array (
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array (
+						),
+						'taxonomy' => array (
+						),
+						'allow_null' => 0,
+						'multiple' => 0,
+						'return_format' => 'id',
+						'ui' => 1,
+					),
 					array(
 						'key' => 'field_acf_key_acfop_autoload',
 						'label' => __('Autoload Values', $this->text_domain),
@@ -263,7 +315,15 @@
 						'type' => 'radio',
 						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', $this->text_domain),
 						'required' => 0,
-						'conditional_logic' => 0,
+						'conditional_logic' => array (
+							array (
+								array (
+									'field' => 'field_acf_key_acfop_save_to',
+									'operator' => '==',
+									'value' => 'options',
+								),
+							),
+						),
 						'choices' => array(
 							1 => 'True',
 							0 => 'False',
@@ -520,12 +580,20 @@
 					}
 					$parent = get_post_meta($id, '_acfop_parent', true);
 					$capability = get_post_meta($id, '_acfop_capability', true);
-					$autoload = get_post_meta($id, '_acfop_autoload', true);
+					$post_id = 'options';
+					$save_to = get_post_meta($id, '_acfop_save_to', true);
+					$autoload = 0;
+					if ($save_to == 'post') {
+						$post_id = intval(get_post_meta($id, '_acfop_post_page', true));
+					} else {
+						$autoload = get_post_meta($id, '_acfop_autoload', true);
+					}
 					if ($parent == 'none') {
 						$options_page = array('page_title' =>	$title,
 																	'menu_title' => $menu_text,
 																	'menu_slug' => $slug,
 																	'capability' => $capability,
+																	'post_id' => $post_id,
 																	'autoload' => $autoload);
 						$redirect = true;
 						$value = get_post_meta($id, '_acfop_redirect', true);
@@ -565,6 +633,7 @@
 																						'slug' => $slug,
 																						'capability' => $capability,
 																						'order' => $order,
+																						'post_id' => $post_id,
 																						'autoload' => $autoload);
 					}
 				} // end foreach $post;
