@@ -197,6 +197,7 @@
 					} // end switch key
 					$new_field_group['fields'] = $this->copy_fields($original_fields, $copy['prefix']);
 				} // end foreach field_group key => value
+				wp_cache_delete('get_field_groups', 'acf');
 				register_field_group($new_field_group);
 			} // end foreach copy
 		} // end private function no_tabs
@@ -261,6 +262,7 @@
 				$new_fields = array_merge($new_fields, $this->copy_fields($original_fields, $tab['prefix']));
 			} // end foreach tab
 			$new_field_group['fields'] = $new_fields;
+			wp_cache_delete('get_field_groups', 'acf');
 			register_field_group($new_field_group);
 		} // end private function copy_tabs
 		
@@ -339,7 +341,7 @@
 			// will not appear unless that cache is cleared
 			// hoping that ACF will be corrected to handle this at some point
 			// will remove this when it is
-			wp_cache_delete('field_groups', 'acf');
+			wp_cache_delete('get_field_groups', 'acf');
 			// ************************************************************************
 			$count = count($field_groups);
 			for ($i=0; $i<$count; $i++) {

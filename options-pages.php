@@ -570,7 +570,6 @@
 				} // end foreach $post;
 			} // end if have_posts
 			wp_reset_query();
-			//echo '<pre>'; print_r($options_pages); die;
 			if (count($options_pages['top'])) {
 				foreach ($options_pages['top'] as $options_page) {
 					acf_add_options_page($options_page);
