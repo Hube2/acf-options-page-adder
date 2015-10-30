@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.1.0
+		Version: 3.1.1
 	*/
 	
 	// If this file is called directly, abort.
@@ -21,7 +21,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.1.0';
+		private $version = '3.1.1';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -38,6 +38,20 @@
 			register_activation_hook(__FILE__, array($this, 'activate'));
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
+			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
+		} // end public function __construct
+		
+		public function after_setup_theme() {
+			// check to see if acf5 is installed
+			// if not then do not run anything else in this plugin
+			// move all other actions to this function except text domain since this is too late
+			if (!class_exists('acf') ||
+					!function_exists('acf_get_setting') ||
+					intval(acf_get_setting('version')) < 5 ||
+					!class_exists('acf_pro')) {
+				$this->active = false;
+				return;
+			}
 			add_action('init', array($this, 'init'), 0);
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
@@ -47,7 +61,7 @@
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
 			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
-		} // end public function __construct
+		} // end public function after_setup_theme
 		
 		public function init() {
 			$this->register_post_type();

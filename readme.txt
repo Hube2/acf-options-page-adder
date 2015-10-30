@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.3
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 Donate link: 
 License: 
 License URI: 
@@ -28,8 +28,11 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.1.1 =
+* Added checks to ensure that ACF5 Pro is installed and active
+
 = 3.1.0 =
-* Corrected but, duplicated field groups not showing on options pages
+* Corrected bug, duplicated field groups not showing on options pages
 * Added support for save/loading to/from post objects added in ACF v5.2.7
 
 = 3.0.0 =
