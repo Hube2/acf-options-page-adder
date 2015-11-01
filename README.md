@@ -24,7 +24,7 @@ http://www.advancedcustomfields.com/resources/options-page/
 ##Field Group Duplicators
 
 Please see [issue #16](https://github.com/Hube2/acf-options-page-adder/issues/16) about the
-future of the field group duplicator
+future of the field group duplicator. See https://github.com/Hube2/acf-reusable-field-group-field
 
 Automatically duplicates field groups so that you can use the same field groups multiple 
 times without the need to manually duplicate and modify all the field names in the group.
