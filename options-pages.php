@@ -14,7 +14,7 @@
 	
 	$duplicator = dirname(__FILE__).'/fieldset-duplicator.php';
 	if (file_exists($duplicator)) {
-		include($duplicator);
+		//include($duplicator);
 	}
 	
 	new acfOptionsPageAdder();
