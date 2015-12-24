@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.1.1
+		Version: 3.1.2
 	*/
 	
 	// If this file is called directly, abort.
@@ -21,7 +21,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.1.1';
+		private $version = '3.1.2';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -101,23 +101,6 @@
 						'prefix' => '',
 						'type' => 'text',
 						'instructions' => __('Will default to title if left blank.', $this->text_domain),
-						'required' => 0,
-						'conditional_logic' => 0,
-						'default_value' => '',
-						'placeholder' => '',
-						'prepend' => '',
-						'append' => '',
-						'maxlength' => '',
-						'readonly' => 0,
-						'disabled' => 0
-					),
-					array(
-						'key' => 'field_acf_key_acfop_slug',
-						'label' => __('Slug', $this->text_domain),
-						'name' => '_acfop_slug',
-						'prefix' => '',
-						'type' => 'text',
-						'instructions' => __('Will default to sanitized title.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -243,6 +226,36 @@
 						'save_other_choice' => 0,
 						'default_value' => 1,
 						'layout' => 'horizontal',
+					),
+					array(
+						'key' => 'field_acf_key_acfop_slug',
+						'label' => __('Slug', $this->text_domain),
+						'name' => '_acfop_slug',
+						'prefix' => '',
+						'type' => 'text',
+						'instructions' => __('Will default to sanitized title.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_parent',
+									'operator' => '==',
+									'value' => 'none',
+								),
+								array(
+									'field' => 'field_acf_key_acfop_redirect',
+									'operator' => '==',
+									'value' => 0,
+								),
+							),
+						),
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+						'readonly' => 0,
+						'disabled' => 0
 					),
 					array(
 						'key' => 'field_acf_key_acfop_order',
@@ -488,6 +501,13 @@
 			global $menu;
 			//global $submenu;
 			$parent_menus = array('none' => 'None');
+			
+			$options_pages = array();
+			if (isset($GLOBALS['acf_options_pages'])) {
+				$options_pages = $GLOBALS['acf_options_pages'];
+			}
+			//echo '<pre>'; print_r($options_pages);
+			//print_r($menu); die;
 			if (!count($menu)) {
 				// bail early
 				$this->parent_menus = $parent_menus;
@@ -500,6 +520,16 @@
 						$parent_menus[$item[2]] = 'Comments';
 					} elseif ($item[2] == 'plugins.php') {
 						$parent_menus[$item[2]] = 'Plugins';
+					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5])) {
+						// search options pages to get correct slug
+						//echo '<pre>'; print_r($item); echo '</pre>';
+						foreach ($options_pages as $options_page) {
+							if ($item[0] == $options_page['page_title']) {
+								$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $item[0]), '-'));
+								$parent_menus[$slug] = $item[0];
+							}
+						}
+						
 					} else {
 						$key = $item[2];
 						$value = $item[0];
@@ -510,6 +540,8 @@
 					} // end if else
 				} // end if good parent menu
 			} // end foreach menu
+			//echo '<pre>'; print_r($menu); 
+			//die;
 			$this->parent_menus = $parent_menus;
 		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
@@ -615,6 +647,9 @@
 							$redirect = false;
 						}
 						$options_page['redirect'] = $redirect;
+						if ($redirect) {
+							$options_page['slug'] = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
+						}
 						
 						$icon = '';
 						$value = get_post_meta($id, '_acfop_icon', true);

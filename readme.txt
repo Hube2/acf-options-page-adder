@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.3
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 Donate link: 
 License: 
 License URI: 
@@ -27,6 +27,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 
 == Changelog ==
+
+= 3.1.2 =
+* Corrects Issue #17
 
 = 3.1.1 =
 * Added checks to ensure that ACF5 Pro is installed and active

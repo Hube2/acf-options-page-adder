@@ -21,6 +21,19 @@ Allows adding options pages though an admin interface. Supports all the features
 ACF Options Pages. For more information see 
 http://www.advancedcustomfields.com/resources/options-page/
 
+##Warning
+If you have created ACF options pages manually in code then there is a condition where this plungin will
+not correctly detect the top level options page in a group and will not be able to successfully add
+sub options pages to that group. This will happen if you have the top level options page set to redirect
+to the first sub options page. This problem can be avoided if
+```
+$menu_slug == strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $page_title), '-'));
+```
+In other words, the slug must be all lower case and contain only letters, numbers and dashes 
+(hyphens -) and that there is never 2 or more consectutive dashes.
+
+Options page groups added using this plugin work correctly as this problem is dealt with internally.
+
 ##Field Group Duplicators
 
 Please see [issue #16](https://github.com/Hube2/acf-options-page-adder/issues/16) about the
