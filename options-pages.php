@@ -513,6 +513,7 @@
 				$this->parent_menus = $parent_menus;
 				return;
 			}
+			//print_r($menu); die;
 			foreach ($menu as $item) {
 				if (isset($item[0]) && $item[0] != '' && 
 						isset($item[2]) && !in_array($item[2], $this->exclude_locations)) {
@@ -523,13 +524,22 @@
 					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5])) {
 						// search options pages to get correct slug
 						//echo '<pre>'; print_r($item); echo '</pre>';
+						$found = false;
 						foreach ($options_pages as $options_page) {
 							if ($item[0] == $options_page['page_title']) {
 								$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $item[0]), '-'));
 								$parent_menus[$slug] = $item[0];
+								$found = true;
 							}
 						}
-						
+						if (!$found) {
+							$key = $item[2];
+							$value = $item[0];
+							if (!preg_match('/\.php/', $key)) {
+								//$key = 'admin.php?page='.$key;
+							}
+							$parent_menus[$key] = $value;
+						}
 					} else {
 						$key = $item[2];
 						$value = $item[0];
