@@ -2,8 +2,8 @@
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
-Tested up to: 4.3
-Stable tag: 3.1.2
+Tested up to: 4.5
+Stable tag: 3.1.3
 Donate link: 
 License: 
 License URI: 
@@ -27,6 +27,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 
 == Changelog ==
+
+= 3.1.3 ==
+* Removed comment from field group duplicator
 
 = 3.1.2 =
 * Corrects Issue #17

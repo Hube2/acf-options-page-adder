@@ -36,12 +36,15 @@ Options page groups added using this plugin work correctly as this problem is de
 
 ##Field Group Duplicators
 
-Please see [issue #16](https://github.com/Hube2/acf-options-page-adder/issues/16) about the
-future of the field group duplicator. See https://github.com/Hube2/acf-reusable-field-group-field
-
 Automatically duplicates field groups so that you can use the same field groups multiple 
 times without the need to manually duplicate and modify all the field names in the group.
 
 * Copy a field group to muliple options pages
 * Copy a field group mulitple times to the same options page
 * Copy a field group to a compound, tabbed field group
+
+### Donations
+If you find my work useful and you have a desire to send me money, which will give me an incentive to continue
+offering and maintaining the plugins I've made public in my many repositories, I'm not going to turn it down
+and whatever you feel my work is worth will be greatly appreciated. You can send money through paypal to
+hube02[AT]earthlink[dot]net. 
