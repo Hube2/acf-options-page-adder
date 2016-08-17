@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.1.2
+		Version: 3.1.3
 	*/
 	
 	// If this file is called directly, abort.
