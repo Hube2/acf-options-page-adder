@@ -28,6 +28,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.1.4 =
+* added support for github updater
+
 = 3.1.3 ==
 * Removed comment from field group duplicator
 
