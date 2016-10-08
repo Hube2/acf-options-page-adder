@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.1.3
+		Version: 3.1.5
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.1.2';
+		private $version = '3.1.5';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -40,7 +40,24 @@
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
+			add_action('admin_head', array($this, 'admin_head'));
+			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 		} // end public function __construct
+			
+			function meta_box_data($plugins=array()) {
+				
+				$plugins[] = array(
+					'title' => 'ACF Options Page Adder',
+					'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
+					'doc' => 'https://github.com/Hube2/acf-options-page-adder'
+				);
+				return $plugins;
+				
+			} // end function meta_box
+		
+		public function admin_head() {
+			//echo '<pre>'; print_r(get_current_screen()); die;
+		} // end public function admin_head
 		
 		public function after_setup_theme() {
 			// check to see if acf5 is installed
@@ -713,5 +730,48 @@
 		} // end private function acf_add_options_pages
 		
 	} // end class acfOptionsPageAdder
+	
+	if (!function_exists('jh_plugins_list_meta_box')) {
+		function jh_plugins_list_meta_box() {
+			$plugins = apply_filters('jh_plugins_list', array());
+				
+			$id = 'plugins-by-john-huebner';
+			$title = '<a style="text-decoration: none; font-size: 1em;" href="https://github.com/Hube2" target="_blank">Plugins by John Huebner</a>';
+			$callback = 'show_blunt_plugins_list_meta_box';
+			$screens = array();
+			foreach ($plugins as $plugin) {
+				$screens = array_merge($screens, $plugin['screens']);
+			}
+			$context = 'side';
+			$priority = 'low';
+			add_meta_box($id, $title, $callback, $screens, $context, $priority);
+			
+			
+		} // end function jh_plugins_list_meta_box
+		add_action('add_meta_boxes', 'jh_plugins_list_meta_box');
+			
+		function show_blunt_plugins_list_meta_box() {
+			$plugins = apply_filters('jh_plugins_list', array());
+			?>
+				<p style="margin-bottom: 0;">Thank you for using my plugins</p>
+				<ul style="margin-top: 0; margin-left: 1em;">
+					<?php 
+						foreach ($plugins as $plugin) {
+							?>
+								<li style="list-style-type: disc; list-style-position:">
+									<?php 
+										echo $plugin['title'];
+										if ($plugin['doc']) {
+											?> <a href="<?php echo $plugin['doc']; ?>" target="_blank">Documentation</a><?php 
+										}
+									?>
+								</li>
+							<?php 
+						}
+					?>
+				</ul>
+				<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hube02%40earthlink%2enet&lc=US&item_name=Donation%20for%20WP%20Plugins%20I%20Use&no_note=0&cn=Add%20special%20instructions%20to%20the%20seller%3a&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Please consider making a small donation.</a></p><?php 
+		}
+	} // end if !function_exists
 
 ?>
