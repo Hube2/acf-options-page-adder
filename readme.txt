@@ -28,6 +28,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.1.6 = 
+* corrected white-space error
+
 = 3.1.5 = 
 * added donation box
 
