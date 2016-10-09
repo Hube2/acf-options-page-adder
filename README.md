@@ -48,3 +48,15 @@ If you find my work useful and you have a desire to send me money, which will gi
 offering and maintaining the plugins I've made public in my many repositories, I'm not going to turn it down
 and whatever you feel my work is worth will be greatly appreciated. You can send money through paypal to
 hube02[AT]earthlink[dot]net. 
+
+#### Automatic Updates
+Install [GitHub Updater](https://github.com/afragen/github-updater) on your site if you want to recieve automatic
+updates for this plugin.
+
+#### Remove Nag
+You may notice that I've started adding a little nag to my plugins. It's just a box on some pages that lists my
+plugins that you're using with a request do consider making a donation for using them. If you want to disable them
+add the following filter to your functions.php file.
+```
+add_filter('remove_hube2_nag', '__return_true');
+```
