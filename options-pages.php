@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.2.0
+		Version: 3.2.1
 	*/
 	
 	// If this file is called directly, abort.
@@ -253,20 +253,7 @@
 						'type' => 'text',
 						'instructions' => __('Will default to sanitized title.', $this->text_domain),
 						'required' => 0,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field' => 'field_acf_key_acfop_parent',
-									'operator' => '==',
-									'value' => 'none',
-								),
-								array(
-									'field' => 'field_acf_key_acfop_redirect',
-									'operator' => '==',
-									'value' => 0,
-								),
-							),
-						),
+						'conditional_logic' => 0,
 						'default_value' => '',
 						'placeholder' => '',
 						'prepend' => '',
