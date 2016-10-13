@@ -34,6 +34,17 @@ In other words, the slug must be all lower case and contain only letters, number
 
 Options page groups added using this plugin work correctly as this problem is dealt with internally.
 
+##Saving options page values to a post ID
+ACF v5.2.7 added the ability to save options page fields to a post ID, so here's a hint and a bite.
+Why not save your values to the options page post that is created when you set up an options page using
+this plugin? The post type is already created and it really is a perfect place to store the values. Here's
+a bonus, if you delete the options page then all of those values will be deleted right long with it.
+You can even use `get_fields($options_page_id)` without needing to worry about getting the fields for
+the options page itself. Why? because all the fields used for creating the options page start with an
+underscore `_` and will not be returned by `get_fields()`. The only thing you need to be careful of is not
+using any of the field names used by this plugin, which should be extremely easy since they all start with
+`_acfop_`.
+
 ##Field Group Duplicators
 
 Automatically duplicates field groups so that you can use the same field groups multiple 
