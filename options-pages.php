@@ -200,7 +200,7 @@
 						'name' => '_acfop_icon',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('The icon url for this menu. Defaults to default WordPress gear.<br /><em>Check out <a href="http://melchoyce.github.io/dashicons/" target="_blank">http://melchoyce.github.io/dashicons/</a> for what to put in this field.</em>', $this->text_domain),
+						'instructions' => __('The icon url for this menu. Defaults to default WordPress gear.<br /><em>Check out <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> for what to put in this field.</em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
