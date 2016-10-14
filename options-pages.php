@@ -25,14 +25,7 @@
 		private $version = '3.2.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
-		private $exclude_locations = array('',
-																			 'cpt_main_menu',
-																			 'edit.php?post_type=acf-field-group',
-																			 //'edit-comments.php',
-																			 //'plugins.php',
-																			 //'edit-tags.php?taxonomy=link_category',
-																			 'edit.php?post_type=acf-options-page',
-																			 );
+		private $exclude_locations = array();
 		private $text_domain = 'acf-options-page-adder';
 		
 		public function __construct() {
