@@ -585,13 +585,22 @@
 		
 		private function register_post_type() {
 			// register the post type
+			$cap = 'manage_options';
+			$cap = apply_filters('acf-options-page-adder/capability', $cap);
+			$capabilities = array(
+				'edit_post'			=> $cap,
+				'delete_post'		=> $cap,
+				'edit_posts'		=> $cap,
+				'delete_posts'		=> $cap,
+			);
 			$args = array('label' => __('Options Pages', $this->text_domain),
 										'description' => '',
 										'public' => false,
 										'show_ui' => true,
 										'show_in_menu' => true,
 										'capability_type' => 'post',
-										'map_meta_cap' => true,
+										'capabilities' => $capabilities,
+										//'map_meta_cap' => true,
 										'hierarchical' => false,
 										'rewrite' => array('slug' => $this->post_type, 'with_front' => false),
 										'query_var' => true,
