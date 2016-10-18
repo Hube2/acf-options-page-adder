@@ -28,6 +28,10 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.3.0 =
+* changed capability to "manage_options"
+* added filter to allow changing of capability
+
 = 3.2.1 =
 * corrected conditional logic on slug field
 
