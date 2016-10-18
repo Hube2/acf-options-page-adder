@@ -21,6 +21,17 @@ Allows adding options pages though an admin interface. Supports all the features
 ACF Options Pages. For more information see 
 http://www.advancedcustomfields.com/resources/options-page/
 
+##Change capability
+The capability required to add/edit options pages was changed to "manage_options" in version 3.3.0.
+This can be altered by adding a filter
+```
+add_filter('acf-options-page-adder/capability', 'my_acf_options_page_adder_cap');
+function my_acf_options_page_adder_cap($cap) {
+  $cap = 'edit_published_posts';
+  return $cap;
+}
+```
+
 ##Warning
 If you have created ACF options pages manually in code then there is a condition where this plungin will
 not correctly detect the top level options page in a group and will not be able to successfully add
