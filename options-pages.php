@@ -400,6 +400,7 @@
 						'choices' => array (
 							'options' => __('Options', $this->text_domain),
 							'post' => __('Post Object', $this->text_domain),
+							'this_post' => __('This Post', $this->text_domain),
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
@@ -752,6 +753,8 @@
 					$autoload = 0;
 					if ($save_to == 'post') {
 						$post_id = intval(get_post_meta($id, '_acfop_post_page', true));
+					} elseif ($save_to == 'this_post') {
+						$post_id = $id;
 					} else {
 						$autoload = get_post_meta($id, '_acfop_autoload', true);
 					}
