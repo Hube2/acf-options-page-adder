@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.3.0
+		Version: 4.0.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.3.0';
+		private $version = '4.0.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -41,19 +41,54 @@
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
 			add_action('admin_head', array($this, 'admin_head'));
+			add_action('acf/save_post', array($this, 'set_post_title'), 20);
+			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 		} // end public function __construct
+		
+		public function set_title_field($value, $post_id, $field) {
+			if (!empty($value)) {
+				return $value;
+			}
+			// options page was created before the title field was added
+			$value = get_the_title(intval($post_id));
+			return $value;
+		} // end public function set_title_field
+		
+		public function set_post_title($post_id) {
+			$post_id = intval($post_id);
+			if (!$post_id) {
+				return;
+			}
+			// post types that need titles set
+			$post_types = array($this->post_type);
+			//echo $post_type; die;
+			if (!in_array($this->post_type, $post_types)) {
+				return;
+			}
+			$title = get_post_meta($post_id, '_acfop_title', true);
+			// strip all html
+			//echo $title; die;
+			$title = preg_replace('#</?\w+[^>]*>#s', '', $title);
+			$slug = sanitize_title($title);
+			remove_action('acf/save_post', array($this, 'set_post_title'), 20);
+			$args = array(
+				'ID' => $post_id,
+				'post_title' => $title,
+				'post_name' => $slug
+			);
+			wp_update_post($args);
+			add_action('acf/save_post', array($this, 'set_post_title'), 20);
+		} // end public function set_post_title
 			
-			function meta_box_data($plugins=array()) {
-				
-				$plugins[] = array(
-					'title' => 'ACF Options Page Adder',
-					'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
-					'doc' => 'https://github.com/Hube2/acf-options-page-adder'
-				);
-				return $plugins;
-				
-			} // end function meta_box
+		public function meta_box_data($plugins=array()) {
+			$plugins[] = array(
+				'title' => 'ACF Options Page Adder',
+				'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
+				'doc' => 'https://github.com/Hube2/acf-options-page-adder'
+			);
+			return $plugins;
+		} // end public function meta_box
 		
 		public function admin_head() {
 			//echo '<pre>'; print_r(get_current_screen()); die;
@@ -111,6 +146,23 @@
 						'required' => 0,
 						'conditional_logic' => 0,
 						'message' => __('Title above is the title that will appear on the page. Enter other details as needed.<br />For more information see the ACF documentation for <a href="http://www.advancedcustomfields.com/resources/acf_add_options_page/" target="_blank">acf_add_options_page()</a> and <a href="http://www.advancedcustomfields.com/resources/acf_add_options_sub_page/" target="_blank">acf_add_options_sub_page()</a>.', $this->text_domain)
+					),
+					array(
+						'key' => 'field_acf_key_acfop_title',
+						'label' => __('Title Text', $this->text_domain),
+						'name' => '_acfop_title',
+						'prefix' => '',
+						'type' => 'text',
+						'instructions' => __('Will default to title if left blank.', $this->text_domain),
+						'required' => 1,
+						'conditional_logic' => 0,
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+						'readonly' => 0,
+						'disabled' => 0
 					),
 					array(
 						'key' => 'field_acf_key_acfop_menu',
@@ -607,7 +659,7 @@
 										'exclude_from_search' => true,
 										'menu_position' => 100,
 										'menu_icon' => 'dashicons-admin-generic',
-										'supports' => array('title','custom-fields','revisions'),
+										'supports' => array('custom-fields','revisions'),
 										'labels' => array('name' => __('Options Pages', $this->text_domain),
 																			'singular_name' => __('Options Page', $this->text_domain),
 																			'menu_name' =>	__('Options Pages', $this->text_domain),
