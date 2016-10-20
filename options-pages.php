@@ -292,7 +292,7 @@
 						'name' => '_acfop_slug',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('Will default to sanitized title.', $this->text_domain),
+						'instructions' => __('This field is optional in ACF and will default to a sanitized version of the title. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
 						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
