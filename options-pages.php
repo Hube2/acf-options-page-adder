@@ -137,17 +137,6 @@
 				'title' => __('Options Page Details', $this->text_domain),
 				'fields' => array(
 					array(
-						'key' => 'field_acf_key_acfop_message',
-						'label' => __('Options Page Message', $this->text_domain),
-						'name' => '',
-						'prefix' => '',
-						'type' => 'message',
-						'instructions' => '',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'message' => __('Title above is the title that will appear on the page. Enter other details as needed.<br />For more information see the ACF documentation for <a href="http://www.advancedcustomfields.com/resources/acf_add_options_page/" target="_blank">acf_add_options_page()</a> and <a href="http://www.advancedcustomfields.com/resources/acf_add_options_sub_page/" target="_blank">acf_add_options_sub_page()</a>.', $this->text_domain)
-					),
-					array(
 						'key' => 'field_acf_key_acfop_title',
 						'label' => __('Title Text', $this->text_domain),
 						'name' => '_acfop_title',
