@@ -304,7 +304,7 @@
 						'prefix' => '',
 						'type' => 'text',
 						'instructions' => __('Will default to sanitized title.', $this->text_domain),
-						'required' => 0,
+						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
 						'placeholder' => '',
