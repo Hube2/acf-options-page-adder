@@ -389,7 +389,7 @@
 						'label' => 'Save to',
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>Hint: You can the values for an options page to this options page post. Just select it as the choice and be careful not to use one of the field names used for creating this field group. The field names for the fields in this group are _acfop_menu, _acfop_parent, _acfop_capability, _acfop_position, _acfop_icon, _acfop_redirect, _acfop_slug, _acfop_order, _acfop_save_to, _acfop_post_page and _acfop_autoload</em>. You will need to publish this options page before you can select it.', $this->text_domain),
+						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post to not use field names in your field groups that start with _acfop_.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array (
@@ -411,7 +411,7 @@
 						'label' => 'Post/Page',
 						'name' => '_acfop_post_page',
 						'type' => 'post_object',
-						'instructions' => __('Select the post object to save and load data to/from.<br /><br /><em>Hint: You can the values for an options page to this options page post. Just select it as the choice and be careful not to use one of the field names used for creating this field group. The field names for the fields in this group are _acfop_menu, _acfop_parent, _acfop_capability, _acfop_position, _acfop_icon, _acfop_redirect, _acfop_slug, _acfop_order, _acfop_save_to, _acfop_post_page and _acfop_autoload</em>. You will need to publish this options page before you can select it.', $this->text_domain),
+						'instructions' => __('Select the post object to save and load data to/from.', $this->text_domain),
 						'required' => 1,
 						'conditional_logic' => array (
 							array (

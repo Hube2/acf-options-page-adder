@@ -32,7 +32,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 * removed post title
 * added required title field
 * slug field now required
+* added validation to slug field
 * removed no longer needed message field about post title
+* updated instructions and messages for several fields
 
 = 3.3.0 =
 * changed capability to "manage_options"
