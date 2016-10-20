@@ -43,15 +43,71 @@
 			add_action('admin_head', array($this, 'admin_head'));
 			add_action('acf/save_post', array($this, 'set_post_title'), 20);
 			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
+			add_filter('acf/load_value/key=field_acf_key_acfop_slug', array($this, 'set_page_slug_field'), 20, 3);
+			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 		} // end public function __construct
+		
+		public function set_page_slug_field($value, $post_id, $field) {
+			if (!empty($value)) {
+				return $value;
+			}
+			// options page was created before the title field was added
+			$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', get_the_title($post_id)), '-'));
+			if ($slug != 'auto-draft') {
+				$value = $slug;
+			}
+			return $value;
+		} // end public function set_page_slug_field
+		
+		public function unique_value($valid, $value, $field, $input) {
+			// must be unique
+			//ob_start(); echo '<pre>'; print_r($_POST); echo '</pre>';return ob_get_clean();
+			//ob_start(); print_r($field); return ob_get_clean();
+			if (!$valid || (!isset($_POST['post_id']) && !isset($_POST['post_ID']))) {
+				return $valid;
+			}
+			if (isset($_POST['post_id'])) {
+				$post_id = intval($_POST['post_id']);
+			} else {
+				$post_id = intval($_POST['post_ID']);
+			}
+			if (!$post_id) {
+				return $valid;
+			}
+			$post_type = get_post_type($post_id);
+			$field_name = $field['name'];
+			$args = array(
+				'post_type' => $post_type,
+				'post_status' => 'publish, draft, trash',
+				'post__not_in' => array($post_id),
+				'meta_query' => array(
+					array(
+						'key' => $field_name,
+						'value' => $value
+					)
+				)
+			);
+			$query = new WP_Query($args);
+			if (count($query->posts)){
+				return 'This Value is not Unique. Please enter a unique '.$field['label'];
+			}
+			// only allow leters, number, underscores, dashes
+			if (!preg_match('/^[a-z]/i', $value) || preg_match('/[^-_0-9a-z]/i', $value)) {
+				return 'Slug must beging with a letter and include only numbers, letters, underscores and hyphens';
+			}
+			return true;
+		} // end public function unique_value
 		
 		public function set_title_field($value, $post_id, $field) {
 			if (!empty($value)) {
 				return $value;
 			}
 			// options page was created before the title field was added
-			$value = get_the_title(intval($post_id));
+			$title = get_the_title(intval($post_id));
+			if ($title != 'Auto Draft') {
+				$value = $title;
+			}
 			return $value;
 		} // end public function set_title_field
 		
@@ -142,7 +198,7 @@
 						'name' => '_acfop_title',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('Will default to title if left blank.', $this->text_domain),
+						'instructions' => __('This will be used as the options page title.', $this->text_domain),
 						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -292,7 +348,7 @@
 						'name' => '_acfop_slug',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('This field is optional in ACF and will default to a sanitized version of the title. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
+						'instructions' => __('This field is optional in ACF. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
 						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -713,7 +769,7 @@
 						}
 						$options_page['redirect'] = $redirect;
 						if ($redirect) {
-							$options_page['slug'] = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
+							//$options_page['slug'] = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
 						}
 						
 						$icon = '';
