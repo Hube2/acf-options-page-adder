@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 4.0.0
+		Version: 3.4.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '4.0.0';
+		private $version = '3.4.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -528,12 +528,13 @@
 			foreach ($columns as $index => $column) {
 				if ($index == 'title') {
 					$new_columns[$index] = $column;
-					$new_columns['menu_text'] = __('Menu Text', $this->text_domain);
-					$new_columns['slug'] = __('Slug', $this->text_domain);
-					$new_columns['location'] = __('Location (Parent)', $this->text_domain);
-					$new_columns['redirect'] = __('Redirect', $this->text_domain);
-					$new_columns['order'] = __('Order', $this->text_domain);
-					$new_columns['capability'] = __('Capability', $this->text_domain);
+					$new_columns['acfop_id'] = __('Post ID', $this->text_domain);
+					$new_columns['acfop_menu_text'] = __('Menu Text', $this->text_domain);
+					$new_columns['acfop_slug'] = __('Slug', $this->text_domain);
+					$new_columns['acfop_location'] = __('Location (Parent)', $this->text_domain);
+					$new_columns['acfop_redirect'] = __('Redirect', $this->text_domain);
+					$new_columns['acfop_order'] = __('Order', $this->text_domain);
+					$new_columns['acfop_capability'] = __('Capability', $this->text_domain);
 				} else {
 					if (strtolower($column) != 'date') {
 						$new_columns[$index] = $column;
@@ -545,14 +546,17 @@
 		
 		public function admin_columns_content($column_name, $post_id) {
 			switch ($column_name) {
-				case 'menu_text':
+				case 'acfop_id':
+					echo $post_id;
+					break;
+				case 'acfop_menu_text':
 					$value = trim(get_post_meta($post_id, '_acfop_menu', true));
 					if (!$value) {
 						$value = trim(get_the_title($post_id));
 					}
 					echo $value;
 					break;
-				case 'slug':
+				case 'acfop_slug':
 					$value = trim(get_post_meta($post_id, '_acfop_slug', true));
 					if (!$value) {
 						$value = trim(get_the_title($post_id));
@@ -560,7 +564,7 @@
 					}
 					echo $value;
 					break;
-				case 'location':
+				case 'acfop_location':
 					$value = get_post_meta($post_id, '_acfop_parent', true);
 					if (isset($this->parent_menus[$value])) {
 						echo $this->parent_menus[$value];
@@ -575,18 +579,18 @@
 						} // end if cout acf_options_pages
 					} // end if esl
 					break;
-				case 'capability':
+				case 'acfop_capability':
 					$value = get_post_meta($post_id, '_acfop_capability', true);
 					echo $value;
 					//the_field('_acfop_capability', $post_id);
 					break;
-				case 'order':
+				case 'acfop_order':
 					$value = get_post_meta($post_id, '_acfop_order', true);
 					if ($value != '') {
 						echo $value;
 					}
 					break;
-				case 'redirect':
+				case 'acfop_redirect':
 					$value = get_post_meta($post_id, '_acfop_redirect', true);
 					if ($value == 1) {
 						echo 'True';
