@@ -28,6 +28,11 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.5.0 =
+* Changed default redirect value to false
+* Added admin column for "Save To"
+* Added function get_option_page_id() and get_options_page_id()
+
 = 3.4.0 =
 * removed post title
 * added required title field

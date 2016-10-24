@@ -32,6 +32,42 @@ function my_acf_options_page_adder_cap($cap) {
 }
 ```
 
+##Get Options Page Save to ID
+Added in version 3.5.0 functions to get the options save to value ($post_id), also added a filter. This
+function or filter will return the current "post_id" setting of for an "menu_slug". It will return either
+"options" or a post ID if the options page is set to save values to a post object.
+Example of use
+```
+// example 1: get_options_page_id()
+
+// get the post_id of an options page
+$post_id = get_options_page_id('my_options_page_slug');
+// get a value using $post_id
+$value = get_field('my_option_field', $post_id);
+```
+
+```
+// example 2: by filter
+$default = 'option',
+$slug = 'my_options_page_slug';
+$post_id = apply_filters('get_option_page_id_filter', $default, $slug);
+$value = get_field('my_option_field', $post_id);
+
+// or like this
+$value = get_field('my_option_field', apply_filters('get_option_page_id_filter', $default, $slug));
+```
+
+There is a condition where you will get the incorrect post id. This condition is created by having a
+top level redirect page that is set to redirect to the first sub options page. If there is no sub options
+page that exists then it will return the value for the top level options page. If you later create a
+sub options page it will return the new value from the sub options page. This is why I have see the
+default value of redirect to false. If you want the top level page to redirect the you need to be aware
+that it can cause you issues later down the road if you haven't created a sub option page. You should also specifically set the order of sub options pages so that these do not change at some point in the future
+because adding a new options page with the same order as the existing top level page will alter the save
+and get location to the new options page. There's noting I can do about this, it the way it works. When
+setting up ACF options pages to save to a post instead of options you must be more precise in with the
+options page arguments.
+
 ##Warning
 If you have created ACF options pages manually in code then there is a condition where this plungin will
 not correctly detect the top level options page in a group and will not be able to successfully add

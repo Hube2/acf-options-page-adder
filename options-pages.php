@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.4.0
+		Version: 3.5.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.4.0';
+		private $version = '3.5.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -170,6 +170,7 @@
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
 			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
+			require_once(dirname(__FILE__).'/api-template.php');
 		} // end public function after_setup_theme
 		
 		public function init() {
@@ -339,7 +340,7 @@
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
-						'default_value' => 1,
+						'default_value' => 0,
 						'layout' => 'horizontal',
 					),
 					array(
@@ -533,6 +534,7 @@
 					$new_columns['acfop_slug'] = __('Slug', $this->text_domain);
 					$new_columns['acfop_location'] = __('Location (Parent)', $this->text_domain);
 					$new_columns['acfop_redirect'] = __('Redirect', $this->text_domain);
+					$new_columns['acfop_saveto'] = __('Save To', $this->text_domain);
 					$new_columns['acfop_order'] = __('Order', $this->text_domain);
 					$new_columns['acfop_capability'] = __('Capability', $this->text_domain);
 				} else {
@@ -546,6 +548,40 @@
 		
 		public function admin_columns_content($column_name, $post_id) {
 			switch ($column_name) {
+				case 'acfop_saveto':
+					$save_to = get_post_meta($post_id, '_acfop_save_to', true);
+					//echo '(',$save_to,')<br>';
+					if ($save_to == 'options') {
+						$redirect = intval(get_post_meta($post_id, '_acfop_redirect', true));
+						$parent = get_post_meta($post_id, '_acfop_parent', true);
+						//echo 'redirect = ',$redirect,', parent = ',$parent,'<br>';
+						if ($parent == 'none' && $redirect) {
+							$save_to = '';
+						}
+					}
+					if ($save_to == 'options') {
+						echo 'Options';
+					} elseif ($save_to == 'post') {
+						echo 'Post ',get_post_meta($post_id, '_acfop_post_page', true);
+					} elseif ($save_to == 'this_post') {
+						echo 'This Post (',$post_id,')';
+					} else {
+						$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
+						if (!$slug) {
+							$slug = trim(get_the_title($post_id));
+							$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
+						}
+						$save_to = get_options_page_id($slug);
+						echo '1st sub option page value<br /><strong>OR</strong><br />';
+						if ($save_to == 'options') {
+							echo 'Options';
+						} elseif ($save_to == $post_id) {
+							echo 'This Post (',$post_id,')';
+						} else {
+							echo 'Post ',$save_to;
+						}
+					}
+					break;
 				case 'acfop_id':
 					echo $post_id;
 					break;
