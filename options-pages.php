@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.5.0
+		Version: 3.5.1
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.5.0';
+		private $version = '3.5.1';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -112,16 +112,15 @@
 		} // end public function set_title_field
 		
 		public function set_post_title($post_id) {
-			$post_id = intval($post_id);
-			if (!$post_id) {
+			if (!is_numeric($post_id)) {
 				return;
 			}
 			// post types that need titles set
-			$post_types = array($this->post_type);
-			//echo $post_type; die;
-			if (!in_array($this->post_type, $post_types)) {
+			$post_type = get_post_type($post_id);
+			if ($this->post_type != $post_type) {
 				return;
 			}
+			echo 'should not get here'; die;
 			$title = get_post_meta($post_id, '_acfop_title', true);
 			// strip all html
 			//echo $title; die;

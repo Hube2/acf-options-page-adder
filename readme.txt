@@ -28,6 +28,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Changelog ==
 
+= 3.5.1 =
+* fixed bug, titles being removed from all other post types
+
 = 3.5.0 =
 * Changed default redirect value to false
 * Added admin column for "Save To"
