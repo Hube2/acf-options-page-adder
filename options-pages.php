@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.5.1
+		Version: 3.5.2
 	*/
 	
 	// If this file is called directly, abort.
@@ -120,7 +120,7 @@
 			if ($this->post_type != $post_type) {
 				return;
 			}
-			echo 'should not get here'; die;
+			//echo 'should not get here'; die;
 			$title = get_post_meta($post_id, '_acfop_title', true);
 			// strip all html
 			//echo $title; die;
