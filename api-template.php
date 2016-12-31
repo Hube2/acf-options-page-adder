@@ -44,8 +44,7 @@
 		function get_option_page_id_filter($post_id='', $slug='') {
 			return get_option_page_id($slug);
 		} // end function function get_option_page_id_filter
+		add_filter('acf/get_options_page_id', 'get_option_page_id_filter', 10, 2);
 	} // end if !function
-	
-	add_filter('acf/get_options_page_id', 'get_option_page_id_filter', 10, 2);
 	
 ?>
