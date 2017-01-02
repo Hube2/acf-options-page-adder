@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.5.2
+		Version: 3.6.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -22,7 +22,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.5.1';
+		private $version = '3.6.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -46,7 +46,22 @@
 			add_filter('acf/load_value/key=field_acf_key_acfop_slug', array($this, 'set_page_slug_field'), 20, 3);
 			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
+			add_filter('acf/location/rule_values/options_page', array($this, 'options_page_rule_values_titles'), 20);
 		} // end public function __construct
+		
+		public function options_page_rule_values_titles($choices) {
+			if (!apply_filters('acf/options_pages/choice_titles', true)) {
+				return $choices;
+			}
+			$pages = acf_get_options_pages();
+			if (!$pages) {
+				return $choices;
+			}
+			foreach ($pages as $page) {
+				$choices[$page['menu_slug']] = $page['page_title'];
+			}
+			return $choices;
+		} // end public function options_page_rule_values_titles
 		
 		public function set_page_slug_field($value, $post_id, $field) {
 			if (!empty($value)) {
