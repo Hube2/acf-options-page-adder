@@ -1,9 +1,9 @@
-=== Advanced Custom Fields: Options Page Adder ===
+=== Options Page Admin for ACF ===
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.5.3
+Stable tag: 3.6.1
 Donate link: 
 License: 
 License URI: 
@@ -12,6 +12,17 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Description ==
 
+This is an add on plugin for Advanced Custom Fields (ACF) 5 
+*** This plugin will not provide any functionality unless ACF 5 and the Options Page Add On (or ACF5 Pro)
+is installed ***
+
+This plugin provides an admin interface for adding options pages in ACF including all options for ACF
+options pages. Most options are selectable, for example the menu location, capability and where to save
+field values to.
+
+For more information see
+[Other Notes](https://wordpress.org/plugins/options-page-admin-for-acf/other_notes) and
+[Screenshots](https://wordpress.org/plugins/options-page-admin-for-acf/screenshots)
 
 == Installation ==
 
@@ -22,11 +33,85 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Screenshots ==
 
+1. Options Page Admin List
+2. Add Top Level Options Page
+3. Add Child Options Page
 
 == Frequently Asked Questions == 
 
+None Yet
+
+== Other Notes ==
+
+== Github Repository ==
+
+This plugin is also on GitHub 
+[https://github.com/Hube2/acf-options-page-adder](https://github.com/Hube2/acf-options-page-adder)
+
+== Change Capability ==
+
+The capability required to add/edit options page settings is "manage_options". This capability can be changed by adding a filter.
+`
+add_filter('acf-options-page-adder/capability', 'my_acf_options_page_adder_cap');
+function my_acf_options_page_adder_cap($cap) {
+  $cap = 'edit_published_posts';
+  return $cap;
+}
+`
+
+== Saving Values to the Options Page Post ===
+
+ACF v5.2.7 added the ability to save options page fields to a post ID. This plugin will let you save the options to the same post ID of the post created when adding an options page using this plugin. You can even use get_fields($options_page_id) without needing to worry about getting the fields for the options page itself. Why? because all the fields used for creating the options page start with an underscore _ and will not be returned by get_fields(). The only thing you need to be careful of is not using any of the field names used by this plugin, which should be extremely easy since they all start with _acfop_.
+
+== Get Post ID for Options Page ==
+
+A function and a filter are available for getting the correct ACF $post_id value to use for getting
+values from the options page. This function/filter will return 'options' for options pages stored in
+options or will return the correct post ID if options are saved to a post. The correct ID is returned
+based on the "menu_slug" value of the options page.
+
+`
+/ example 1: function get_options_page_id()
+
+// get the post_id of an options page
+$post_id = get_options_page_id('my_options_page_slug');
+// get a value using $post_id
+$value = get_field('my_option_field', $post_id);
+
+// or it can be combined like this
+$value = get_field('my_option_field', get_options_page_id('my_options_page_slug'));
+`
+
+`
+// example 2: by filter
+$default = 'option',
+$slug = 'my_options_page_slug';
+$post_id = apply_filters('get_option_page_id_filter', $default, $slug);
+$value = get_field('my_option_field', $post_id);
+
+// or it can be combined like this
+$value = get_field('my_option_field', apply_filters('get_option_page_id_filter', $default, $slug));
+`
+
+*There is a condition where you will get the incorrect post id. This condition is created by having a top level redirect page that is set to redirect to the first sub options page. If there is no sub options page that exists then it will return the value for the top level options page. If you later create a sub options page it will return the new value from the sub options page. This is why I have see the default value of redirect to false. If you want the top level page to redirect the you need to be aware that it can cause you issues later down the road if you haven't created a sub option page. You should also specifically set the order of sub options pages so that these do not change at some point in the future because adding a new options page with the same order as the existing top level page will alter the save and get location to the new options page. There's noting I can do about this, it the way it works. When setting up ACF options pages to save to a post instead of options you must be more precise in with the options page arguments.*
+
+== Remove Nag ==
+
+If you would like to remove my little nag that appears on some admin pages add the following to your functions.php file
+`
+add_filter('remove_hube2_nag', '__return_true');
+`
+
 
 == Changelog ==
+
+= 3.6.1 =
+* First release to wordpress.org
+
+= 3.6.0 =
+* Added filter to use page tiles instead of menu title for location setting when editing ACF field group
+* Corrected some bugs
+* Removed fieldset duplicator
 
 = 3.5.3 =
 * correction to when filter is added to prevent multiple additions of filter

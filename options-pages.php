@@ -1,28 +1,30 @@
 <?php 
 
 	/*
-		Plugin Name: Advanced Custom Fields: Options Page Adder
+		Plugin Name: Options Page Admin for ACF
 		Plugin URI: https://github.com/Hube2/acf-options-page-adder
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.6.0
+		Version: 3.6.1
 	*/
 	
 	// If this file is called directly, abort.
 	if (!defined('WPINC')) {die;}
 	
+	/*
 	$duplicator = dirname(__FILE__).'/fieldset-duplicator.php';
 	if (file_exists($duplicator)) {
 		include($duplicator);
 	}
+	*/
 	
 	new acfOptionsPageAdder();
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.6.0';
+		private $version = '3.6.1';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -50,7 +52,7 @@
 		} // end public function __construct
 		
 		public function options_page_rule_values_titles($choices) {
-			if (!apply_filters('acf/options_pages/choice_titles', true)) {
+			if (!apply_filters('acf-options-page-adder/choice_titles', true)) {
 				return $choices;
 			}
 			$pages = acf_get_options_pages();
@@ -404,7 +406,7 @@
 						'label' => 'Save to',
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post to not use field names in your field groups that start with _acfop_.', $this->text_domain),
+						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post to not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array (
