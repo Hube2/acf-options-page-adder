@@ -2,8 +2,8 @@
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
-Tested up to: 4.6
-Stable tag: 3.1.4
+Tested up to: 4.7
+Stable tag: 3.5.3
 Donate link: 
 License: 
 License URI: 
@@ -27,6 +27,12 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 
 == Changelog ==
+
+= 3.5.3 =
+* correction to when filter is added to prevent multiple additions of filter
+
+= 3.5.2 =
+* ?
 
 = 3.5.1 =
 * fixed bug, titles being removed from all other post types
