@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.6.1
+Stable tag: 3.7.0
 Donate link: 
 License: 
 License URI: 
@@ -59,7 +59,7 @@ function my_acf_options_page_adder_cap($cap) {
 }
 `
 
-== Saving Values to the Options Page Post ===
+== Saving Values to the Options Page Post ==
 
 ACF v5.2.7 added the ability to save options page fields to a post ID. This plugin will let you save the options to the same post ID of the post created when adding an options page using this plugin. You can even use get_fields($options_page_id) without needing to worry about getting the fields for the options page itself. Why? because all the fields used for creating the options page start with an underscore _ and will not be returned by get_fields(). The only thing you need to be careful of is not using any of the field names used by this plugin, which should be extremely easy since they all start with _acfop_.
 
@@ -95,6 +95,13 @@ $value = get_field('my_option_field', apply_filters('get_option_page_id_filter',
 
 *There is a condition where you will get the incorrect post id. This condition is created by having a top level redirect page that is set to redirect to the first sub options page. If there is no sub options page that exists then it will return the value for the top level options page. If you later create a sub options page it will return the new value from the sub options page. This is why I have see the default value of redirect to false. If you want the top level page to redirect the you need to be aware that it can cause you issues later down the road if you haven't created a sub option page. You should also specifically set the order of sub options pages so that these do not change at some point in the future because adding a new options page with the same order as the existing top level page will alter the save and get location to the new options page. There's noting I can do about this, it the way it works. When setting up ACF options pages to save to a post instead of options you must be more precise in with the options page arguments.*
 
+== Font Awesome Support ==
+
+Please not that this plugin does not enqueue or include Font Awswsome in the admin of your site.
+If you include Font Awsome in your admin then you can use Font Awesome Icons for the icons of
+top level options page. For example if you wanted to use [Address Book Icon](http://fontawesome.io/icon/address-book/) then all you need to do is add `fa fa-address-book`
+into the Icon field when adding or editing the options page.
+
 == Remove Nag ==
 
 If you would like to remove my little nag that appears on some admin pages add the following to your functions.php file
@@ -104,6 +111,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.7.0 =
+* Added support for Font Awesome icons [See Other Notes](https://wordpress.org/plugins/options-page-admin-for-acf/other_notes/)
 
 = 3.6.1 =
 * First release to wordpress.org

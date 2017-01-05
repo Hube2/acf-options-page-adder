@@ -7,7 +7,7 @@
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
 		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.6.1
+		Version: 3.7.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -24,7 +24,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.6.1';
+		private $version = '3.7.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -49,7 +49,24 @@
 			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 			add_filter('acf/location/rule_values/options_page', array($this, 'options_page_rule_values_titles'), 20);
+			//add_filter('add_menu_classes', array($this, 'admin_menu_classes'));
+			add_action('admin_enqueue_scripts', array($this, 'script'));
 		} // end public function __construct
+		
+		public function script() {
+			$handle    	= 'acf-options-page-adder';
+			$src       	= plugin_dir_url(__FILE__).'options-pages.js';
+			$deps      	= array('jquery');
+			$ver       	= $this->version;
+			$in_footer 	= false;
+			wp_enqueue_script($handle, $src, $deps, $ver, $in_footer);
+		} // end public function script
+		
+		public function admin_menu_classes($menu) {
+			//echo '<pre>'; print_r($menu); die;
+			return $menu;
+			
+		} // end public function admin_menu_classes
 		
 		public function options_page_rule_values_titles($choices) {
 			if (!apply_filters('acf-options-page-adder/choice_titles', true)) {
@@ -658,6 +675,7 @@
 		
 		public function build_admin_menu_list() {
 			global $menu;
+			//echo '<pre>'; print_r($menu); //die;
 			//global $submenu;
 			$parent_menus = array('none' => 'None');
 			
@@ -673,7 +691,7 @@
 				return;
 			}
 			//print_r($menu); die;
-			foreach ($menu as $item) {
+			foreach ($menu as $index => $item) {
 				if (isset($item[0]) && $item[0] != '' && 
 						isset($item[2]) && !in_array($item[2], $this->exclude_locations)) {
 					if ($item[2] == 'edit-comments.php') {
@@ -708,9 +726,14 @@
 						$parent_menus[$key] = $value;
 					} // end if else
 				} // end if good parent menu
+				//echo 'here<br />';
+				if (isset($item[6]) && substr($item[6], 0, 6) == 'fa fa-') {
+					//echo '<pre>'; print_r($menu[$index]);
+					$menu[$index][4] .= ' acfop-fontawesome-'.str_replace(' ', '_', $item[6]);
+					//print_r($menu[$index]); die;
+				}
 			} // end foreach menu
-			//echo '<pre>'; print_r($menu); 
-			//die;
+			//echo '<pre>'; print_r($menu); die;
 			$this->parent_menus = $parent_menus;
 		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
