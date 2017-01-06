@@ -108,8 +108,9 @@ and whatever you feel my work is worth will be greatly appreciated. You can send
 hube02[AT]earthlink[dot]net. 
 
 #### Automatic Updates
-Install [GitHub Updater](https://github.com/afragen/github-updater) on your site if you want to recieve automatic
-updates for this plugin.
+Github updater support has been removed. This plugin has been published to WordPress.Org here
+https://wordpress.org/plugins/options-page-admin-for-acf/. If you are having problems updating please
+try installing from there. 
 
 #### Remove Nag
 You may notice that I've started adding a little nag to my plugins. It's just a box on some pages that lists my

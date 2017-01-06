@@ -1,9 +1,9 @@
-=== Options Page Admin for ACF ===
+=== ACF Options Page Admin ===
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.7.0
+Stable tag: 3.7.1
 Donate link: 
 License: 
 License URI: 
@@ -12,9 +12,9 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Description ==
 
-This is an add on plugin for Advanced Custom Fields (ACF) 5 
-*** This plugin will not provide any functionality unless ACF 5 and the Options Page Add On (or ACF5 Pro)
-is installed ***
+This is an add on plugin for Advanced Custom Fields (ACF) 5 + the Options Page Add On (or ACF Pro).
+***This plugin will not provide any functionality unless ACF 5 and the Options Page Add On (or ACF5 Pro)
+is installed***
 
 This plugin provides an admin interface for adding options pages in ACF including all options for ACF
 options pages. Most options are selectable, for example the menu location, capability and where to save
@@ -111,6 +111,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.7.1 =
+* removed github updater support
 
 = 3.7.0 =
 * Added support for Font Awesome icons [See Other Notes](https://wordpress.org/plugins/options-page-admin-for-acf/other_notes/)

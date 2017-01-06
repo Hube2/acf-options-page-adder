@@ -1,13 +1,12 @@
 <?php 
 
 	/*
-		Plugin Name: Options Page Admin for ACF
-		Plugin URI: https://github.com/Hube2/acf-options-page-adder
+		Plugin Name: ACF Options Page Admin
+		Plugin URI: https://wordpress.org/plugins/options-page-admin-for-acf/
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		GitHub Plugin URI: https://github.com/Hube2/acf-options-page-adder
-		Version: 3.7.0
+		Version: 3.7.1
 	*/
 	
 	// If this file is called directly, abort.
@@ -24,7 +23,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.7.0';
+		private $version = '3.7.1';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
