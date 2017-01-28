@@ -326,7 +326,7 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_icon',
-						'label' => 'Icon',
+						'label' => __('Icon', $this->text_domain),
 						'name' => '_acfop_icon',
 						'prefix' => '',
 						'type' => 'text',
@@ -367,8 +367,8 @@
 							),
 						),
 						'choices' => array(
-							1 => 'True',
-							0 => 'False',
+							1 => __('True', $this->text_domain),
+							0 => __('False', $this->text_domain),
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
@@ -419,7 +419,7 @@
 					),
 					array (
 						'key' => 'field_acf_key_acfop_save_to',
-						'label' => 'Save to',
+						'label' => __('Save To', $this->text_domain),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
 						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post to not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
@@ -442,7 +442,7 @@
 					),
 					array (
 						'key' => 'field_acf_key_acfop_post_page',
-						'label' => 'Post/Page',
+						'label' => __('Post/Page', $this->text_domain),
 						'name' => '_acfop_post_page',
 						'type' => 'post_object',
 						'instructions' => __('Select the post object to save and load data to/from.', $this->text_domain),
@@ -488,8 +488,8 @@
 							),
 						),
 						'choices' => array(
-							1 => 'True',
-							0 => 'False',
+							1 => __('True', $this->text_domain),
+							0 => __('False', $this->text_domain),
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
@@ -661,9 +661,9 @@
 				case 'acfop_redirect':
 					$value = get_post_meta($post_id, '_acfop_redirect', true);
 					if ($value == 1) {
-						echo 'True';
+						echo __('True', $this->text_domain);
 					} elseif ($value == 0 && $value != '') {
-						echo 'False';
+						echo __('False', $this->text_domain);
 					}
 					break;
 				default:
