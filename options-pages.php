@@ -422,7 +422,7 @@
 						'label' => __('Save To', $this->text_domain),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post to not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
+						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array (
@@ -676,7 +676,7 @@
 			global $menu;
 			//echo '<pre>'; print_r($menu); //die;
 			//global $submenu;
-			$parent_menus = array('none' => 'None');
+			$parent_menus = array('none' => __('None', $this->text_domain));
 			
 			$options_pages = array();
 			if (isset($GLOBALS['acf_options_pages'])) {
