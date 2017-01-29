@@ -113,7 +113,9 @@ add_filter('remove_hube2_nag', '__return_true');
 == Changelog ==
 
 = 3.7.2 =
-* Added missing text domain - thanks @pedro-mendonca
+* Added missing text domain
+* Typos corrected
+* Add Portuguese (pt_PT) translation - thanks @pedro-mendonca
 
 = 3.7.1 =
 * removed github updater support
