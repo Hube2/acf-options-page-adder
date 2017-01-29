@@ -92,15 +92,6 @@ underscore `_` and will not be returned by `get_fields()`. The only thing you ne
 using any of the field names used by this plugin, which should be extremely easy since they all start with
 `_acfop_`.
 
-##Field Group Duplicators
-
-Automatically duplicates field groups so that you can use the same field groups multiple 
-times without the need to manually duplicate and modify all the field names in the group.
-
-* Copy a field group to muliple options pages
-* Copy a field group mulitple times to the same options page
-* Copy a field group to a compound, tabbed field group
-
 ### Donations
 If you find my work useful and you have a desire to send me money, which will give me an incentive to continue
 offering and maintaining the plugins I've made public in my many repositories, I'm not going to turn it down
