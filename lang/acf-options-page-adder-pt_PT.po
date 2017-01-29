@@ -1,0 +1,286 @@
+# Copyright (C) 2014
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ACF Options Page Adder\n"
+"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
+"POT-Creation-Date: 2017-01-29 00:21+0000\n"
+"PO-Revision-Date: 2017-01-29 00:49+0000\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: options-pages.php\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: options-pages.php:226
+msgid "Options Page Details"
+msgstr "Detalhes da página de opções"
+
+#: options-pages.php:230
+msgid "Title Text"
+msgstr "Texto do título"
+
+#: options-pages.php:234
+msgid "This will be used as the options page title."
+msgstr "Isto será usado como título da página de opções."
+
+#: options-pages.php:247 options-pages.php:565
+msgid "Menu Text"
+msgstr "Texto do menu"
+
+#: options-pages.php:251
+msgid "Will default to title if left blank."
+msgstr "Por omissão será usado o título."
+
+#: options-pages.php:264
+msgid "Menu Location (Parent)"
+msgstr "Localização no menu (Superior)"
+
+#: options-pages.php:268
+msgid ""
+"Select the menu this options page will appear under. Will default to None."
+msgstr ""
+"Seleccione o menu onde a página de opções deverá ser incluída. Por omissão é "
+"nenhum."
+
+#: options-pages.php:283 options-pages.php:571
+msgid "Capability"
+msgstr "Capacidade"
+
+#: options-pages.php:287
+msgid ""
+"The user capability to view this options page. Will default to "
+"manage_options."
+msgstr ""
+"A capacidade do utilizador para ver esta página de opções. Por omissão é "
+"manage_options."
+
+#: options-pages.php:302
+msgid "Menu Position"
+msgstr "Posição no menu"
+
+#: options-pages.php:306
+msgid ""
+"The position in the menu order this menu should appear. WARNING: if two menu "
+"items use the same position attribute, one of the items may be overwritten "
+"so that only one item displays! Risk of conflict can be reduced by using "
+"decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to "
+"bottom of utility menu items.<br /><em>Core Menu Item Positions: "
+"2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, "
+"25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, "
+"80=Settings, 99=Separator</em>"
+msgstr ""
+"A posição em que este menu deverá aparecer. AVISO: Se dois itens de menu "
+"usarem o mesmo atributo de posição, um dos itens poderá ser substituído e só "
+"um será mostrado! O risco de conflito será reduzido se usar números decimais "
+"em vez de inteiros, por exemplo 63.3 em vez de 63. Por omissão será abaixo "
+"dos itens de menu principais.<br>Posições de itens de menu do core: "
+"2=Painel, 4=Separador, 5=Artigos, 10=Multimédia, 15=Ligações, 20=Páginas, "
+"25=Comentários, 59=Separador, 60=Apresentação, 65=Plugins, 70=Utilizadores, "
+"75=Ferramentas, 80=Opções, 99=Separador</em>"
+
+#: options-pages.php:329
+msgid "Icon"
+msgstr "Ícone"
+
+#: options-pages.php:333
+msgid ""
+"The icon url for this menu. Defaults to default WordPress gear.<br /"
+"><em>Check out <a href=\"https://developer.wordpress.org/resource/dashicons/"
+"\" target=\"_blank\">https://developer.wordpress.org/resource/dashicons/</a> "
+"for what to put in this field.</em>"
+msgstr ""
+"O URL do ícone para este menu. Por omissão é a roda dentada do WordPress."
+"<br /><em>Veja os <a href=\"https://developer.wordpress.org/resource/"
+"dashicons/\" target=\"_blank\">https://developer.wordpress.org/resource/"
+"dashicons/</a> que pode inserir neste campo.</em>"
+
+#: options-pages.php:354 options-pages.php:568
+msgid "Redirect"
+msgstr "Redireccionar"
+
+#: options-pages.php:358
+msgid ""
+"If set to true, this options page will redirect to the first child page (if "
+"a child page exists). If set to false, this parent page will appear "
+"alongside any child pages. Defaults to true.<br /><em><strong>NOTE: Changing "
+"this setting will effect the location or appearance of sub options pages "
+"currently associated with this options page.</strong></em>"
+msgstr ""
+"Se optar por verdadeiro, esta página de opções será redireccionada para a "
+"primeira página dependente, caso exista. Se optar por falso, esta página "
+"superior será mostrada tal como qualquer página dependente. Por omissão é "
+"verdadeiro.<br /><em><strong>ATENÇÃO: Alterar esta definição irá afectar a "
+"localização ou apresentação de páginas dependentes actualmente associadas a "
+"esta página de opções.</strong></em>"
+
+#: options-pages.php:370 options-pages.php:491 options-pages.php:664
+msgid "True"
+msgstr "Verdadeiro"
+
+#: options-pages.php:371 options-pages.php:492 options-pages.php:666
+msgid "False"
+msgstr "Falso"
+
+#: options-pages.php:380 options-pages.php:566
+msgid "Slug"
+msgstr "Slug"
+
+#: options-pages.php:384
+msgid ""
+"This field is optional in ACF. It is required here. You must know what the "
+"slug is to enable get_options_page_post_id() added in 4.4.0"
+msgstr ""
+"Este campo é opcional no ACF. Aqui é obrigatório. Tem de saber qual é a slug "
+"para permitir a função get_options_page_post_id() adicionada na v4.4.0."
+
+#: options-pages.php:397 options-pages.php:570
+msgid "Order"
+msgstr "Ordem"
+
+#: options-pages.php:401
+msgid "The order that this child menu should appear under its parent menu."
+msgstr "A ordem em que este submenu deverá ficar dentro do seu menu superior."
+
+#: options-pages.php:422 options-pages.php:569
+msgid "Save To"
+msgstr "Guardar para"
+
+#: options-pages.php:425
+msgid ""
+"ACF v5.2.7 added the ability to save and load data to/from a post rather "
+"than options.<br /><br /><em>When saving values to this post do not use "
+"field names in your field groups that start with _acfop_.</em>"
+msgstr ""
+"O ACF v5.2.7 adicionou a possibilidade de guardar e carregar dados num "
+"conteúdo em vez de opções.<br /><br /><em>Ao guardar valores para este "
+"conteúdo, não utilize nomes de campos nos seus grupos de campos que comecem "
+"com _acfop_.</em>"
+
+#: options-pages.php:434
+msgid "Options"
+msgstr "Opções"
+
+#: options-pages.php:435
+msgid "Post Object"
+msgstr "Conteúdo"
+
+#: options-pages.php:436
+msgid "This Post"
+msgstr "Este conteúdo"
+
+#: options-pages.php:445
+msgid "Post/Page"
+msgstr "Conteúdo/Página"
+
+#: options-pages.php:448
+msgid "Select the post object to save and load data to/from."
+msgstr "Seleccione o conteúdo para onde guardar e de onde carregar dados."
+
+#: options-pages.php:475
+msgid "Autoload Values"
+msgstr "Carregar valores automaticamente"
+
+#: options-pages.php:479
+msgid ""
+"Whether to load the options (values saved from this options page) when "
+"WordPress starts up. Added in ACF v5.2.8."
+msgstr ""
+"Se deverá carregar as opções (valores guardados através desta página de "
+"opções) ao carregar o WordPress. Adicionado no ACF v5.2.8."
+
+#: options-pages.php:564
+msgid "Post ID"
+msgstr "ID do conteúdo"
+
+#: options-pages.php:567
+msgid "Location (Parent)"
+msgstr "Localização (Superior)"
+
+#: options-pages.php:679
+msgid "None"
+msgstr "Nenhum"
+
+#: options-pages.php:772 options-pages.php:787 options-pages.php:789
+msgid "Options Pages"
+msgstr "Páginas de opções"
+
+#: options-pages.php:788
+msgid "Options Page"
+msgstr "Página de opções"
+
+#: options-pages.php:790
+msgid "Add Options Page"
+msgstr "Adicionar página de opções"
+
+#: options-pages.php:791
+msgid "Add New Options Page"
+msgstr "Adicionar nova página de opções"
+
+#: options-pages.php:792
+msgid "Edit"
+msgstr "Editar"
+
+#: options-pages.php:793
+msgid "Edit Options Page"
+msgstr "Editar página de opções"
+
+#: options-pages.php:794
+msgid "New Options Page"
+msgstr "Nova página de opções"
+
+#: options-pages.php:795 options-pages.php:796
+msgid "View Options Page"
+msgstr "Ver página de opções"
+
+#: options-pages.php:797
+msgid "Search Options Pages"
+msgstr "Pesquisar páginas de opções"
+
+#: options-pages.php:798
+msgid "No Options Pages Found"
+msgstr "Nenhuma página de opções encontrada"
+
+#: options-pages.php:799
+msgid "No Options Pages Found in Trash"
+msgstr "Nenhuma página de opções encontrada no lixo"
+
+#: options-pages.php:800
+msgid "Parent Options Page"
+msgstr "Página de opções superior"
+
+#. Plugin Name of the plugin/theme
+msgid "ACF Options Page Admin"
+msgstr "ACF Options Page Admin"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/options-page-admin-for-acf/"
+msgstr "https://wordpress.org/plugins/options-page-admin-for-acf/"
+
+#. Description of the plugin/theme
+msgid ""
+"Allows easy creation of options pages using Advanced Custom Fields Pro "
+"without needing to do any PHP coding. Requires that ACF Pro is installed."
+msgstr ""
+"Permite facilmente criar páginas de opções usando Advanced Custom Fields Pro "
+"sem precisar de programar em PHP. Requer que o ACF Pro esteja instalado."
+
+#. Author of the plugin/theme
+msgid "John A. Huebner II"
+msgstr "John A. Huebner II"
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/Hube2"
+msgstr "https://github.com/Hube2"
