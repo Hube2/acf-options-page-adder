@@ -676,7 +676,7 @@
 			global $menu;
 			//echo '<pre>'; print_r($menu); //die;
 			//global $submenu;
-			$parent_menus = array('none' => 'None');
+			$parent_menus = array('none' => __('None', $this->text_domain));
 			
 			$options_pages = array();
 			if (isset($GLOBALS['acf_options_pages'])) {
