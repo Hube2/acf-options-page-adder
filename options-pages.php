@@ -62,9 +62,7 @@
 		} // end public function script
 		
 		public function admin_menu_classes($menu) {
-			//echo '<pre>'; print_r($menu); die;
 			return $menu;
-			
 		} // end public function admin_menu_classes
 		
 		public function options_page_rule_values_titles($choices) {
@@ -95,8 +93,6 @@
 		
 		public function unique_value($valid, $value, $field, $input) {
 			// must be unique
-			//ob_start(); echo '<pre>'; print_r($_POST); echo '</pre>';return ob_get_clean();
-			//ob_start(); print_r($field); return ob_get_clean();
 			if (!$valid || (!isset($_POST['post_id']) && !isset($_POST['post_ID']))) {
 				return $valid;
 			}
@@ -153,10 +149,9 @@
 			if ($this->post_type != $post_type) {
 				return;
 			}
-			//echo 'should not get here'; die;
+			// should not get here unless added in old version
 			$title = get_post_meta($post_id, '_acfop_title', true);
 			// strip all html
-			//echo $title; die;
 			$title = preg_replace('#</?\w+[^>]*>#s', '', $title);
 			$slug = sanitize_title($title);
 			remove_action('acf/save_post', array($this, 'set_post_title'), 20);
@@ -179,7 +174,6 @@
 		} // end public function meta_box
 		
 		public function admin_head() {
-			//echo '<pre>'; print_r(get_current_screen()); die;
 		} // end public function admin_head
 		
 		public function after_setup_theme() {
@@ -572,11 +566,9 @@
 			switch ($column_name) {
 				case 'acfop_saveto':
 					$save_to = get_post_meta($post_id, '_acfop_save_to', true);
-					//echo '(',$save_to,')<br>';
 					if ($save_to == 'options') {
 						$redirect = intval(get_post_meta($post_id, '_acfop_redirect', true));
 						$parent = get_post_meta($post_id, '_acfop_parent', true);
-						//echo 'redirect = ',$redirect,', parent = ',$parent,'<br>';
 						if ($parent == 'none' && $redirect) {
 							$save_to = '';
 						}
@@ -664,22 +656,17 @@
 		
 		public function build_admin_menu_list() {
 			global $menu;
-			//echo '<pre>'; print_r($menu); //die;
-			//global $submenu;
 			$parent_menus = array('none' => __('None', $this->text_domain));
 			
 			$options_pages = array();
 			if (isset($GLOBALS['acf_options_pages'])) {
 				$options_pages = $GLOBALS['acf_options_pages'];
 			}
-			//echo '<pre>'; print_r($options_pages);
-			//print_r($menu); die;
 			if (!count($menu)) {
 				// bail early
 				$this->parent_menus = $parent_menus;
 				return;
 			}
-			//print_r($menu); die;
 			foreach ($menu as $index => $item) {
 				if (isset($item[0]) && $item[0] != '' && 
 						isset($item[2]) && !in_array($item[2], $this->exclude_locations)) {
@@ -689,7 +676,6 @@
 						$parent_menus[$item[2]] = 'Plugins';
 					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5])) {
 						// search options pages to get correct slug
-						//echo '<pre>'; print_r($item); echo '</pre>';
 						$found = false;
 						foreach ($options_pages as $options_page) {
 							if ($item[0] == $options_page['page_title']) {
@@ -715,14 +701,10 @@
 						$parent_menus[$key] = $value;
 					} // end if else
 				} // end if good parent menu
-				//echo 'here<br />';
 				if (isset($item[6]) && substr($item[6], 0, 6) == 'fa fa-') {
-					//echo '<pre>'; print_r($menu[$index]);
 					$menu[$index][4] .= ' acfop-fontawesome-'.str_replace(' ', '_', $item[6]);
-					//print_r($menu[$index]); die;
 				}
 			} // end foreach menu
-			//echo '<pre>'; print_r($menu); die;
 			$this->parent_menus = $parent_menus;
 		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
