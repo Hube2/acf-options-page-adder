@@ -37,18 +37,14 @@
 		private $text_domain = 'acf-options-page-adder';
 		
 		public function __construct() {
-			register_activation_hook(__FILE__, array($this, 'activate'));
-			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
-			add_action('admin_head', array($this, 'admin_head'));
 			add_action('acf/save_post', array($this, 'set_post_title'), 20);
 			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
 			add_filter('acf/load_value/key=field_acf_key_acfop_slug', array($this, 'set_page_slug_field'), 20, 3);
 			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 			add_filter('acf/location/rule_values/options_page', array($this, 'options_page_rule_values_titles'), 20);
-			//add_filter('add_menu_classes', array($this, 'admin_menu_classes'));
 			add_action('admin_enqueue_scripts', array($this, 'script'));
 		} // end public function __construct
 		
@@ -60,10 +56,6 @@
 			$in_footer 	= false;
 			wp_enqueue_script($handle, $src, $deps, $ver, $in_footer);
 		} // end public function script
-		
-		public function admin_menu_classes($menu) {
-			return $menu;
-		} // end public function admin_menu_classes
 		
 		public function options_page_rule_values_titles($choices) {
 			if (!apply_filters('acf-options-page-adder/choice_titles', true)) {
@@ -173,9 +165,6 @@
 			return $plugins;
 		} // end public function meta_box
 		
-		public function admin_head() {
-		} // end public function admin_head
-		
 		public function after_setup_theme() {
 			// check to see if acf5 is installed
 			// if not then do not run anything else in this plugin
@@ -194,8 +183,6 @@
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
 			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2);
 			add_action('acf/include_fields', array($this, 'acf_include_fields'));
-			add_filter('acf_options_page/post_type', array($this, 'get_post_type'));
-			add_filter('acf_options_page/text_domain', array($this, 'get_text_domain'));
 			require_once(dirname(__FILE__).'/api-template.php');
 		} // end public function after_setup_theme
 		
@@ -204,14 +191,6 @@
 			$this->acf_add_options_pages();
 			do_action('acf_options_page/init');
 		} // end public function init
-		
-		public function get_post_type($value='') {
-			return $this->post_type;
-		} // end public function get_post_type
-		
-		public function get_text_domain($value='') {
-			return $this->text_domain;
-		} // end public function get_text_domain
 		
 		public function acf_include_fields() {
 			// this function is called when ACF5 is installed
@@ -722,14 +701,6 @@
 				return 1;
 			}
 		} // end public function sort_by_order
-		
-		public function activate() {
-			// just in case I want to do anything on activate
-		} // end public function activate
-		
-		public function deactivate() {
-			// just in case I want to do anyting on deactivate
-		} // end public function deactivate
 		
 		private function register_post_type() {
 			// register the post type
