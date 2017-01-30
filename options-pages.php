@@ -913,7 +913,7 @@
 			$plugins = apply_filters('jh_plugins_list', array());
 				
 			$id = 'plugins-by-john-huebner';
-			$title = '<a style="text-decoration: none; font-size: 1em;" href="https://github.com/Hube2" target="_blank">Plugins by John Huebner</a>';
+			$title = '<a style="text-decoration: none; font-size: 1em;" href="https://github.com/Hube2" target="_blank">'.__('Plugins by John Huebner', 'acf-options-page-adder').'</a>';
 			$callback = 'show_blunt_plugins_list_meta_box';
 			$screens = array();
 			foreach ($plugins as $plugin) {
@@ -930,7 +930,7 @@
 		function show_blunt_plugins_list_meta_box() {
 			$plugins = apply_filters('jh_plugins_list', array());
 			?>
-				<p style="margin-bottom: 0;">Thank you for using my plugins</p>
+				<p style="margin-bottom: 0;"><?php echo __('Thank you for using my plugins', 'acf-options-page-adder'); ?></p>
 				<ul style="margin-top: 0; margin-left: 1em;">
 					<?php 
 						foreach ($plugins as $plugin) {
@@ -939,7 +939,7 @@
 									<?php 
 										echo $plugin['title'];
 										if ($plugin['doc']) {
-											?> <a href="<?php echo $plugin['doc']; ?>" target="_blank">Documentation</a><?php 
+											?> <a href="<?php echo $plugin['doc']; ?>" target="_blank"><?php echo __('Documentation', 'acf-options-page-adder'); ?></a><?php 
 										}
 									?>
 								</li>
@@ -947,7 +947,7 @@
 						}
 					?>
 				</ul>
-				<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hube02%40earthlink%2enet&lc=US&item_name=Donation%20for%20WP%20Plugins%20I%20Use&no_note=0&cn=Add%20special%20instructions%20to%20the%20seller%3a&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Please consider making a small donation.</a></p><?php 
+				<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hube02%40earthlink%2enet&lc=US&item_name=Donation%20for%20WP%20Plugins%20I%20Use&no_note=0&cn=Add%20special%20instructions%20to%20the%20seller%3a&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank"><?php echo __('Please consider making a small donation.', 'acf-options-page-adder'); ?></a></p><?php 
 		}
 	} // end if !function_exists
 
