@@ -555,7 +555,7 @@
 					if ($save_to == 'options') {
 						echo __('Options', $this->text_domain);
 					} elseif ($save_to == 'post') {
-						echo __('Post '),get_post_meta($post_id, '_acfop_post_page', true);
+						echo __('Post ', $this->text_domain),get_post_meta($post_id, '_acfop_post_page', true);
 					} elseif ($save_to == 'this_post') {
 						echo __('This Post'),' (',$post_id,')';
 					} else {
