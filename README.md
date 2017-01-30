@@ -1,4 +1,4 @@
-Advanced Custom Fields: Options Page Adder
+ACF Options Page Admin
 ==========================================
 
 Allows creation of options pages using Advanced Custom Fields Pro without needing to do any 
