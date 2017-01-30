@@ -8,7 +8,7 @@ Donate link:
 License: 
 License URI: 
 
-Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF5 Pro is installed.
+Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF5 Pro is installed (or ACF5 + Options Page Add On)
 
 == Description ==
 
@@ -21,12 +21,12 @@ options pages. Most options are selectable, for example the menu location, capab
 field values to.
 
 For more information see
-[Other Notes](https://wordpress.org/plugins/options-page-admin-for-acf/other_notes) and
-[Screenshots](https://wordpress.org/plugins/options-page-admin-for-acf/screenshots)
+[Other Notes](https://wordpress.org/plugins/options-page-admin-for-acf/other_notes/) and
+[Screenshots](https://wordpress.org/plugins/options-page-admin-for-acf/screenshots/)
 
 == Installation ==
 
-1. Extract files to folder named acf-options-page-adder in your plugin folder (usually /wp-content/plugins/acf-options-page-adder)
+1. Extract files to folder named acf-options-page-adder in your plugin folder (usually /wp-content/plugins/options-page-admin-for-acf/)
 2. Upload files
 3. Activate it from the Plugins Page
 
@@ -97,7 +97,7 @@ $value = get_field('my_option_field', apply_filters('get_option_page_id_filter',
 
 == Font Awesome Support ==
 
-Please not that this plugin does not enqueue or include Font Awswsome in the admin of your site.
+Please note that this plugin does not enqueue or include Font Awswsome in the admin of your site.
 If you include Font Awsome in your admin then you can use Font Awesome Icons for the icons of
 top level options page. For example if you wanted to use [Address Book Icon](http://fontawesome.io/icon/address-book/) then all you need to do is add `fa fa-address-book`
 into the Icon field when adding or editing the options page.
@@ -111,6 +111,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.7.3 =
+* added more missing text domains
 
 = 3.7.2 =
 * Added missing text domain
