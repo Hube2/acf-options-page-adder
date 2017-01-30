@@ -171,7 +171,7 @@
 			
 		public function meta_box_data($plugins=array()) {
 			$plugins[] = array(
-				'title' => 'ACF Options Page Adder',
+				'title' => __('ACF Options Page Admin', $this->text_domain),
 				'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
 				'doc' => 'https://github.com/Hube2/acf-options-page-adder'
 			);
@@ -353,9 +353,11 @@
 						'key' => 'field_acf_key_acfop_redirect',
 						'label' => __('Redirect', $this->text_domain),
 						'name' => '_acfop_redirect',
-						'prefix' => '',
-						'type' => 'radio',
-						'instructions' => __('If set to true, this options page will redirect to the first child page (if a child page exists). If set to false, this parent page will appear alongside any child pages. Defaults to true.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>', $this->text_domain),
+						'type' => 'true_false',
+						'ui' => 1,
+						'ui_on_text' => __('Yes', $this->text_domain),
+						'ui_off_text' => __('No', $this->text_domain),
+						'instructions' => __('If set to Yes, this options page will redirect to the first child page (if a child page exists). If set to No, this parent page will appear alongside any child pages. Defaults to Yes.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -366,14 +368,7 @@
 								),
 							),
 						),
-						'choices' => array(
-							1 => __('True', $this->text_domain),
-							0 => __('False', $this->text_domain),
-						),
-						'other_choice' => 0,
-						'save_other_choice' => 0,
 						'default_value' => 0,
-						'layout' => 'horizontal',
 					),
 					array(
 						'key' => 'field_acf_key_acfop_slug',
@@ -417,7 +412,7 @@
 						'readonly' => 0,
 						'disabled' => 0,
 					),
-					array (
+					array(
 						'key' => 'field_acf_key_acfop_save_to',
 						'label' => __('Save To', $this->text_domain),
 						'name' => '_acfop_save_to',
@@ -440,7 +435,7 @@
 						'default_value' => 'options',
 						'layout' => 'horizontal',
 					),
-					array (
+					array(
 						'key' => 'field_acf_key_acfop_post_page',
 						'label' => __('Post/Page', $this->text_domain),
 						'name' => '_acfop_post_page',
@@ -474,8 +469,10 @@
 						'key' => 'field_acf_key_acfop_autoload',
 						'label' => __('Autoload Values', $this->text_domain),
 						'name' => '_acfop_autoload',
-						'prefix' => '',
-						'type' => 'radio',
+						'type' => 'true_false',
+						'ui' => 1,
+						'ui_on_text' => __('Yes', $this->text_domain),
+						'ui_off_text' => __('No', $this->text_domain),
 						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => array (
@@ -487,14 +484,7 @@
 								),
 							),
 						),
-						'choices' => array(
-							1 => __('True', $this->text_domain),
-							0 => __('False', $this->text_domain),
-						),
-						'other_choice' => 0,
-						'save_other_choice' => 0,
 						'default_value' => 1,
-						'layout' => 'horizontal',
 					),
 				),
 				'location' => array(
@@ -592,11 +582,11 @@
 						}
 					}
 					if ($save_to == 'options') {
-						echo 'Options';
+						echo __('Options', $this->text_domain);
 					} elseif ($save_to == 'post') {
-						echo 'Post ',get_post_meta($post_id, '_acfop_post_page', true);
+						echo __('Post '),get_post_meta($post_id, '_acfop_post_page', true);
 					} elseif ($save_to == 'this_post') {
-						echo 'This Post (',$post_id,')';
+						echo __('This Post'),' (',$post_id,')';
 					} else {
 						$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
 						if (!$slug) {
@@ -604,13 +594,13 @@
 							$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
 						}
 						$save_to = get_options_page_id($slug);
-						echo '1st sub option page value<br /><strong>OR</strong><br />';
+						echo __('1st sub option page value<br /><strong>OR</strong><br />', $this->text_domain);
 						if ($save_to == 'options') {
-							echo 'Options';
+							echo __('Options', $this->text_domain);
 						} elseif ($save_to == $post_id) {
-							echo 'This Post (',$post_id,')';
+							echo __('This Post', $this->text_domain),' (',$post_id,')';
 						} else {
-							echo 'Post ',$save_to;
+							echo __('Post ', $this->text_domain),$save_to;
 						}
 					}
 					break;
@@ -661,9 +651,9 @@
 				case 'acfop_redirect':
 					$value = get_post_meta($post_id, '_acfop_redirect', true);
 					if ($value == 1) {
-						echo __('True', $this->text_domain);
+						echo __('Yes', $this->text_domain);
 					} elseif ($value == 0 && $value != '') {
-						echo __('False', $this->text_domain);
+						echo __('No', $this->text_domain);
 					}
 					break;
 				default:
@@ -834,7 +824,7 @@
 					} elseif ($save_to == 'this_post') {
 						$post_id = $id;
 					} else {
-						$autoload = get_post_meta($id, '_acfop_autoload', true);
+						$autoload = intval(get_post_meta($id, '_acfop_autoload', true));
 					}
 					if ($parent == 'none') {
 						$options_page = array('page_title' =>	$title,
@@ -845,7 +835,7 @@
 																	'autoload' => $autoload);
 						$redirect = true;
 						$value = get_post_meta($id, '_acfop_redirect', true);
-						if ($value == '0') {
+						if ($value == '0' && $value != '') {
 							$redirect = false;
 						}
 						$options_page['redirect'] = $redirect;
