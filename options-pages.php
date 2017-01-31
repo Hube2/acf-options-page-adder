@@ -555,9 +555,9 @@
 					if ($save_to == 'options') {
 						echo __('Options', $this->text_domain);
 					} elseif ($save_to == 'post') {
-						echo __('Post ', $this->text_domain),get_post_meta($post_id, '_acfop_post_page', true);
+						echo __('Post', $this->text_domain),' ',get_post_meta($post_id, '_acfop_post_page', true);
 					} elseif ($save_to == 'this_post') {
-						echo __('This Post'),' (',$post_id,')';
+						echo __('This Post', $this->text_domain),' (',$post_id,')';
 					} else {
 						$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
 						if (!$slug) {
@@ -571,7 +571,7 @@
 						} elseif ($save_to == $post_id) {
 							echo __('This Post', $this->text_domain),' (',$post_id,')';
 						} else {
-							echo __('Post ', $this->text_domain),$save_to;
+							echo __('Post', $this->text_domain),' ',$save_to;
 						}
 					}
 					break;
