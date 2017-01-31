@@ -114,6 +114,7 @@ add_filter('remove_hube2_nag', '__return_true');
 
 = 3.7.3 =
 * added more missing text domains
+* completed adding Portuguese (pt_PT) translation
 * converted True/False radio fields to ACF true/false UI fields
 
 = 3.7.2 =
