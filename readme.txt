@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.7.2
+Stable tag: 3.7.3
 Donate link: 
 License: 
 License URI: 
@@ -116,11 +116,12 @@ add_filter('remove_hube2_nag', '__return_true');
 * added more missing text domains
 * completed adding Portuguese (pt_PT) translation
 * converted True/False radio fields to ACF true/false UI fields
+* added Russian (ru_RU) translations - thanks [@antonvyukov](https://wordpress.org/support/users/antonvyukov/)
 
 = 3.7.2 =
 * Added missing text domain
 * Typos corrected
-* Add Portuguese (pt_PT) translation - thanks @pedro-mendonca
+* Add Portuguese (pt_PT) translation - thanks [@pedro-mendonca](https://wordpress.org/support/users/pedromendonca)
 
 = 3.7.1 =
 * removed github updater support
