@@ -1,0 +1,277 @@
+# Copyright (C) 2014
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: ACF Options Page Adder\n"
+"Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
+"POT-Creation-Date: 2017-01-29 00:21+0000\n"
+"PO-Revision-Date: 2017-02-11 08:24+0300\n"
+"Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: options-pages.php\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: options-pages.php:226
+msgid "Options Page Details"
+msgstr "Настройки страницы опций"
+
+#: options-pages.php:230
+msgid "Title Text"
+msgstr "Заголовок"
+
+#: options-pages.php:234
+msgid "This will be used as the options page title."
+msgstr "Используется как заголовок страницы опций"
+
+#: options-pages.php:247 options-pages.php:565
+msgid "Menu Text"
+msgstr "Название пункта меню"
+
+#: options-pages.php:251
+msgid "Will default to title if left blank."
+msgstr ""
+"По умолчанию будет равно названию страницы опций (если оставить пустым)."
+
+#: options-pages.php:264
+msgid "Menu Location (Parent)"
+msgstr "Дочернее меню"
+
+#: options-pages.php:268
+msgid ""
+"Select the menu this options page will appear under. Will default to None."
+msgstr ""
+"Укажите в какой разделе меню поместить данную страницу. Или оставьте пустым "
+"чтоб поместить ее в главное меню."
+
+#: options-pages.php:283 options-pages.php:571
+msgid "Capability"
+msgstr "Совместимость"
+
+#: options-pages.php:287
+msgid ""
+"The user capability to view this options page. Will default to "
+"manage_options."
+msgstr ""
+"Поддержка определенного типа совместимости. По умолчанию manage_options."
+
+#: options-pages.php:302
+msgid "Menu Position"
+msgstr "Порядок в главном меню"
+
+#: options-pages.php:306
+msgid ""
+"The position in the menu order this menu should appear. WARNING: if two menu "
+"items use the same position attribute, one of the items may be overwritten "
+"so that only one item displays! Risk of conflict can be reduced by using "
+"decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to "
+"bottom of utility menu items.<br /><em>Core Menu Item Positions: "
+"2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, "
+"25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, "
+"80=Settings, 99=Separator</em>"
+msgstr ""
+"В какой позиции разместить ссылку на эту страницу. Предупреждение: Можно "
+"использовать десятичные дроби, а не целые значения, например, 63.3 вместо "
+"63. Позиции для размещения: 2=Консоль, 4=Разделитель, 5=Записи, "
+"10=Медиафайлы, 15=Ссылки, 20=Страницы, 25=Комментарии, 59=Разделитель, "
+"60=Внешний вид, 65=Плагины, 70=Пользователи, 75=Инструменты, 80=Настройки, "
+"99=Разделитель"
+
+#: options-pages.php:329
+msgid "Icon"
+msgstr "Иконка"
+
+#: options-pages.php:333
+msgid ""
+"The icon url for this menu. Defaults to default WordPress gear.<br /"
+"><em>Check out <a href=\"https://developer.wordpress.org/resource/dashicons/"
+"\" target=\"_blank\">https://developer.wordpress.org/resource/dashicons/</a> "
+"for what to put in this field.</em>"
+msgstr ""
+"Иконка для меню. Вы можете выбрать иконку на странице <a href=\"https://"
+"developer.wordpress.org/resource/dashicons/\" target=\"_blank\">https://"
+"developer.wordpress.org/resource/dashicons/</a> В поле вставляется имя "
+"иконки, например: dashicons-menu"
+
+#: options-pages.php:354 options-pages.php:568
+msgid "Redirect"
+msgstr "Перенаправление"
+
+#: options-pages.php:358
+msgid ""
+"If set to true, this options page will redirect to the first child page (if "
+"a child page exists). If set to false, this parent page will appear "
+"alongside any child pages. Defaults to true.<br /><em><strong>NOTE: Changing "
+"this setting will effect the location or appearance of sub options pages "
+"currently associated with this options page.</strong></em>"
+msgstr ""
+"Если установить данный параметр, то будет происходит перенаправление на "
+"первый пункт вложенного меню."
+
+#: options-pages.php:370 options-pages.php:491 options-pages.php:664
+msgid "True"
+msgstr "Да"
+
+#: options-pages.php:371 options-pages.php:492 options-pages.php:666
+msgid "False"
+msgstr "Нет"
+
+#: options-pages.php:380 options-pages.php:566
+msgid "Slug"
+msgstr "Ссылка"
+
+#: options-pages.php:384
+msgid ""
+"This field is optional in ACF. It is required here. You must know what the "
+"slug is to enable get_options_page_post_id() added in 4.4.0"
+msgstr ""
+"Ссылка для страницы опций. Значение должно содержать латинские символы, "
+"подчеркивание и дефис. Например: my_settings"
+
+#: options-pages.php:397 options-pages.php:570
+msgid "Order"
+msgstr "Местоположение в дочернем меню"
+
+#: options-pages.php:401
+msgid "The order that this child menu should appear under its parent menu."
+msgstr "Укажите порядковый номер расположения в дочернем меню."
+
+#: options-pages.php:422 options-pages.php:569
+msgid "Save To"
+msgstr "Сохранить как"
+
+#: options-pages.php:425
+msgid ""
+"ACF v5.2.7 added the ability to save and load data to/from a post rather "
+"than options.<br /><br /><em>When saving values to this post do not use "
+"field names in your field groups that start with _acfop_.</em>"
+msgstr ""
+"Вы можете сохранять настройки полей в определенную запись. Если вы это "
+"делаете не используйте в названии груп полей словосочетание _acfop_ в начале "
+"названия."
+
+#: options-pages.php:434
+msgid "Options"
+msgstr "Опции"
+
+#: options-pages.php:435
+msgid "Post Object"
+msgstr "Выбрать запись"
+
+#: options-pages.php:436
+msgid "This Post"
+msgstr "Эта запись"
+
+#: options-pages.php:445
+msgid "Post/Page"
+msgstr "Запись \\ Страница"
+
+#: options-pages.php:448
+msgid "Select the post object to save and load data to/from."
+msgstr "Выберите страницу или запись для сохранения в нее настроек."
+
+#: options-pages.php:475
+msgid "Autoload Values"
+msgstr "Автозагрузка опций"
+
+#: options-pages.php:479
+msgid ""
+"Whether to load the options (values saved from this options page) when "
+"WordPress starts up. Added in ACF v5.2.8."
+msgstr "Загружать эти опции по умолчанию при загрузке Wordpress."
+
+#: options-pages.php:564
+msgid "Post ID"
+msgstr "ID записи"
+
+#: options-pages.php:567
+msgid "Location (Parent)"
+msgstr "Расположение (Родитель)"
+
+#: options-pages.php:679
+msgid "None"
+msgstr "Не выбрано"
+
+#: options-pages.php:772 options-pages.php:787 options-pages.php:789
+msgid "Options Pages"
+msgstr "Страницы опций"
+
+#: options-pages.php:788
+msgid "Options Page"
+msgstr "Страница опций"
+
+#: options-pages.php:790
+msgid "Add Options Page"
+msgstr "Добавить страницу опций"
+
+#: options-pages.php:791
+msgid "Add New Options Page"
+msgstr "Добавление страницы опций..."
+
+#: options-pages.php:792
+msgid "Edit"
+msgstr "Редактировать"
+
+#: options-pages.php:793
+msgid "Edit Options Page"
+msgstr "Редактировать страницу опций"
+
+#: options-pages.php:794
+msgid "New Options Page"
+msgstr "Новая страница опций"
+
+#: options-pages.php:795 options-pages.php:796
+msgid "View Options Page"
+msgstr "Просмотреть"
+
+#: options-pages.php:797
+msgid "Search Options Pages"
+msgstr "Найти"
+
+#: options-pages.php:798
+msgid "No Options Pages Found"
+msgstr "Ничего не найдено"
+
+#: options-pages.php:799
+msgid "No Options Pages Found in Trash"
+msgstr "Ничего не найдено"
+
+#: options-pages.php:800
+msgid "Parent Options Page"
+msgstr "Родительская страница опций"
+
+#. Plugin Name of the plugin/theme
+msgid "ACF Options Page Admin"
+msgstr "Настройка страниц опций для ACF"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/options-page-admin-for-acf/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Allows easy creation of options pages using Advanced Custom Fields Pro "
+"without needing to do any PHP coding. Requires that ACF Pro is installed."
+msgstr ""
+"Создание страниц опций для плагина Advanced Custom Fields Pro без "
+"использования PHP. Требуется про-версия плагина ACF."
+
+#. Author of the plugin/theme
+msgid "John A. Huebner II"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/Hube2"
+msgstr ""
