@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.7.3
+Stable tag: 3.7.4
 Donate link: 
 License: 
 License URI: 
@@ -111,6 +111,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.7.4 =
+* updated Russian translation [@antonvyukov](https://wordpress.org/support/users/antonvyukov/)
 
 = 3.7.3 =
 * added more missing text domains

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
 "POT-Creation-Date: 2017-01-29 00:21+0000\n"
-"PO-Revision-Date: 2017-02-11 08:24+0300\n"
+"PO-Revision-Date: 2017-02-19 01:08+0300\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language: ru\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: options-pages.php:264
 msgid "Menu Location (Parent)"
-msgstr "Дочернее меню"
+msgstr "Родительское меню"
 
 #: options-pages.php:268
 msgid ""
@@ -142,7 +142,7 @@ msgstr ""
 
 #: options-pages.php:397 options-pages.php:570
 msgid "Order"
-msgstr "Местоположение в дочернем меню"
+msgstr "Родительское меню"
 
 #: options-pages.php:401
 msgid "The order that this child menu should appear under its parent menu."
