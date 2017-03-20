@@ -8,21 +8,19 @@ PHP coding.
 
 This plugin will not provide any functionality if ACF5 Pro is not installed and active
 
-##Installation
+## Installation
 
 * Download and decompress plugin
 * Create a folder in your plugins folder named "acf-options-page-adder"
 * Upload files to the folder you just created
 * Activate plugin
 
-##Options Pages
-
+## Options Pages
 Allows adding options pages though an admin interface. Supports all the features of 
 ACF Options Pages. For more information see 
 http://www.advancedcustomfields.com/resources/options-page/
 
-##Change capability
-
+## Change capabilit
 The capability required to add/edit options pages was changed to "manage_options" in version 3.3.0.
 This can be altered by adding a filter
 ```
@@ -33,7 +31,7 @@ function my_acf_options_page_adder_cap($cap) {
 }
 ```
 
-##Get Options Page Save to ID
+## Get Options Page Save to ID
 
 Added in version 3.5.0 functions to get the options save to value ($post_id), also added a filter. This
 function or filter will return the current "post_id" setting of for an "menu_slug". It will return either
@@ -70,8 +68,7 @@ and get location to the new options page. There's noting I can do about this, it
 setting up ACF options pages to save to a post instead of options you must be more precise in with the
 options page arguments.
 
-##Warning
-
+## Warning
 If you have created ACF options pages manually in code then there is a condition where this plugin will
 not correctly detect the top level options page in a group and will not be able to successfully add
 sub options pages to that group. This will happen if you have the top level options page set to redirect
@@ -85,7 +82,6 @@ In other words, the slug must be all lower case and contain only letters, number
 Options page groups added using this plugin work correctly as this problem is dealt with internally.
 
 ##Saving options page values to a post ID
-
 ACF v5.2.7 added the ability to save options page fields to a post ID, so here's a hint.
 Why not save your values to the options page post that is created when you set up an options page using
 this plugin? The post type is already created and it really is a perfect place to store the values. Here's
@@ -96,8 +92,7 @@ underscore `_` and will not be returned by `get_fields()`. The only thing you ne
 using any of the field names used by this plugin, which should be extremely easy since they all start with
 `_acfop_`.
 
-##Customize Options Page
-
+## Customize Options Page
 Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.
 
 **Header Content**
