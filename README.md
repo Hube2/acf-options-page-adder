@@ -92,6 +92,48 @@ underscore `_` and will not be returned by `get_fields()`. The only thing you ne
 using any of the field names used by this plugin, which should be extremely easy since they all start with
 `_acfop_`.
 
+##Customize Options Page
+Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.
+
+**Header Content**
+
+```
+add_filter('acf-options-page-adder/page-header', 'my_custom_options_page_header', 10, 2);
+
+function my_custom_options_page_header($content, $hook) {
+  // $content = content, by default it is '' or the value of the WYSIWYG editor
+	// $hook = the current options page hook that is being called
+	$content = '<p>My Custom Header Content</p>';
+	return $content;
+}
+```
+
+**Footer Content**
+
+```
+add_filter('acf-options-page-adder/page-footer', 'my_custom_options_page_footer', 10, 2);
+
+function my_custom_options_page_footer($content, $hook) {
+  // $content = content, by default it is '' or the value of the WYSIWYG editor
+	// $hook = the current options page hook that is being called
+	$content = '<p>My Custom Footer Content</p>';
+	return $content;
+}
+```
+
+**Filter Entire Options Page**
+
+```
+add_filter('acf-options-page-adder/page-content', 'my_custom_options_page_filter', 10, 2);
+
+function my_custom_options_page_filter($content, $hook) {
+  // $content = entire content or options page, including all ACF fields
+	// $hook = the current options page hook that is being called
+	// caution should be taken when making modification to the page content
+	return $content;
+}
+```
+
 ### Donations
 If you find my work useful and you have a desire to send me money, which will give me an incentive to continue
 offering and maintaining the plugins I've made public in my many repositories, I'm not going to turn it down

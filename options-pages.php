@@ -12,13 +12,6 @@
 	// If this file is called directly, abort.
 	if (!defined('WPINC')) {die;}
 	
-	/*
-	$duplicator = dirname(__FILE__).'/fieldset-duplicator.php';
-	if (file_exists($duplicator)) {
-		include($duplicator);
-	}
-	*/
-	
 	new acfOptionsPageAdder();
 	
 	class acfOptionsPageAdder {
@@ -27,7 +20,7 @@
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
-																			 'cpt_main_menu',
+																			 //'cpt_main_menu',
 																			 'edit.php?post_type=acf-field-group',
 																			 //'edit-comments.php',
 																			 //'plugins.php',
@@ -35,18 +28,45 @@
 																			 'edit.php?post_type=acf-options-page',
 																			 );
 		private $text_domain = 'acf-options-page-adder';
+		private $options_pages = array(); // hold all options pages
+		private $hooks = array(); // options page hook to post id
 		
 		public function __construct() {
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
-			add_action('acf/save_post', array($this, 'set_post_title'), 20);
 			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
 			add_filter('acf/load_value/key=field_acf_key_acfop_slug', array($this, 'set_page_slug_field'), 20, 3);
 			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
 			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
 			add_filter('acf/location/rule_values/options_page', array($this, 'options_page_rule_values_titles'), 20);
 			add_action('admin_enqueue_scripts', array($this, 'script'));
+			add_action('acf/save_post', array($this, 'acf_save_post'), 20);
+			add_filter('user_has_cap', array($this, 'attach_files'), 10, 4);
 		} // end public function __construct
+		
+		public function attach_files($allcaps, $caps, $args, $user) {
+			if (!defined('DOING_AJAX') || !DOING_AJAX || !isset($_REQUEST['post_id']) ||
+					!in_array('edit_post', $args)) {
+				return $allcaps;
+			}
+			$id = intval($_REQUEST['post_id']);
+			if (get_post_type($id) != $this->post_type ||
+					!isset($this->options_pages[$id])) {
+				return $allcaps;
+			}
+			remove_filter('user_has_cap', array($this, 'attach_files'), 10);
+			
+			$page = $this->options_pages[$id];
+			$cap = $page['acf']['capability'];
+			if (current_user_can($cap)) {
+				// add all $caps to $allcaps
+				foreach ($caps as $add) {
+					$allcaps[$add] = true;
+				}
+			}
+			add_filter('user_has_cap', array($this, 'attach_files'), 10, 4);
+			return $allcaps;
+		} // end public function attach_files
 		
 		public function script() {
 			$handle    	= 'acf-options-page-adder';
@@ -131,30 +151,6 @@
 			}
 			return $value;
 		} // end public function set_title_field
-		
-		public function set_post_title($post_id) {
-			if (!is_numeric($post_id)) {
-				return;
-			}
-			// post types that need titles set
-			$post_type = get_post_type($post_id);
-			if ($this->post_type != $post_type) {
-				return;
-			}
-			// should not get here unless added in old version
-			$title = get_post_meta($post_id, '_acfop_title', true);
-			// strip all html
-			$title = preg_replace('#</?\w+[^>]*>#s', '', $title);
-			$slug = sanitize_title($title);
-			remove_action('acf/save_post', array($this, 'set_post_title'), 20);
-			$args = array(
-				'ID' => $post_id,
-				'post_title' => $title,
-				'post_name' => $slug
-			);
-			wp_update_post($args);
-			add_action('acf/save_post', array($this, 'set_post_title'), 20);
-		} // end public function set_post_title
 			
 		public function meta_box_data($plugins=array()) {
 			$plugins[] = array(
@@ -178,6 +174,7 @@
 			}
 			add_action('init', array($this, 'init'), 0);
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
+			add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
@@ -198,6 +195,22 @@
 				'key' => 'acf_options-page-details',
 				'title' => __('Options Page Details', $this->text_domain),
 				'fields' => array(
+					array(
+						'key' => 'field_acf_key_acfop_tab_basic',
+						'label' => __('Basic Settings', $this->text_domain),
+						'name' => '',
+						'type' => 'tab',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => ''
+						),
+						'placement' => 'left',
+						'endpoint' => 0
+					),
 					array(
 						'key' => 'field_acf_key_acfop_title',
 						'label' => __('Title Text', $this->text_domain),
@@ -250,6 +263,64 @@
 						'placeholder' => '',
 						'disabled' => 0,
 						'readonly' => 0
+					),
+					array(
+						'key' => 'field_acf_key_acfop_slug',
+						'label' => __('Slug', $this->text_domain),
+						'name' => '_acfop_slug',
+						'prefix' => '',
+						'type' => 'text',
+						'instructions' => __('This field is optional in ACF. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
+						'required' => 1,
+						'conditional_logic' => 0,
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+						'readonly' => 0,
+						'disabled' => 0
+					),
+					array(
+						'key' => 'field_acf_key_acfop_order',
+						'label' => __('Order', $this->text_domain),
+						'name' => '_acfop_order',
+						'prefix' => '',
+						'type' => 'number',
+						'instructions' => __('The order that this child menu should appear under its parent menu.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_parent',
+									'operator' => '!=',
+									'value' => 'none',
+								),
+							),
+						),
+						'default_value' => 0,
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+						'readonly' => 0,
+						'disabled' => 0,
+					),
+					array(
+						'key' => 'field_acf_key_acfop_tab_advanced',
+						'label' => __('Advanced Settings', $this->text_domain),
+						'name' => '',
+						'type' => 'tab',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => ''
+						),
+						'placement' => 'left',
+						'endpoint' => 0
 					),
 					array(
 						'key' => 'field_acf_key_acfop_capability',
@@ -344,61 +415,19 @@
 						'default_value' => 0,
 					),
 					array(
-						'key' => 'field_acf_key_acfop_slug',
-						'label' => __('Slug', $this->text_domain),
-						'name' => '_acfop_slug',
-						'prefix' => '',
-						'type' => 'text',
-						'instructions' => __('This field is optional in ACF. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
-						'required' => 1,
-						'conditional_logic' => 0,
-						'default_value' => '',
-						'placeholder' => '',
-						'prepend' => '',
-						'append' => '',
-						'maxlength' => '',
-						'readonly' => 0,
-						'disabled' => 0
-					),
-					array(
-						'key' => 'field_acf_key_acfop_order',
-						'label' => __('Order', $this->text_domain),
-						'name' => '_acfop_order',
-						'prefix' => '',
-						'type' => 'number',
-						'instructions' => __('The order that this child menu should appear under its parent menu.', $this->text_domain),
-						'required' => 0,
-						'conditional_logic' => array(
-							array(
-								array(
-									'field' => 'field_acf_key_acfop_parent',
-									'operator' => '!=',
-									'value' => 'none',
-								),
-							),
-						),
-						'default_value' => 0,
-						'placeholder' => '',
-						'prepend' => '',
-						'append' => '',
-						'maxlength' => '',
-						'readonly' => 0,
-						'disabled' => 0,
-					),
-					array(
 						'key' => 'field_acf_key_acfop_save_to',
 						'label' => __('Save To', $this->text_domain),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
+						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
 						'required' => 0,
 						'conditional_logic' => 0,
-						'wrapper' => array (
+						'wrapper' => array(
 							'width' => '',
 							'class' => '',
 							'id' => '',
 						),
-						'choices' => array (
+						'choices' => array(
 							'options' => __('Options', $this->text_domain),
 							'post' => __('Post Object', $this->text_domain),
 							'this_post' => __('This Post', $this->text_domain),
@@ -415,23 +444,23 @@
 						'type' => 'post_object',
 						'instructions' => __('Select the post object to save and load data to/from.', $this->text_domain),
 						'required' => 1,
-						'conditional_logic' => array (
-							array (
-								array (
+						'conditional_logic' => array(
+							array(
+								array(
 									'field' => 'field_acf_key_acfop_save_to',
 									'operator' => '==',
 									'value' => 'post',
 								),
 							),
 						),
-						'wrapper' => array (
+						'wrapper' => array(
 							'width' => '',
 							'class' => '',
 							'id' => '',
 						),
-						'post_type' => array (
+						'post_type' => array(
 						),
-						'taxonomy' => array (
+						'taxonomy' => array(
 						),
 						'allow_null' => 0,
 						'multiple' => 0,
@@ -448,9 +477,9 @@
 						'ui_off_text' => __('No', $this->text_domain),
 						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', $this->text_domain),
 						'required' => 0,
-						'conditional_logic' => array (
-							array (
-								array (
+						'conditional_logic' => array(
+							array(
+								array(
 									'field' => 'field_acf_key_acfop_save_to',
 									'operator' => '==',
 									'value' => 'options',
@@ -458,6 +487,60 @@
 							),
 						),
 						'default_value' => 1,
+					),
+					array(
+						'key' => 'field_acf_key_acfop_tab_content',
+						'label' => __('Customize', $this->text_domain),
+						'name' => '',
+						'type' => 'tab',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => ''
+						),
+						'placement' => 'left',
+						'endpoint' => 0
+					),
+					array(
+						'key' => 'field_acf_key_acfop_header_content',
+						'label' => __('Header Content', $this->text_domain),
+						'name' => '_acfop_header_content',
+						'type' => 'wysiwyg',
+						'instructions' => __('Content will be added to the options page header after the Options Page Title.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'default_value' => '',
+						'tabs' => 'all',
+						'toolbar' => 'full',
+						'media_upload' => 1,
+						'delay' => 0,
+					),
+					array(
+						'key' => 'field_acf_key_acfop_footer_content',
+						'label' => __('Footer Content', $this->text_domain),
+						'name' => '_acfop_footer_content',
+						'type' => 'wysiwyg',
+						'instructions' => __('Content will be added to the options page footer after all ACF Field Groups.', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'default_value' => '',
+						'tabs' => 'all',
+						'toolbar' => 'full',
+						'media_upload' => 1,
+						'delay' => 0,
 					),
 				),
 				'location' => array(
@@ -472,8 +555,8 @@
 				'menu_order' => 0,
 				'position' => 'normal',
 				'style' => 'default',
-				'label_placement' => 'top',
-				'instruction_placement' => 'label',
+				'label_placement' => 'left',
+				'instruction_placement' => 'field',
 				'hide_on_screen' => array(
 					0 => 'permalink',
 					1 => 'the_content',
@@ -489,8 +572,167 @@
 					11 => 'tags'
 				),
 			);
-			register_field_group($field_group);
+			acf_add_local_field_group($field_group);
 		} // end public function acf_include_fields
+		
+		private function build_options_page_settings($post_id, $title='') {
+			$skip_hook = false;
+			if ($title = '') {
+				$skip_hook = true;
+			}
+			$settings = array();
+			$settings['acf'] = array();
+			if ($title == '') {
+				$title = get_the_title($post_id);
+			}
+			$settings['acf']['page_title'] = $title;
+			$menu_text = trim(get_post_meta($post_id, '_acfop_menu', true));
+			if (!$menu_text) {
+				$menu_text = $title;
+			}
+			$settings['acf']['menu_title'] = $menu_text;
+			$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
+			if (!$slug) {
+				$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
+			}
+			$settings['acf']['menu_slug'] = $slug;
+			
+			$parent = get_post_meta($post_id, '_acfop_parent', true);
+			if ($parent == 'none') {
+				$parent = '';
+			}
+			$settings['acf']['parent_slug'] = $parent;
+			
+			$settings['acf']['capability'] = get_post_meta($post_id, '_acfop_capability', true);
+			
+			$save_id = 'options';
+			$save_to = get_post_meta($post_id, '_acfop_save_to', true);
+			$autoload = 0;
+			if ($save_to == 'post') {
+				$save_id = intval(get_post_meta($post_id, '_acfop_post_page', true));
+			} elseif ($save_to == 'this_post') {
+				$save_id = $post_id;
+			} else {
+				$autoload = intval(get_post_meta($post_id, '_acfop_autoload', true));
+			}
+			$settings['acf']['post_id'] = $save_id;
+			$settings['acf']['autoload'] = $autoload;
+			
+			if (!$parent) {
+				$settings['type'] = 'page';
+				$settings['order'] = false;
+				$redirect = true;
+				$value = get_post_meta($post_id, '_acfop_redirect', true);
+				if ($value == '0' && $value != '') {
+					$redirect = false;
+				}
+				$settings['acf']['redirect'] = $redirect;
+				
+				$icon = '';
+				$value = get_post_meta($post_id, '_acfop_icon', true);
+				if ($value != '') {
+					$icon = $value;
+				}
+				$settings['acf']['icon_url'] = $icon;
+				$menu_position = false;
+				if ($value != '') {
+					$menu_position = $value;
+					$settings['acf']['position'] = $menu_position;
+				}
+				
+			} else {
+				// parent set
+				$settings['type'] = 'sub_page';
+				$settings['order'] = intval(get_post_meta($post_id, '_acfop_order', true));
+			}
+			if ($skip_hook) {
+				$settings['hook'] = get_plugin_page_hookname($slug, $parent);
+			}
+			
+			$settings['header'] = trim(get_post_meta($post_id, '_acfop_header_content', true));
+			
+			$settings['footer'] = trim(get_post_meta($post_id, '_acfop_footer_content', true));
+			
+			return $settings;
+		} // end private function build_options_page_settings
+		
+		public function add_hooks() {
+			foreach($this->options_pages as $id => $options_page) {
+				if (isset($options_page['hook'])) {
+					$hook = $options_page['hook'];
+				} else {
+					$hook = get_plugin_page_hookname($options_page['acf']['menu_slug'], $options_page['acf']['parent_slug']);
+					$this->options_pages[$id]['hook'] = $hook;
+				}
+				add_action($hook, array($this, 'customize_start'), 1);
+				add_action($hook, array($this, 'customize_end'), 20);
+				$this->hooks[$hook] = $id;
+			}
+		} // end public function add_hooks
+		
+		public function customize_start() {
+			ob_start();
+		} // end public function customize_start
+		
+		public function customize_end() {
+			
+			$replaces = 1;
+			
+			$content = ob_get_clean();
+			
+			$hook = current_filter();
+			
+			$options_page = $this->options_pages[$this->hooks[$hook]];
+			
+			$header = '';
+			if ($options_page['header']) {
+				$header = apply_filters('acf_the_content', $header);
+			}
+			$header = apply_filters('acf-options-page-adder/page-header', $header, $hook);
+			if ($header) {
+				$content = str_replace('</h1>', '</h1>'.$header, $content, $replaces);
+			}
+			
+			$footer = '';
+			if ($options_page['footer']) {
+				$footer = apply_filters('acf_the_content', $footer);
+			}
+			$footer = apply_filters('acf-options-page-adder/page-footer', $footer, $hook);
+			if ($footer) {
+				$content = str_replace('</form>', '</form>'.$footer, $content, $replaces);
+			}
+			
+			$content = apply_filters('acf-options-page-adder/page-content', $content, $hook);
+			
+			echo $content;
+		} // end public function customize_end
+		
+		public function acf_save_post($post_id) {
+			if (!is_numeric($post_id)) {
+				return;
+			}
+			// post types that need titles set
+			$post_type = get_post_type($post_id);
+			if ($this->post_type != $post_type) {
+				return;
+			}
+			
+			remove_action('acf/save_post', array($this, 'acf_save_post'), 20);
+			
+			// set post title based on title field
+			$title = get_post_meta($post_id, '_acfop_title', true);
+			// strip all html
+			$title = preg_replace('#</?\w+[^>]*>#s', '', $title);
+			$slug = sanitize_title($title);
+			$args = array(
+				'ID' => $post_id,
+				'post_title' => $title,
+				'post_name' => $slug,
+				'post_content' => serialize($this->build_options_page_settings($post_id, $title))
+			);
+			wp_update_post($args);
+			add_action('acf/save_post', array($this, 'acf_save_post'), 20);
+		} // end public function acf_save_post
 		
 		public function acf_load_parent_menu_field($field) {
 			$field['choices'] = $this->parent_menus;
@@ -532,6 +774,7 @@
 					$new_columns['acfop_saveto'] = __('Save To', $this->text_domain);
 					$new_columns['acfop_order'] = __('Order', $this->text_domain);
 					$new_columns['acfop_capability'] = __('Capability', $this->text_domain);
+					$new_columns['acfop_hook'] = __('Hook Suffix', $this->text_domain);
 				} else {
 					if (strtolower($column) != 'date') {
 						$new_columns[$index] = $column;
@@ -585,6 +828,12 @@
 					}
 					echo $value;
 					break;
+				case 'acfop_hook':
+					$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
+					$parent = get_post_meta($post_id, '_acfop_parent', true);
+					$value = get_plugin_page_hookname($slug, $parent);
+					echo $value;
+					break;
 				case 'acfop_slug':
 					$value = trim(get_post_meta($post_id, '_acfop_slug', true));
 					if (!$value) {
@@ -636,7 +885,7 @@
 		public function build_admin_menu_list() {
 			global $menu;
 			$parent_menus = array('none' => __('None', $this->text_domain));
-			
+			$this->exclude_locations = apply_filters('acf-options-page-adder/exlude-locations', $this->exclude_locations);
 			$options_pages = array();
 			if (isset($GLOBALS['acf_options_pages'])) {
 				$options_pages = $GLOBALS['acf_options_pages'];
@@ -757,91 +1006,38 @@
 			$page_query = new WP_Query($args);
 			if (count($page_query->posts)) {
 				foreach ($page_query->posts as $post) {
-					$id = $post->ID;
-					$title = get_the_title($id);
-					$menu_text = trim(get_post_meta($id, '_acfop_menu', true));
-					if (!$menu_text) {
-						$menu_text = $title;
-					}
-					$slug = trim(get_post_meta($id, '_acfop_slug', true));
-					if (!$slug) {
-						$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
-					}
-					$parent = get_post_meta($id, '_acfop_parent', true);
-					$capability = get_post_meta($id, '_acfop_capability', true);
-					$post_id = 'options';
-					$save_to = get_post_meta($id, '_acfop_save_to', true);
-					$autoload = 0;
-					if ($save_to == 'post') {
-						$post_id = intval(get_post_meta($id, '_acfop_post_page', true));
-					} elseif ($save_to == 'this_post') {
-						$post_id = $id;
+					$content = $post->post_content;
+					if ($content) {
+						$content = unserialize($content);
 					} else {
-						$autoload = intval(get_post_meta($id, '_acfop_autoload', true));
+						$content = $this->build_options_page_settings($post->ID);
 					}
-					if ($parent == 'none') {
-						$options_page = array('page_title' =>	$title,
-																	'menu_title' => $menu_text,
-																	'menu_slug' => $slug,
-																	'capability' => $capability,
-																	'post_id' => $post_id,
-																	'autoload' => $autoload);
-						$redirect = true;
-						$value = get_post_meta($id, '_acfop_redirect', true);
-						if ($value == '0' && $value != '') {
-							$redirect = false;
-						}
-						$options_page['redirect'] = $redirect;
-						if ($redirect) {
-							//$options_page['slug'] = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title), '-'));
-						}
-						
-						$icon = '';
-						$value = get_post_meta($id, '_acfop_icon', true);
-						if ($value != '') {
-							$icon = $value;
-						}
-						if ($icon) {
-							$options_page['icon_url'] = $icon;
-						}
-						
-						$menu_position = '';
-						$value = get_post_meta($id, '_acfop_position', true);
-						if ($value != '') {
-							$menu_position = $value;
-						}
-						if ($menu_position) {
-							$options_page['position'] = $menu_position;
-						}
-						
-						$options_pages['top'][] = $options_page;
-					} else {
-						$order = 0;
-						$value = get_post_meta($id, '_acfop_order', true);
-						if ($value) {
-							$order = $value;
-						}
-						$options_pages['sub'][] = array('title' => $title,
-																						'menu' => $menu_text,
-																						'parent' => $parent,
-																						'slug' => $slug,
-																						'capability' => $capability,
-																						'order' => $order,
-																						'post_id' => $post_id,
-																						'autoload' => $autoload);
-					}
+					$this->options_pages[$post->ID] = $content;
 				} // end foreach $post;
 			} // end if have_posts
-			wp_reset_query();
-			if (count($options_pages['top'])) {
-				foreach ($options_pages['top'] as $options_page) {
-					acf_add_options_page($options_page);
+			
+			if (!count($this->options_pages)) {
+				return;
+			}
+			
+			$top = array();
+			$sub = array();
+			foreach ($this->options_pages as $page) {
+				if ($page['type'] == 'page') {
+					$top[] = $page;
+				} else {
+					$sub[] = $page;
 				}
 			}
-			if (count($options_pages['sub'])) {
-				usort($options_pages['sub'], array($this, 'sort_by_order'));
-				foreach ($options_pages['sub'] as $options_page) {
-					acf_add_options_sub_page($options_page);
+			if (count($top)) {
+				foreach ($top as $page) {
+					acf_add_options_page($page['acf']);
+				}
+			}
+			if (count($sub)) {
+				usort($sub, array($this, 'sort_by_order'));
+				foreach ($sub as $page) {
+					acf_add_options_sub_page($page['acf']);
 				}
 			}
 		} // end private function acf_add_options_pages

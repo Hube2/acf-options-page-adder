@@ -34,8 +34,11 @@ For more information see
 == Screenshots ==
 
 1. Options Page Admin List
-2. Add Top Level Options Page
-3. Add Child Options Page
+2. Options Page Basic Settings
+3. Options Sub Page Basic Settings
+4. Options Page Advanced Settings
+5. Options Sub Page Advanced Settings
+6. Options Page Content Customization
 
 == Frequently Asked Questions == 
 
@@ -102,6 +105,49 @@ If you include Font Awsome in your admin then you can use Font Awesome Icons for
 top level options page. For example if you wanted to use [Address Book Icon](http://fontawesome.io/icon/address-book/) then all you need to do is add `fa fa-address-book`
 into the Icon field when adding or editing the options page.
 
+== Filter Options Page Header/Footer/Content ==
+
+Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.
+
+**Header Content**
+
+`
+add_filter('acf-options-page-adder/page-header', 'my_custom_options_page_header', 10, 2);
+
+function my_custom_options_page_header($content, $hook) {
+  // $content = content, by default it is '' or the value of the WYSIWYG editor
+	// $hook = the current options page hook that is being called
+	$content = '<p>My Custom Header Content</p>';
+	return $content;
+}
+`
+
+**Footer Content**
+
+`
+add_filter('acf-options-page-adder/page-footer', 'my_custom_options_page_footer', 10, 2);
+
+function my_custom_options_page_footer($content, $hook) {
+  // $content = content, by default it is '' or the value of the WYSIWYG editor
+	// $hook = the current options page hook that is being called
+	$content = '<p>My Custom Footer Content</p>';
+	return $content;
+}
+`
+
+**Filter Entire Options Page**
+
+`
+add_filter('acf-options-page-adder/page-content', 'my_custom_options_page_filter', 10, 2);
+
+function my_custom_options_page_filter($content, $hook) {
+  // $content = entire content or options page, including all ACF fields
+	// $hook = the current options page hook that is being called
+	// caution should be taken when making modification to the page content
+	return $content;
+}
+`
+
 == Remove Nag ==
 
 If you would like to remove my little nag that appears on some admin pages add the following to your functions.php file
@@ -111,6 +157,14 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.8.0 =
+* replaced register_field_group() call with acf_add_local_field_group() - #41
+* added tabs for basic/advanced settings
+* added page content customization options + new filters - #40
+* added performance optimization - #42
+* added internal correction for attaching files - #39
+* minor modifications
 
 = 3.7.5 =
 * more updates to Russian translation [@antonvyukov](https://wordpress.org/support/users/antonvyukov/)
