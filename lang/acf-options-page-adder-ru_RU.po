@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2017-02-20 05:47+0300\n"
-"PO-Revision-Date: 2017-02-20 06:04+0300\n"
+"POT-Creation-Date: 2017-03-21 14:51+0300\n"
+"PO-Revision-Date: 2017-03-21 15:00+0300\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language: ru\n"
@@ -24,58 +24,86 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: options-pages.php:174
+#: options-pages.php:132
 msgid "ACF Options Page Admin"
 msgstr "Настройка страниц опций для ACF"
 
-#: options-pages.php:226
+#: options-pages.php:171
 msgid "Options Page Details"
 msgstr "Настройки страницы опций"
 
-#: options-pages.php:230
+#: options-pages.php:175
+msgid "Basic Settings"
+msgstr "Основные настройки"
+
+#: options-pages.php:191
 msgid "Title Text"
 msgstr "Заголовок"
 
-#: options-pages.php:234
+#: options-pages.php:195
 msgid "This will be used as the options page title."
 msgstr "Используется как заголовок страницы опций"
 
-#: options-pages.php:247 options-pages.php:555
+#: options-pages.php:208 options-pages.php:745
 msgid "Menu Text"
 msgstr "Название пункта меню"
 
-#: options-pages.php:251
+#: options-pages.php:212
 msgid "Will default to title if left blank."
 msgstr ""
 "По умолчанию будет равно названию страницы опций (если оставить пустым)."
 
-#: options-pages.php:264
+#: options-pages.php:225
 msgid "Menu Location (Parent)"
 msgstr "Родительское меню"
 
-#: options-pages.php:268
+#: options-pages.php:229
 msgid ""
 "Select the menu this options page will appear under. Will default to None."
 msgstr ""
 "Укажите в какой раздел меню поместить данную страницу опций. Или оставьте "
 "это поле пустым чтоб поместить ее в главное меню."
 
-#: options-pages.php:283 options-pages.php:561
+#: options-pages.php:244 options-pages.php:746
+msgid "Slug"
+msgstr "Ссылка"
+
+#: options-pages.php:248
+msgid ""
+"This field is optional in ACF. It is required here. You must know what the "
+"slug is to enable get_options_page_post_id() added in 4.4.0"
+msgstr ""
+"Ссылка для страницы опций. Значение должно содержать латинские символы, "
+"подчеркивание и дефис. Например: my_settings"
+
+#: options-pages.php:261 options-pages.php:750
+msgid "Order"
+msgstr "Родительское меню"
+
+#: options-pages.php:265
+msgid "The order that this child menu should appear under its parent menu."
+msgstr "Укажите порядковый номер расположения в дочернем меню."
+
+#: options-pages.php:286
+msgid "Advanced Settings"
+msgstr "Дополнительные настройки"
+
+#: options-pages.php:302 options-pages.php:751
 msgid "Capability"
 msgstr "Совместимость"
 
-#: options-pages.php:287
+#: options-pages.php:306
 msgid ""
 "The user capability to view this options page. Will default to "
 "manage_options."
 msgstr ""
 "Поддержка определенного типа совместимости. По умолчанию manage_options."
 
-#: options-pages.php:302
+#: options-pages.php:321
 msgid "Menu Position"
 msgstr "Порядок в главном меню"
 
-#: options-pages.php:306
+#: options-pages.php:325
 msgid ""
 "The position in the menu order this menu should appear. WARNING: if two menu "
 "items use the same position attribute, one of the items may be overwritten "
@@ -93,11 +121,11 @@ msgstr ""
 "60=Внешний вид, 65=Плагины, 70=Пользователи, 75=Инструменты, 80=Настройки, "
 "99=Разделитель"
 
-#: options-pages.php:329
+#: options-pages.php:348
 msgid "Icon"
 msgstr "Иконка"
 
-#: options-pages.php:333
+#: options-pages.php:352
 msgid ""
 "The icon url for this menu. Defaults to default WordPress gear.<br /"
 "><em>Check out <a href=\"https://developer.wordpress.org/resource/dashicons/"
@@ -109,19 +137,19 @@ msgstr ""
 "developer.wordpress.org/resource/dashicons/</a> В поле вставляется имя "
 "иконки, например: dashicons-menu"
 
-#: options-pages.php:354 options-pages.php:558
+#: options-pages.php:373 options-pages.php:748
 msgid "Redirect"
 msgstr "Перенаправление"
 
-#: options-pages.php:358 options-pages.php:474 options-pages.php:654
+#: options-pages.php:377 options-pages.php:451 options-pages.php:849
 msgid "Yes"
 msgstr "Да"
 
-#: options-pages.php:359 options-pages.php:475 options-pages.php:656
+#: options-pages.php:378 options-pages.php:452 options-pages.php:851
 msgid "No"
 msgstr "Нет"
 
-#: options-pages.php:360
+#: options-pages.php:379
 msgid ""
 "If set to Yes, this options page will redirect to the first child page (if a "
 "child page exists). If set to No, this parent page will appear alongside any "
@@ -135,154 +163,173 @@ msgstr ""
 "><em><strong>ЗАМЕЧАНИЕ: Данная настройка позволяет управлять расположением "
 "дочерних страниц опций.</strong></em>"
 
-#: options-pages.php:375 options-pages.php:556
-msgid "Slug"
-msgstr "Ссылка"
-
-#: options-pages.php:379
-msgid ""
-"This field is optional in ACF. It is required here. You must know what the "
-"slug is to enable get_options_page_post_id() added in 4.4.0"
-msgstr ""
-"Ссылка для страницы опций. Значение должно содержать латинские символы, "
-"подчеркивание и дефис. Например: my_settings"
-
-#: options-pages.php:392 options-pages.php:560
-msgid "Order"
-msgstr "Родительское меню"
-
-#: options-pages.php:396
-msgid "The order that this child menu should appear under its parent menu."
-msgstr "Укажите порядковый номер расположения в дочернем меню."
-
-#: options-pages.php:417 options-pages.php:559
+#: options-pages.php:394 options-pages.php:749
 msgid "Save To"
 msgstr "Сохранить как"
 
-#: options-pages.php:420
+#: options-pages.php:397
 msgid ""
 "ACF v5.2.7 added the ability to save and load data to/from a post rather "
-"than options.<br /><br /><em>When saving values to this post do not use "
-"field names in your field groups that start with _acfop_.</em>"
+"than options.<br /><em>When saving values to this post do not use field "
+"names in your field groups that start with _acfop_.</em>"
 msgstr ""
-"Вы можете сохранять настройки полей в определенную запись. Если вы это "
-"делаете не используйте в названии груп полей словосочетание _acfop_ в начале "
-"названия."
+"В версии ACF v5.2.7 добавлена возможность сохранять опции в записи.<br /"
+"><em>Если вы используете сохранение опций в запись, то не используйте в "
+"именах полей приставку _acfop_.</em>"
 
-#: options-pages.php:429 options-pages.php:585 options-pages.php:599
+#: options-pages.php:406 options-pages.php:774 options-pages.php:788
 msgid "Options"
 msgstr "Опции"
 
-#: options-pages.php:430
+#: options-pages.php:407
 msgid "Post Object"
 msgstr "Выбрать запись"
 
-#: options-pages.php:431 options-pages.php:589 options-pages.php:601
+#: options-pages.php:408 options-pages.php:778 options-pages.php:790
 msgid "This Post"
 msgstr "Эта запись"
 
-#: options-pages.php:440
+#: options-pages.php:417
 msgid "Post/Page"
 msgstr "Запись \\ Страница"
 
-#: options-pages.php:443
+#: options-pages.php:420
 msgid "Select the post object to save and load data to/from."
 msgstr "Выберите страницу или запись для сохранения в нее настроек."
 
-#: options-pages.php:470
+#: options-pages.php:447
 msgid "Autoload Values"
 msgstr "Автозагрузка опций"
 
-#: options-pages.php:476
+#: options-pages.php:453
 msgid ""
 "Whether to load the options (values saved from this options page) when "
 "WordPress starts up. Added in ACF v5.2.8."
 msgstr "Загружать эти опции по умолчанию при загрузке Wordpress."
 
-#: options-pages.php:554
+#: options-pages.php:468
+msgid "Customize"
+msgstr "Настроить"
+
+#: options-pages.php:484
+msgid "Header Content"
+msgstr "Текст сверху"
+
+#: options-pages.php:487
+msgid ""
+"Content will be added to the options page header after the Options Page "
+"Title."
+msgstr "Текст из этого блока будет добавлен вверху страницы настройки."
+
+#: options-pages.php:503
+msgid "Footer Content"
+msgstr "Текст снизу"
+
+#: options-pages.php:506
+msgid ""
+"Content will be added to the options page footer after all ACF Field Groups."
+msgstr "Текст из этого блока будет добавлен внизу страницы настройки."
+
+#: options-pages.php:744
 msgid "Post ID"
 msgstr "ID записи"
 
-#: options-pages.php:557
+#: options-pages.php:747
 msgid "Location (Parent)"
 msgstr "Расположение (Родитель)"
 
-#: options-pages.php:587 options-pages.php:603
-msgid "Post "
+#: options-pages.php:752
+msgid "Hook Suffix"
+msgstr "Суффикс для хука"
+
+#: options-pages.php:776 options-pages.php:792
+msgid "Post"
 msgstr "Запись"
 
-#: options-pages.php:597
+#: options-pages.php:786
 msgid "1st sub option page value<br /><strong>OR</strong><br />"
 msgstr "Значение 1й вложенной страницы<br /><strong>ИЛИ</strong><br />"
 
-#: options-pages.php:669
+#: options-pages.php:862
 msgid "None"
 msgstr "Не выбрано"
 
-#: options-pages.php:762 options-pages.php:777 options-pages.php:779
+#: options-pages.php:939 options-pages.php:954 options-pages.php:956
 msgid "Options Pages"
 msgstr "Страницы опций"
 
-#: options-pages.php:778
+#: options-pages.php:955
 msgid "Options Page"
 msgstr "Страница опций"
 
-#: options-pages.php:780
+#: options-pages.php:957
 msgid "Add Options Page"
 msgstr "Добавить страницу опций"
 
-#: options-pages.php:781
+#: options-pages.php:958
 msgid "Add New Options Page"
 msgstr "Добавление страницы опций..."
 
-#: options-pages.php:782
+#: options-pages.php:959
 msgid "Edit"
 msgstr "Редактировать"
 
-#: options-pages.php:783
+#: options-pages.php:960
 msgid "Edit Options Page"
 msgstr "Редактировать страницу опций"
 
-#: options-pages.php:784
+#: options-pages.php:961
 msgid "New Options Page"
 msgstr "Новая страница опций"
 
-#: options-pages.php:785 options-pages.php:786
+#: options-pages.php:962 options-pages.php:963
 msgid "View Options Page"
 msgstr "Просмотреть"
 
-#: options-pages.php:787
+#: options-pages.php:964
 msgid "Search Options Pages"
 msgstr "Найти"
 
-#: options-pages.php:788
+#: options-pages.php:965
 msgid "No Options Pages Found"
 msgstr "Ничего не найдено"
 
-#: options-pages.php:789
+#: options-pages.php:966
 msgid "No Options Pages Found in Trash"
 msgstr "Ничего не найдено"
 
-#: options-pages.php:790
+#: options-pages.php:967
 msgid "Parent Options Page"
 msgstr "Родительская страница опций"
 
-#: options-pages.php:906
+#: options-pages.php:1030
 msgid "Plugins by John Huebner"
 msgstr "Автор плагина: John Huebner"
 
-#: options-pages.php:923
+#: options-pages.php:1047
 msgid "Thank you for using my plugins"
 msgstr "Спасибо, за то, что используете мой плагин."
 
-#: options-pages.php:932
+#: options-pages.php:1056
 msgid "Documentation"
 msgstr "Документация"
 
-#: options-pages.php:940
+#: options-pages.php:1064
 msgid "Please consider making a small donation."
 msgstr ""
 "Если вам понравился данный плагин, вы можете сделать небольшое пожертвование."
+
+#~ msgid ""
+#~ "ACF v5.2.7 added the ability to save and load data to/from a post rather "
+#~ "than options.<br /><br /><em>When saving values to this post do not use "
+#~ "field names in your field groups that start with _acfop_.</em>"
+#~ msgstr ""
+#~ "Вы можете сохранять настройки полей в определенную запись. Если вы это "
+#~ "делаете не используйте в названии груп полей словосочетание _acfop_ в "
+#~ "начале названия."
+
+#~ msgid "Post "
+#~ msgstr "Запись"
 
 #~ msgid ""
 #~ "If set to true, this options page will redirect to the first child page "
