@@ -635,10 +635,11 @@
 				}
 				$settings['acf']['icon_url'] = $icon;
 				$menu_position = false;
+				$value = get_post_meta($post_id, '_acfop_position', true);
 				if ($value != '') {
 					$menu_position = $value;
-					$settings['acf']['position'] = $menu_position;
 				}
+				$settings['acf']['position'] = $menu_position;
 				
 			} else {
 				// parent set

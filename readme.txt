@@ -158,6 +158,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 == Changelog ==
 
+= 3.8.1 =
+* corrected bug in menu position
+
 = 3.8.0 =
 * replaced register_field_group() call with acf_add_local_field_group() - #41
 * added tabs for basic/advanced settings
