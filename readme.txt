@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.8.0
+Stable tag: 3.8.1
 Donate link: 
 License: 
 License URI: 
@@ -160,6 +160,7 @@ add_filter('remove_hube2_nag', '__return_true');
 
 = 3.8.1 =
 * corrected bug in menu position
+* corrected bug in hook setting
 
 = 3.8.0 =
 * replaced register_field_group() call with acf_add_local_field_group() - #41
