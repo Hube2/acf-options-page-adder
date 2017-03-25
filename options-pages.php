@@ -577,7 +577,7 @@
 		
 		private function build_options_page_settings($post_id, $title='') {
 			$skip_hook = false;
-			if ($title = '') {
+			if ($title == '') {
 				$skip_hook = true;
 			}
 			$settings = array();
@@ -646,7 +646,7 @@
 				$settings['type'] = 'sub_page';
 				$settings['order'] = intval(get_post_meta($post_id, '_acfop_order', true));
 			}
-			if ($skip_hook) {
+			if (!$skip_hook) {
 				$settings['hook'] = get_plugin_page_hookname($slug, $parent);
 			}
 			
