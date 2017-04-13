@@ -95,6 +95,9 @@ using any of the field names used by this plugin, which should be extremely easy
 ## Customize Options Page
 Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.
 
+Version 3.8.2 of this plugin adds a toggle to enable this feature. This feature can cause an out of
+memory fatal error on options pages that have large numbers of fields. If content was entered into this field before the toggle to turn in on then the toggle will be automatically turned on. Otherwise the default for this option will be off.
+
 **Header Content**
 
 ```

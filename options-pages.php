@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.8.1
+		Version: 3.8.2
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.8.1';
+		private $version = '3.8.2';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -505,13 +505,35 @@
 						'endpoint' => 0
 					),
 					array(
+						'key' => 'field_acf_key_acfop_custize',
+						'label' => __('Customization', $this->text_domain),
+						'name' => '_acfop_customize',
+						'type' => 'true_false',
+						'ui' => 1,
+						'ui_on_text' => __('Yes', $this->text_domain),
+						'ui_off_text' => __('No', $this->text_domain),
+						'instructions' => __('Turning this on will allow you to add header and footer content to the options page<br /><span style="color: #C00;">WARNING:</span> On options page with a large number of fields this feature can cause the loading of the options page to cause an out of memory fatal error. This feature should not be used on options pages that may have large numbers of fields to display. If this feature is off it will disable not only the content editors here but also will disable the filters mentioned in the documentation.', $this->text_domain),
+						'message' => __('Allow Customization of Header &amp; Footer?', $this->text_domain),
+						'required' => 0,
+						'conditional_logic' => 0,
+						'default_value' => 0,
+					),
+					array(
 						'key' => 'field_acf_key_acfop_header_content',
 						'label' => __('Header Content', $this->text_domain),
 						'name' => '_acfop_header_content',
 						'type' => 'wysiwyg',
 						'instructions' => __('Content will be added to the options page header after the Options Page Title.', $this->text_domain),
 						'required' => 0,
-						'conditional_logic' => 0,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_custize',
+									'operator' => '==',
+									'value' => 1,
+								),
+							),
+						),
 						'wrapper' => array(
 							'width' => '',
 							'class' => '',
@@ -530,7 +552,15 @@
 						'type' => 'wysiwyg',
 						'instructions' => __('Content will be added to the options page footer after all ACF Field Groups.', $this->text_domain),
 						'required' => 0,
-						'conditional_logic' => 0,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_custize',
+									'operator' => '==',
+									'value' => 1,
+								),
+							),
+						),
 						'wrapper' => array(
 							'width' => '',
 							'class' => '',
@@ -650,15 +680,33 @@
 				$settings['hook'] = get_plugin_page_hookname($slug, $parent);
 			}
 			
-			$settings['header'] = trim(get_post_meta($post_id, '_acfop_header_content', true));
-			
-			$settings['footer'] = trim(get_post_meta($post_id, '_acfop_footer_content', true));
+			$allow = intval(get_post_meta($post_id, '_acfop_customize', true));
+			if ($allow === '') {
+				$allow = 0;
+			} else {
+				$allow = intval($allow);
+			}
+			$header = trim(get_post_meta($post_id, '_acfop_header_content', true));
+			$footer = trim(get_post_meta($post_id, '_acfop_footer_content', true));
+			if ($allow || $header || $footer) {
+				$allow = true;
+				update_post_meta($post_id, '_acfop_customize', '1');
+			} else {
+				$allow = false;
+				update_post_meta($post_id, '_acfop_customize', '0');
+			}
+			$settings['customize'] = $allow;
+			$settings['header'] = $header;
+			$settings['footer'] = $footer;
 			
 			return $settings;
 		} // end private function build_options_page_settings
 		
 		public function add_hooks() {
 			foreach($this->options_pages as $id => $options_page) {
+				if (!$options_page['customize']) {
+					continue;
+				}
 				if (isset($options_page['hook'])) {
 					$hook = $options_page['hook'];
 				} else {

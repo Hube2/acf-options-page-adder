@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.8.1
+Stable tag: 3.8.2
 Donate link: 
 License: 
 License URI: 
@@ -109,6 +109,9 @@ into the Icon field when adding or editing the options page.
 
 Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.
 
+Version 3.8.2 of this plugin adds a toggle to enable this feature. This feature can cause an out of
+memory fatal error on options pages that have large numbers of fields. If content was entered into this field before the toggle to turn in on then the toggle will be automatically turned on. Otherwise the default for this option will be off.
+
 **Header Content**
 
 `
@@ -157,6 +160,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.8.2 =
+* added toggle to turn customize features on/off
 
 = 3.8.1 =
 * corrected bug in menu position
