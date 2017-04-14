@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.8.2
+Stable tag: 3.8.3
 Donate link: 
 License: 
 License URI: 
@@ -160,6 +160,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.8.3 =
+* correcting some minor issues/erros introduced in 3.8.2
 
 = 3.8.2 =
 * added toggle to turn customize features on/off
