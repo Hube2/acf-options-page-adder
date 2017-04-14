@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2017-03-24 00:15+0000\n"
-"PO-Revision-Date: 2017-03-24 00:26+0000\n"
+"POT-Creation-Date: 2017-04-14 13:24+0100\n"
+"PO-Revision-Date: 2017-04-14 15:14+0100\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language: pt_PT\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
@@ -45,7 +45,7 @@ msgstr "Texto do título"
 msgid "This will be used as the options page title."
 msgstr "Isto será usado como título da página de opções."
 
-#: options-pages.php:233 options-pages.php:770
+#: options-pages.php:233 options-pages.php:819
 msgid "Menu Text"
 msgstr "Texto do menu"
 
@@ -64,7 +64,7 @@ msgstr ""
 "Seleccione o menu onde a página de opções deverá ser incluída. Por omissão é "
 "nenhum."
 
-#: options-pages.php:269 options-pages.php:771
+#: options-pages.php:269 options-pages.php:820
 msgid "Slug"
 msgstr "Slug"
 
@@ -76,7 +76,7 @@ msgstr ""
 "Este campo é opcional no ACF. Aqui é obrigatório. Tem de saber qual é a slug "
 "para permitir a função get_options_page_post_id() adicionada na v4.4.0."
 
-#: options-pages.php:286 options-pages.php:775
+#: options-pages.php:286 options-pages.php:824
 msgid "Order"
 msgstr "Ordem"
 
@@ -88,7 +88,7 @@ msgstr "A ordem em que este submenu deverá ficar dentro do seu menu superior."
 msgid "Advanced Settings"
 msgstr "Definições avançadas"
 
-#: options-pages.php:327 options-pages.php:776
+#: options-pages.php:327 options-pages.php:825
 msgid "Capability"
 msgstr "Capacidade"
 
@@ -140,15 +140,17 @@ msgstr ""
 "dashicons/\" target=\"_blank\">https://developer.wordpress.org/resource/"
 "dashicons/</a> que pode inserir neste campo.</em>"
 
-#: options-pages.php:398 options-pages.php:773
+#: options-pages.php:398 options-pages.php:822
 msgid "Redirect"
 msgstr "Redireccionar"
 
-#: options-pages.php:402 options-pages.php:476 options-pages.php:874
+#: options-pages.php:402 options-pages.php:476 options-pages.php:513
+#: options-pages.php:923
 msgid "Yes"
 msgstr "Sim"
 
-#: options-pages.php:403 options-pages.php:477 options-pages.php:876
+#: options-pages.php:403 options-pages.php:477 options-pages.php:514
+#: options-pages.php:925
 msgid "No"
 msgstr "Não"
 
@@ -167,7 +169,7 @@ msgstr ""
 "definição irá afectar a localização ou apresentação de páginas dependentes "
 "actualmente associadas a esta página de opções.</strong></em>"
 
-#: options-pages.php:419 options-pages.php:774
+#: options-pages.php:419 options-pages.php:823
 msgid "Save To"
 msgstr "Guardar para"
 
@@ -182,7 +184,7 @@ msgstr ""
 "não utilize nomes de campos nos seus grupos de campos que comecem com "
 "_acfop_.</em>"
 
-#: options-pages.php:431 options-pages.php:799 options-pages.php:813
+#: options-pages.php:431 options-pages.php:848 options-pages.php:862
 msgid "Options"
 msgstr "Opções"
 
@@ -190,7 +192,7 @@ msgstr "Opções"
 msgid "Post Object"
 msgstr "Conteúdo"
 
-#: options-pages.php:433 options-pages.php:803 options-pages.php:815
+#: options-pages.php:433 options-pages.php:852 options-pages.php:864
 msgid "This Post"
 msgstr "Este conteúdo"
 
@@ -219,10 +221,37 @@ msgid "Customize"
 msgstr "Personalizar"
 
 #: options-pages.php:509
+msgid "Customization"
+msgstr "Personalização"
+
+#: options-pages.php:515
+msgid ""
+"Turning this on will allow you to add header and footer content to the "
+"options page<br /><span style=\"color: #C00;\">WARNING:</span> On options "
+"page with a large number of fields this feature can cause the loading of the "
+"options page to cause an out of memory fatal error. This feature should not "
+"be used on options pages that may have large numbers of fields to display. "
+"If this feature is off it will disable not only the content editors here but "
+"also will disable the filters mentioned in the documentation."
+msgstr ""
+"Se ligar esta opção, permitirá adicionar conteúdo ao cabeçalho e rodapé da "
+"sua página de opções.<br /><span style=\"color: #C00;\">AVISO:</span> Em "
+"páginas de opções com uma grande quantidade de campos, esta funcionalidade "
+"poderá causar um erro fatal de memória ao carregar a página de opções. Esta "
+"funcionalidade não deverá ser usada em páginas de opções que mostrem uma "
+"grande quantidade de campos. Se esta funcionalidade estiver desligada, "
+"desactivará não só os editores de conteúdo mas também os filtros mencionados "
+"na documentação."
+
+#: options-pages.php:516
+msgid "Allow Customization of Header &amp; Footer?"
+msgstr "Permitir a personalização do cabeçalho e do rodapé?"
+
+#: options-pages.php:523
 msgid "Header Content"
 msgstr "Conteúdo do cabeçalho"
 
-#: options-pages.php:512
+#: options-pages.php:526
 msgid ""
 "Content will be added to the options page header after the Options Page "
 "Title."
@@ -230,102 +259,102 @@ msgstr ""
 "O conteúdo será adicionado ao cabeçalho da página de opções, depois do "
 "título da página de opções."
 
-#: options-pages.php:528
+#: options-pages.php:550
 msgid "Footer Content"
 msgstr "Conteúdo do rodapé"
 
-#: options-pages.php:531
+#: options-pages.php:553
 msgid ""
 "Content will be added to the options page footer after all ACF Field Groups."
 msgstr ""
 "O conteúdo será adicionado ao rodapé da página de opções, depois de todos os "
 "grupos de campos do ACF."
 
-#: options-pages.php:769
+#: options-pages.php:818
 msgid "Post ID"
 msgstr "ID do conteúdo"
 
-#: options-pages.php:772
+#: options-pages.php:821
 msgid "Location (Parent)"
 msgstr "Localização (Superior)"
 
-#: options-pages.php:777
+#: options-pages.php:826
 msgid "Hook Suffix"
 msgstr "Sufixo do hook"
 
-#: options-pages.php:801 options-pages.php:817
+#: options-pages.php:850 options-pages.php:866
 msgid "Post"
 msgstr "Conteúdo"
 
-#: options-pages.php:811
+#: options-pages.php:860
 msgid "1st sub option page value<br /><strong>OR</strong><br />"
 msgstr "Valor da 1ª página dependente<br /><strong>OU</strong><br />"
 
-#: options-pages.php:887
+#: options-pages.php:936
 msgid "None"
 msgstr "Nenhum"
 
-#: options-pages.php:964 options-pages.php:979 options-pages.php:981
+#: options-pages.php:1013 options-pages.php:1028 options-pages.php:1030
 msgid "Options Pages"
 msgstr "Páginas de opções"
 
-#: options-pages.php:980
+#: options-pages.php:1029
 msgid "Options Page"
 msgstr "Página de opções"
 
-#: options-pages.php:982
+#: options-pages.php:1031
 msgid "Add Options Page"
 msgstr "Adicionar página de opções"
 
-#: options-pages.php:983
+#: options-pages.php:1032
 msgid "Add New Options Page"
 msgstr "Adicionar nova página de opções"
 
-#: options-pages.php:984
+#: options-pages.php:1033
 msgid "Edit"
 msgstr "Editar"
 
-#: options-pages.php:985
+#: options-pages.php:1034
 msgid "Edit Options Page"
 msgstr "Editar página de opções"
 
-#: options-pages.php:986
+#: options-pages.php:1035
 msgid "New Options Page"
 msgstr "Nova página de opções"
 
-#: options-pages.php:987 options-pages.php:988
+#: options-pages.php:1036 options-pages.php:1037
 msgid "View Options Page"
 msgstr "Ver página de opções"
 
-#: options-pages.php:989
+#: options-pages.php:1038
 msgid "Search Options Pages"
 msgstr "Pesquisar páginas de opções"
 
-#: options-pages.php:990
+#: options-pages.php:1039
 msgid "No Options Pages Found"
 msgstr "Nenhuma página de opções encontrada"
 
-#: options-pages.php:991
+#: options-pages.php:1040
 msgid "No Options Pages Found in Trash"
 msgstr "Nenhuma página de opções encontrada no lixo"
 
-#: options-pages.php:992
+#: options-pages.php:1041
 msgid "Parent Options Page"
 msgstr "Página de opções superior"
 
-#: options-pages.php:1055
+#: options-pages.php:1104
 msgid "Plugins by John Huebner"
 msgstr "Plugins de John Huebner"
 
-#: options-pages.php:1072
+#: options-pages.php:1121
 msgid "Thank you for using my plugins"
 msgstr "Obrigado por usar os meus plugins"
 
-#: options-pages.php:1081
+#: options-pages.php:1130
 msgid "Documentation"
 msgstr "Documentação"
 
-#: options-pages.php:1089
+#: options-pages.php:1138
 msgid "Please consider making a small donation."
 msgstr "Por favor, considere fazer um pequeno donativo."
 
