@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Options Page Adder\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2017-03-21 14:51+0300\n"
-"PO-Revision-Date: 2017-03-21 15:00+0300\n"
+"POT-Creation-Date: 2017-04-19 23:02+0300\n"
+"PO-Revision-Date: 2017-04-19 23:02+0300\n"
 "Last-Translator: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language-Team: Pedro Mendonça <ped.gaspar@gmail.com>\n"
 "Language: ru\n"
@@ -209,7 +209,7 @@ msgstr "Загружать эти опции по умолчанию при за
 
 #: options-pages.php:468
 msgid "Customize"
-msgstr "Настроить"
+msgstr "Подписи сверху и снизу"
 
 #: options-pages.php:484
 msgid "Header Content"
