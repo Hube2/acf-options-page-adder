@@ -2,7 +2,7 @@
 Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: 3.8.5
 Donate link: 
 License: 
