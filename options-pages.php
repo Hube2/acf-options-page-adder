@@ -185,9 +185,7 @@
 		
 		public function init() {
 			$this->register_post_type();
-			if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
-				$this->acf_add_options_pages();
-			}
+			$this->acf_add_options_pages();
 			do_action('acf_options_page/init');
 		} // end public function init
 		
