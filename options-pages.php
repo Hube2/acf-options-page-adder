@@ -172,7 +172,7 @@
 				$this->active = false;
 				return;
 			}
-			add_action('init', array($this, 'init'), 0);
+			add_action('init', array($this, 'init'), 20);
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
 			add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
