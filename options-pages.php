@@ -418,7 +418,7 @@
 						'label' => __('Save To', 'acf-options-page-adder'),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', 'acf-options-page-adder'),
+						'instructions' => __('1) ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br />When saving values to this post do not use field names in your field groups that start with _acfop_.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(
