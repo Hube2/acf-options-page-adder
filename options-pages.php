@@ -27,7 +27,6 @@
 																			 //'edit-tags.php?taxonomy=link_category',
 																			 'edit.php?post_type=acf-options-page',
 																			 );
-		private $text_domain = 'acf-options-page-adder';
 		private $options_pages = array(); // hold all options pages
 		private $hooks = array(); // options page hook to post id
 		
@@ -154,7 +153,7 @@
 			
 		public function meta_box_data($plugins=array()) {
 			$plugins[] = array(
-				'title' => __('ACF Options Page Admin', $this->text_domain),
+				'title' => __('ACF Options Page Admin', 'acf-options-page-adder'),
 				'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
 				'doc' => 'https://github.com/Hube2/acf-options-page-adder'
 			);
@@ -193,11 +192,11 @@
 			// this function is called when ACF5 is installed
 			$field_group = array(
 				'key' => 'acf_options-page-details',
-				'title' => __('Options Page Details', $this->text_domain),
+				'title' => __('Options Page Details', 'acf-options-page-adder'),
 				'fields' => array(
 					array(
 						'key' => 'field_acf_key_acfop_tab_basic',
-						'label' => __('Basic Settings', $this->text_domain),
+						'label' => __('Basic Settings', 'acf-options-page-adder'),
 						'name' => '',
 						'type' => 'tab',
 						'instructions' => '',
@@ -213,11 +212,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_title',
-						'label' => __('Title Text', $this->text_domain),
+						'label' => __('Title Text', 'acf-options-page-adder'),
 						'name' => '_acfop_title',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('This will be used as the options page title.', $this->text_domain),
+						'instructions' => __('This will be used as the options page title.', 'acf-options-page-adder'),
 						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -230,11 +229,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_menu',
-						'label' => __('Menu Text', $this->text_domain),
+						'label' => __('Menu Text', 'acf-options-page-adder'),
 						'name' => '_acfop_menu',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('Will default to title if left blank.', $this->text_domain),
+						'instructions' => __('Will default to title if left blank.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -247,11 +246,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_parent',
-						'label' => __('Menu Location (Parent)', $this->text_domain),
+						'label' => __('Menu Location (Parent)', 'acf-options-page-adder'),
 						'name' => '_acfop_parent',
 						'prefix' => '',
 						'type' => 'select',
-						'instructions' => __('Select the menu this options page will appear under. Will default to None.', $this->text_domain),
+						'instructions' => __('Select the menu this options page will appear under. Will default to None.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'choices' => array(), // dynamic populate
@@ -266,11 +265,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_slug',
-						'label' => __('Slug', $this->text_domain),
+						'label' => __('Slug', 'acf-options-page-adder'),
 						'name' => '_acfop_slug',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('This field is optional in ACF. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', $this->text_domain),
+						'instructions' => __('This field is optional in ACF. It is required here. You must know what the slug is to enable get_options_page_post_id() added in 4.4.0', 'acf-options-page-adder'),
 						'required' => 1,
 						'conditional_logic' => 0,
 						'default_value' => '',
@@ -283,11 +282,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_order',
-						'label' => __('Order', $this->text_domain),
+						'label' => __('Order', 'acf-options-page-adder'),
 						'name' => '_acfop_order',
 						'prefix' => '',
 						'type' => 'number',
-						'instructions' => __('The order that this child menu should appear under its parent menu.', $this->text_domain),
+						'instructions' => __('The order that this child menu should appear under its parent menu.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -308,7 +307,7 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_tab_advanced',
-						'label' => __('Advanced Settings', $this->text_domain),
+						'label' => __('Advanced Settings', 'acf-options-page-adder'),
 						'name' => '',
 						'type' => 'tab',
 						'instructions' => '',
@@ -324,11 +323,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_capability',
-						'label' => __('Capability', $this->text_domain),
+						'label' => __('Capability', 'acf-options-page-adder'),
 						'name' => '_acfop_capability',
 						'prefix' => '',
 						'type' => 'select',
-						'instructions' => __('The user capability to view this options page. Will default to manage_options.', $this->text_domain),
+						'instructions' => __('The user capability to view this options page. Will default to manage_options.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'choices' => array(), // dynamic populate
@@ -343,11 +342,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_position',
-						'label' => __('Menu Position', $this->text_domain),
+						'label' => __('Menu Position', 'acf-options-page-adder'),
 						'name' => '_acfop_position',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('The position in the menu order this menu should appear. WARNING: if two menu items use the same position attribute, one of the items may be overwritten so that only one item displays! Risk of conflict can be reduced by using decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to bottom of utility menu items.<br /><em>Core Menu Item Positions: 2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, 25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, 80=Settings, 99=Separator</em>', $this->text_domain),
+						'instructions' => __('The position in the menu order this menu should appear. WARNING: if two menu items use the same position attribute, one of the items may be overwritten so that only one item displays! Risk of conflict can be reduced by using decimal instead of integer values, e.g. 63.3 instead of 63. Defaults to bottom of utility menu items.<br /><em>Core Menu Item Positions: 2=Dashboard, 4=Separator, 5=Posts, 10=Media, 15=Links, 20=Pages, 25=Comments, 59=Separator, 60=Appearance, 65=Plugins, 70=Users, 75=Tools, 80=Settings, 99=Separator</em>', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -370,11 +369,11 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_icon',
-						'label' => __('Icon', $this->text_domain),
+						'label' => __('Icon', 'acf-options-page-adder'),
 						'name' => '_acfop_icon',
 						'prefix' => '',
 						'type' => 'text',
-						'instructions' => __('The icon url for this menu. Defaults to default WordPress gear.<br /><em>Check out <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> for what to put in this field.</em>', $this->text_domain),
+						'instructions' => __('The icon url for this menu. Defaults to default WordPress gear.<br /><em>Check out <a href="https://developer.wordpress.org/resource/dashicons/" target="_blank">https://developer.wordpress.org/resource/dashicons/</a> for what to put in this field.</em>', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -395,13 +394,13 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_redirect',
-						'label' => __('Redirect', $this->text_domain),
+						'label' => __('Redirect', 'acf-options-page-adder'),
 						'name' => '_acfop_redirect',
 						'type' => 'true_false',
 						'ui' => 1,
-						'ui_on_text' => __('Yes', $this->text_domain),
-						'ui_off_text' => __('No', $this->text_domain),
-						'instructions' => __('If set to Yes, this options page will redirect to the first child page (if a child page exists). If set to No, this parent page will appear alongside any child pages. Defaults to Yes.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>', $this->text_domain),
+						'ui_on_text' => __('Yes', 'acf-options-page-adder'),
+						'ui_off_text' => __('No', 'acf-options-page-adder'),
+						'instructions' => __('If set to Yes, this options page will redirect to the first child page (if a child page exists). If set to No, this parent page will appear alongside any child pages. Defaults to Yes.<br /><em><strong>NOTE: Changing this setting will effect the location or appearance of sub options pages currently associated with this options page.</strong></em>', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -416,10 +415,10 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_save_to',
-						'label' => __('Save To', $this->text_domain),
+						'label' => __('Save To', 'acf-options-page-adder'),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', $this->text_domain),
+						'instructions' => __('ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br /><em>When saving values to this post do not use field names in your field groups that start with _acfop_.</em>', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(
@@ -428,9 +427,9 @@
 							'id' => '',
 						),
 						'choices' => array(
-							'options' => __('Options', $this->text_domain),
-							'post' => __('Post Object', $this->text_domain),
-							'this_post' => __('This Post', $this->text_domain),
+							'options' => __('Options', 'acf-options-page-adder'),
+							'post' => __('Post Object', 'acf-options-page-adder'),
+							'this_post' => __('This Post', 'acf-options-page-adder'),
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
@@ -439,10 +438,10 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_post_page',
-						'label' => __('Post/Page', $this->text_domain),
+						'label' => __('Post/Page', 'acf-options-page-adder'),
 						'name' => '_acfop_post_page',
 						'type' => 'post_object',
-						'instructions' => __('Select the post object to save and load data to/from.', $this->text_domain),
+						'instructions' => __('Select the post object to save and load data to/from.', 'acf-options-page-adder'),
 						'required' => 1,
 						'conditional_logic' => array(
 							array(
@@ -469,13 +468,13 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_autoload',
-						'label' => __('Autoload Values', $this->text_domain),
+						'label' => __('Autoload Values', 'acf-options-page-adder'),
 						'name' => '_acfop_autoload',
 						'type' => 'true_false',
 						'ui' => 1,
-						'ui_on_text' => __('Yes', $this->text_domain),
-						'ui_off_text' => __('No', $this->text_domain),
-						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', $this->text_domain),
+						'ui_on_text' => __('Yes', 'acf-options-page-adder'),
+						'ui_off_text' => __('No', 'acf-options-page-adder'),
+						'instructions' => __('Whether to load the options (values saved from this options page) when WordPress starts up. Added in ACF v5.2.8.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -490,7 +489,7 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_tab_content',
-						'label' => __('Customize', $this->text_domain),
+						'label' => __('Customize', 'acf-options-page-adder'),
 						'name' => '',
 						'type' => 'tab',
 						'instructions' => '',
@@ -506,24 +505,24 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_custize',
-						'label' => __('Customization', $this->text_domain),
+						'label' => __('Customization', 'acf-options-page-adder'),
 						'name' => '_acfop_customize',
 						'type' => 'true_false',
 						'ui' => 1,
-						'ui_on_text' => __('Yes', $this->text_domain),
-						'ui_off_text' => __('No', $this->text_domain),
-						'instructions' => __('Turning this on will allow you to add header and footer content to the options page<br /><span style="color: #C00;">WARNING:</span> On options page with a large number of fields this feature can cause the loading of the options page to cause an out of memory fatal error. This feature should not be used on options pages that may have large numbers of fields to display. If this feature is off it will disable not only the content editors here but also will disable the filters mentioned in the documentation.', $this->text_domain),
-						'message' => __('Allow Customization of Header &amp; Footer?', $this->text_domain),
+						'ui_on_text' => __('Yes', 'acf-options-page-adder'),
+						'ui_off_text' => __('No', 'acf-options-page-adder'),
+						'instructions' => __('Turning this on will allow you to add header and footer content to the options page<br /><span style="color: #C00;">WARNING:</span> On options page with a large number of fields this feature can cause the loading of the options page to cause an out of memory fatal error. This feature should not be used on options pages that may have large numbers of fields to display. If this feature is off it will disable not only the content editors here but also will disable the filters mentioned in the documentation.', 'acf-options-page-adder'),
+						'message' => __('Allow Customization of Header &amp; Footer?', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => 0,
 						'default_value' => 0,
 					),
 					array(
 						'key' => 'field_acf_key_acfop_header_content',
-						'label' => __('Header Content', $this->text_domain),
+						'label' => __('Header Content', 'acf-options-page-adder'),
 						'name' => '_acfop_header_content',
 						'type' => 'wysiwyg',
-						'instructions' => __('Content will be added to the options page header after the Options Page Title.', $this->text_domain),
+						'instructions' => __('Content will be added to the options page header after the Options Page Title.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -547,10 +546,10 @@
 					),
 					array(
 						'key' => 'field_acf_key_acfop_footer_content',
-						'label' => __('Footer Content', $this->text_domain),
+						'label' => __('Footer Content', 'acf-options-page-adder'),
 						'name' => '_acfop_footer_content',
 						'type' => 'wysiwyg',
-						'instructions' => __('Content will be added to the options page footer after all ACF Field Groups.', $this->text_domain),
+						'instructions' => __('Content will be added to the options page footer after all ACF Field Groups.', 'acf-options-page-adder'),
 						'required' => 0,
 						'conditional_logic' => array(
 							array(
@@ -824,15 +823,15 @@
 			foreach ($columns as $index => $column) {
 				if ($index == 'title') {
 					$new_columns[$index] = $column;
-					$new_columns['acfop_id'] = __('Post ID', $this->text_domain);
-					$new_columns['acfop_menu_text'] = __('Menu Text', $this->text_domain);
-					$new_columns['acfop_slug'] = __('Slug', $this->text_domain);
-					$new_columns['acfop_location'] = __('Location (Parent)', $this->text_domain);
-					$new_columns['acfop_redirect'] = __('Redirect', $this->text_domain);
-					$new_columns['acfop_saveto'] = __('Save To', $this->text_domain);
-					$new_columns['acfop_order'] = __('Order', $this->text_domain);
-					$new_columns['acfop_capability'] = __('Capability', $this->text_domain);
-					$new_columns['acfop_hook'] = __('Hook Suffix', $this->text_domain);
+					$new_columns['acfop_id'] = __('Post ID', 'acf-options-page-adder');
+					$new_columns['acfop_menu_text'] = __('Menu Text', 'acf-options-page-adder');
+					$new_columns['acfop_slug'] = __('Slug', 'acf-options-page-adder');
+					$new_columns['acfop_location'] = __('Location (Parent)', 'acf-options-page-adder');
+					$new_columns['acfop_redirect'] = __('Redirect', 'acf-options-page-adder');
+					$new_columns['acfop_saveto'] = __('Save To', 'acf-options-page-adder');
+					$new_columns['acfop_order'] = __('Order', 'acf-options-page-adder');
+					$new_columns['acfop_capability'] = __('Capability', 'acf-options-page-adder');
+					$new_columns['acfop_hook'] = __('Hook Suffix', 'acf-options-page-adder');
 				} else {
 					if (strtolower($column) != 'date') {
 						$new_columns[$index] = $column;
@@ -855,14 +854,14 @@
 					}
 					$redirect = intval(get_post_meta($post_id, '_acfop_redirect', true));
 					if ($redirect) {
-						echo __('1st sub options page value<br /><strong>OR</strong><br />', $this->text_domain);
+						echo __('1st sub options page value<br /><strong>OR</strong><br />', 'acf-options-page-adder');
 					}
 					if ($save_to == 'options') {
-						echo __('Options', $this->text_domain);
+						echo __('Options', 'acf-options-page-adder');
 					} elseif ($save_to == 'post') {
-						echo __('Post', $this->text_domain),' ',get_post_meta($post_id, '_acfop_post_page', true);
+						echo __('Post', 'acf-options-page-adder'),' ',get_post_meta($post_id, '_acfop_post_page', true);
 					} elseif ($save_to == 'this_post') {
-						echo __('This Post', $this->text_domain),' (',$post_id,')';
+						echo __('This Post', 'acf-options-page-adder'),' (',$post_id,')';
 					} else {
 						$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
 						if (!$slug) {
@@ -870,13 +869,13 @@
 							$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
 						}
 						$save_to = get_options_page_id($slug);
-						//echo __('1st sub option page value<br /><strong>OR</strong><br />', $this->text_domain);
+						//echo __('1st sub option page value<br /><strong>OR</strong><br />', 'acf-options-page-adder');
 						if ($save_to == 'options') {
-							echo __('Options', $this->text_domain);
+							echo __('Options', 'acf-options-page-adder');
 						} elseif ($save_to == $post_id) {
-							echo __('This Post', $this->text_domain),' (',$post_id,')';
+							echo __('This Post', 'acf-options-page-adder'),' (',$post_id,')';
 						} else {
-							echo __('Post', $this->text_domain),' ',$save_to;
+							echo __('Post', 'acf-options-page-adder'),' ',$save_to;
 						}
 					}
 					break;
@@ -933,9 +932,9 @@
 				case 'acfop_redirect':
 					$value = get_post_meta($post_id, '_acfop_redirect', true);
 					if ($value == 1) {
-						echo __('Yes', $this->text_domain);
+						echo __('Yes', 'acf-options-page-adder');
 					} elseif ($value == 0 && $value != '') {
-						echo __('No', $this->text_domain);
+						echo __('No', 'acf-options-page-adder');
 					}
 					break;
 				default:
@@ -946,7 +945,7 @@
 		
 		public function build_admin_menu_list() {
 			global $menu;
-			$parent_menus = array('none' => __('None', $this->text_domain));
+			$parent_menus = array('none' => __('None', 'acf-options-page-adder'));
 			$this->exclude_locations = apply_filters('acf-options-page-adder/exlude-locations', $this->exclude_locations);
 			$options_pages = acf_get_options_pages();
 			if (isset($GLOBALS['acf_options_pages'])) {
@@ -999,7 +998,7 @@
 		} // end public function build_admin_menu_listacf_load_capabilities_field
 		
 		public function load_text_domain() {
-			load_plugin_textdomain($this->text_domain, false, dirname(plugin_basename(__FILE__)).'/lang/');
+			load_plugin_textdomain('acf-options-page-adder', false, dirname(plugin_basename(__FILE__)).'/lang/');
 			do_action('acf_options_page/load_text_domain'); 
 		} // end public function load_text_domain
 		
@@ -1023,7 +1022,7 @@
 				'edit_posts'		=> $cap,
 				'delete_posts'		=> $cap,
 			);
-			$args = array('label' => __('Options Pages', $this->text_domain),
+			$args = array('label' => __('Options Pages', 'acf-options-page-adder'),
 										'description' => '',
 										'public' => false,
 										'show_ui' => true,
@@ -1038,20 +1037,20 @@
 										'menu_position' => 100,
 										'menu_icon' => 'dashicons-admin-generic',
 										'supports' => array('custom-fields','revisions'),
-										'labels' => array('name' => __('Options Pages', $this->text_domain),
-																			'singular_name' => __('Options Page', $this->text_domain),
-																			'menu_name' =>	__('Options Pages', $this->text_domain),
-																			'add_new' => __('Add Options Page', $this->text_domain),
-																			'add_new_item' => __('Add New Options Page', $this->text_domain),
-																			'edit' => __('Edit', $this->text_domain),
-																			'edit_item' => __('Edit Options Page', $this->text_domain),
-																			'new_item' => __('New Options Page', $this->text_domain),
-																			'view' => __('View Options Page', $this->text_domain),
-																			'view_item' => __('View Options Page', $this->text_domain),
-																			'search_items' => __('Search Options Pages', $this->text_domain),
-																			'not_found' => __('No Options Pages Found', $this->text_domain),
-																			'not_found_in_trash' => __('No Options Pages Found in Trash', $this->text_domain),
-																			'parent' => __('Parent Options Page', $this->text_domain)));
+										'labels' => array('name' => __('Options Pages', 'acf-options-page-adder'),
+																			'singular_name' => __('Options Page', 'acf-options-page-adder'),
+																			'menu_name' =>	__('Options Pages', 'acf-options-page-adder'),
+																			'add_new' => __('Add Options Page', 'acf-options-page-adder'),
+																			'add_new_item' => __('Add New Options Page', 'acf-options-page-adder'),
+																			'edit' => __('Edit', 'acf-options-page-adder'),
+																			'edit_item' => __('Edit Options Page', 'acf-options-page-adder'),
+																			'new_item' => __('New Options Page', 'acf-options-page-adder'),
+																			'view' => __('View Options Page', 'acf-options-page-adder'),
+																			'view_item' => __('View Options Page', 'acf-options-page-adder'),
+																			'search_items' => __('Search Options Pages', 'acf-options-page-adder'),
+																			'not_found' => __('No Options Pages Found', 'acf-options-page-adder'),
+																			'not_found_in_trash' => __('No Options Pages Found in Trash', 'acf-options-page-adder'),
+																			'parent' => __('Parent Options Page', 'acf-options-page-adder')));
 			register_post_type($this->post_type, $args);
 		} // end private function register_post_type
 		
