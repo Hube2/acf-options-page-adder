@@ -173,7 +173,7 @@
 				return;
 			}
 			add_action('init', array($this, 'init'), 20);
-			add_action('admin_menu', array($this, 'build_admin_menu_list'), 999);
+			add_action('admin_menu', array($this, 'build_admin_menu_list'), 9999);
 			add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
@@ -792,6 +792,7 @@
 		} // end public function acf_save_post
 		
 		public function acf_load_parent_menu_field($field) {
+			//$this->build_admin_menu_list();
 			$field['choices'] = $this->parent_menus;
 			return $field;
 		} // end public function acf_load_parent_menu_field
@@ -943,7 +944,7 @@
 			global $menu;
 			$parent_menus = array('none' => __('None', $this->text_domain));
 			$this->exclude_locations = apply_filters('acf-options-page-adder/exlude-locations', $this->exclude_locations);
-			$options_pages = array();
+			$options_pages = acf_get_options_pages();
 			if (isset($GLOBALS['acf_options_pages'])) {
 				$options_pages = $GLOBALS['acf_options_pages'];
 			}
@@ -962,9 +963,9 @@
 					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5])) {
 						// search options pages to get correct slug
 						$found = false;
-						foreach ($options_pages as $options_page) {
+						foreach ($options_pages as $slug => $options_page) {
 							if ($item[0] == $options_page['page_title']) {
-								$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $item[0]), '-'));
+								//$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $item[0]), '-'));
 								$parent_menus[$slug] = $item[0];
 								$found = true;
 							}
@@ -984,7 +985,7 @@
 							//$key = 'admin.php?page='.$key;
 						}
 						$parent_menus[$key] = $value;
-					} // end if else
+					}
 				} // end if good parent menu
 				if (isset($item[6]) && substr($item[6], 0, 6) == 'fa fa-') {
 					$menu[$index][4] .= ' acfop-fontawesome-'.str_replace(' ', '_', $item[6]);
