@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 4.9
-Stable tag: 3.8.8
+Stable tag: 3.8.9
 Donate link: 
 License: 
 License URI: 
@@ -160,6 +160,13 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.8.9 =
+* Fixed bug in setting parent options page
+* Corrected display of were fields will be saved
+* Corrected all translation calls to not use variable for text domain
+* Corrected bug in get_option_page_id() for redirected parent pages
+* Minor text changes
 
 = 3.8.8 =
 * Increased init priority to prevent interferance with some poorly written plugins that alter queries without proper checking to make sure the query is for the correct post type.
