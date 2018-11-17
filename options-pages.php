@@ -853,6 +853,10 @@
 							$save_to = '';
 						}
 					}
+					$redirect = intval(get_post_meta($post_id, '_acfop_redirect', true));
+					if ($redirect) {
+						echo __('1st sub options page value<br /><strong>OR</strong><br />', $this->text_domain);
+					}
 					if ($save_to == 'options') {
 						echo __('Options', $this->text_domain);
 					} elseif ($save_to == 'post') {
@@ -866,7 +870,7 @@
 							$slug = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
 						}
 						$save_to = get_options_page_id($slug);
-						echo __('1st sub option page value<br /><strong>OR</strong><br />', $this->text_domain);
+						//echo __('1st sub option page value<br /><strong>OR</strong><br />', $this->text_domain);
 						if ($save_to == 'options') {
 							echo __('Options', $this->text_domain);
 						} elseif ($save_to == $post_id) {
