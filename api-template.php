@@ -17,16 +17,19 @@
 			if (empty($pages)) {
 				return $post_id;
 			}
-			foreach ($pages as $page) {
-				if ($page['menu_slug'] == $slug) {
+			foreach ($pages as $page_slug => $page) {
+				if ($page_slug == $slug) {
 					$post_id = $page['post_id'];
 					// if parent slug not empty then break
 					if (!empty($page['parent_slug'])) {
 						break;
 					}
 					// if parent slug is empty and !redirect then break
-					if (!$page['redirect'] && empty($page['parent_slug'])) {
-						break;
+					if ($page['redirect']) {
+						if (isset($pages[$page['menu_slug']])) {
+							$post_id = $pages[$page['menu_slug']]['post_id'];
+							break;
+						}
 					}
 				}
 			} // end foreach $page
