@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.8.9
+		Version: 3.9.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.8.9';
+		private $version = '3.9.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -36,7 +36,8 @@
 			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
 			add_filter('acf/load_value/key=field_acf_key_acfop_slug', array($this, 'set_page_slug_field'), 20, 3);
 			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'unique_value'), 10, 4);
-			add_filter('jh_plugins_list', array($this, 'meta_box_data'));
+			add_filter('acf/validate_value/key=field_acf_key_acfop_slug', array($this, 'slug_characters'), 10, 4);
+			add_filter('acf/validate_value/key=field_acf_key_acfop_custom_slug', array($this, 'slug_characters'), 10, 4);
 			add_filter('acf/location/rule_values/options_page', array($this, 'options_page_rule_values_titles'), 20);
 			add_action('admin_enqueue_scripts', array($this, 'script'));
 			add_action('acf/save_post', array($this, 'acf_save_post'), 20);
@@ -102,6 +103,17 @@
 			return $value;
 		} // end public function set_page_slug_field
 		
+		public function slug_characters($valid, $value, $post_id, $field) {
+			// only allow leters, number, underscores, dashes
+			if (!$valid) {
+				return $valid;
+			}
+			if (!preg_match('/^[a-z]/i', $value) || preg_match('/[^-_0-9a-z]/i', $value)) {
+				return $field['label'].' '.__('must begin with a letter and include only numbers, letters, underscores and hyphens', 'acf-options-page-adder');
+			}
+			return $valid;
+		} // end public function slug_characters
+		
 		public function unique_value($valid, $value, $field, $input) {
 			// must be unique
 			if (!$valid || (!isset($_POST['post_id']) && !isset($_POST['post_ID']))) {
@@ -130,13 +142,9 @@
 			);
 			$query = new WP_Query($args);
 			if (count($query->posts)){
-				return 'This Value is not Unique. Please enter a unique '.$field['label'];
+				return __('This Value is not Unique. Please enter a unique', 'acf-options-page-adder').' '.$field['label'];
 			}
-			// only allow leters, number, underscores, dashes
-			if (!preg_match('/^[a-z]/i', $value) || preg_match('/[^-_0-9a-z]/i', $value)) {
-				return 'Slug must beging with a letter and include only numbers, letters, underscores and hyphens';
-			}
-			return true;
+			return $valid;
 		} // end public function unique_value
 		
 		public function set_title_field($value, $post_id, $field) {
@@ -150,15 +158,6 @@
 			}
 			return $value;
 		} // end public function set_title_field
-			
-		public function meta_box_data($plugins=array()) {
-			$plugins[] = array(
-				'title' => __('ACF Options Page Admin', 'acf-options-page-adder'),
-				'screens' => array('acf-field-group', 'edit-acf-field-group', 'acf-options-page'),
-				'doc' => 'https://github.com/Hube2/acf-options-page-adder'
-			);
-			return $plugins;
-		} // end public function meta_box
 		
 		public function after_setup_theme() {
 			// check to see if acf5 is installed
@@ -418,7 +417,7 @@
 						'label' => __('Save To', 'acf-options-page-adder'),
 						'name' => '_acfop_save_to',
 						'type' => 'radio',
-						'instructions' => __('1) ACF v5.2.7 added the ability to save and load data to/from a post rather than options.<br />When saving values to this post do not use field names in your field groups that start with _acfop_.', 'acf-options-page-adder'),
+						'instructions' => '<span style="font-size:.85em;">'.__('<sup>1</sup> The standard setting for ACF options pages.<br /><sup>2</sup> Save values to a selected post.<br /><sup>3</sup> You can choose to save all fields of the options page to this options page post in this plugin.<br /><sup>4</sup> Use the options page slug. This replaces the standard ACF "option" prefix in the options table so that you can speicify the slug you set for this options page as the post ID.<br /><sup>5</sup> Works the same as <sup>4</sup> except that you can specify the slug/post ID. This is useful to set other places, for example "user_1" or "term_27"', 'acf-options-page-adder').'</span>',
 						'required' => 0,
 						'conditional_logic' => 0,
 						'wrapper' => array(
@@ -427,14 +426,41 @@
 							'id' => '',
 						),
 						'choices' => array(
-							'options' => __('Options', 'acf-options-page-adder'),
-							'post' => __('Post Object', 'acf-options-page-adder'),
-							'this_post' => __('This Post', 'acf-options-page-adder'),
+							'options' => __('Options', 'acf-options-page-adder').'<sup>1</sup>',
+							'post' => __('Post Object', 'acf-options-page-adder').'<sup>2</sup>',
+							'this_post' => __('This Post', 'acf-options-page-adder').'<sup>3</sup>',
+							'page_slug' => __('Use Page Slug', 'acf-options-page-adder').'<sup>4</sup>',
+							'custom_slug' => __('Use Custom Slug', 'acf-options-page-adder'.'<sup>5</sup>')
 						),
 						'other_choice' => 0,
 						'save_other_choice' => 0,
 						'default_value' => 'options',
 						'layout' => 'horizontal',
+					),
+					array(
+						'key' => 'field_acf_key_acfop_custom_slug',
+						'label' => __('Custom Slug/ID', 'acf-options-page-adder'),
+						'name' => '_acfop_custom_slug',
+						'prefix' => '',
+						'type' => 'text',
+						'instructions' => __('Enter the Custom Slug to use for saving fields on this options page.', 'acf-options-page-adder'),
+						'required' => 1,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_save_to',
+									'operator' => '==',
+									'value' => 'custom_slug',
+								),
+							),
+						),
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+						'readonly' => 0,
+						'disabled' => 0
 					),
 					array(
 						'key' => 'field_acf_key_acfop_post_page',
@@ -482,6 +508,20 @@
 									'field' => 'field_acf_key_acfop_save_to',
 									'operator' => '==',
 									'value' => 'options',
+								),
+							),
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_save_to',
+									'operator' => '==',
+									'value' => 'page_slug',
+								),
+							),
+							array(
+								array(
+									'field' => 'field_acf_key_acfop_save_to',
+									'operator' => '==',
+									'value' => 'custom_slug',
 								),
 							),
 						),
@@ -641,6 +681,10 @@
 				$save_id = intval(get_post_meta($post_id, '_acfop_post_page', true));
 			} elseif ($save_to == 'this_post') {
 				$save_id = $post_id;
+			} elseif ($save_to == 'page_slug') {
+				$save_id = trim(get_post_meta($post_id, '_acfop_slug', true));
+			} elseif ($save_to == 'custom_slug') {
+				$save_id = trim(get_post_meta($post_id, '_acfop_custom_slug', true));
 			} else {
 				$autoload = intval(get_post_meta($post_id, '_acfop_autoload', true));
 			}
@@ -862,6 +906,15 @@
 						echo __('Post', 'acf-options-page-adder'),' ',get_post_meta($post_id, '_acfop_post_page', true);
 					} elseif ($save_to == 'this_post') {
 						echo __('This Post', 'acf-options-page-adder'),' (',$post_id,')';
+					} elseif ($save_to == 'page_slug') {
+						$value = trim(get_post_meta($post_id, '_acfop_slug', true));
+						if (!$value) {
+							$value = trim(get_the_title($post_id));
+							$value = strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value), '-'));
+						}
+						echo $value;
+					} elseif ($save_to == 'custom_slug') {
+						echo trim(get_post_meta($post_id, '_acfop_custom_slug', true));
 					} else {
 						$slug = trim(get_post_meta($post_id, '_acfop_slug', true));
 						if (!$slug) {
@@ -1037,6 +1090,7 @@
 										'menu_position' => 100,
 										'menu_icon' => 'dashicons-admin-generic',
 										'supports' => array('custom-fields','revisions'),
+										'show_in_rest' => false,
 										'labels' => array('name' => __('Options Pages', 'acf-options-page-adder'),
 																			'singular_name' => __('Options Page', 'acf-options-page-adder'),
 																			'menu_name' =>	__('Options Pages', 'acf-options-page-adder'),
@@ -1106,51 +1160,4 @@
 		} // end private function acf_add_options_pages
 		
 	} // end class acfOptionsPageAdder
-	
-	if (!function_exists('jh_plugins_list_meta_box')) {
-		function jh_plugins_list_meta_box() {
-			if (apply_filters('remove_hube2_nag', false)) {
-				return;
-			}
-			$plugins = apply_filters('jh_plugins_list', array());
-				
-			$id = 'plugins-by-john-huebner';
-			$title = '<a style="text-decoration: none; font-size: 1em;" href="https://github.com/Hube2" target="_blank">'.__('Plugins by John Huebner', 'acf-options-page-adder').'</a>';
-			$callback = 'show_blunt_plugins_list_meta_box';
-			$screens = array();
-			foreach ($plugins as $plugin) {
-				$screens = array_merge($screens, $plugin['screens']);
-			}
-			$context = 'side';
-			$priority = 'low';
-			add_meta_box($id, $title, $callback, $screens, $context, $priority);
-			
-			
-		} // end function jh_plugins_list_meta_box
-		add_action('add_meta_boxes', 'jh_plugins_list_meta_box');
-			
-		function show_blunt_plugins_list_meta_box() {
-			$plugins = apply_filters('jh_plugins_list', array());
-			?>
-				<p style="margin-bottom: 0;"><?php echo __('Thank you for using my plugins', 'acf-options-page-adder'); ?></p>
-				<ul style="margin-top: 0; margin-left: 1em;">
-					<?php 
-						foreach ($plugins as $plugin) {
-							?>
-								<li style="list-style-type: disc; list-style-position:">
-									<?php 
-										echo $plugin['title'];
-										if ($plugin['doc']) {
-											?> <a href="<?php echo $plugin['doc']; ?>" target="_blank"><?php echo __('Documentation', 'acf-options-page-adder'); ?></a><?php 
-										}
-									?>
-								</li>
-							<?php 
-						}
-					?>
-				</ul>
-				<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hube02%40earthlink%2enet&lc=US&item_name=Donation%20for%20WP%20Plugins%20I%20Use&no_note=0&cn=Add%20special%20instructions%20to%20the%20seller%3a&no_shipping=1&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank"><?php echo __('Please consider making a small donation.', 'acf-options-page-adder'); ?></a></p><?php 
-		}
-	} // end if !function_exists
-
 ?>
