@@ -20,7 +20,7 @@ Allows adding options pages though an admin interface. Supports all the features
 ACF Options Pages. For more information see 
 http://www.advancedcustomfields.com/resources/options-page/
 
-## Change capabilit
+## Change capability
 The capability required to add/edit options pages was changed to "manage_options" in version 3.3.0.
 This can be altered by adding a filter
 ```
@@ -81,7 +81,7 @@ In other words, the slug must be all lower case and contain only letters, number
 
 Options page groups added using this plugin work correctly as this problem is dealt with internally.
 
-##Saving options page values to a post ID
+## Saving options page values to a post ID
 ACF v5.2.7 added the ability to save options page fields to a post ID, so here's a hint.
 Why not save your values to the options page post that is created when you set up an options page using
 this plugin? The post type is already created and it really is a perfect place to store the values. Here's
@@ -91,6 +91,10 @@ the options page itself. Why? because all the fields used for creating the optio
 underscore `_` and will not be returned by `get_fields()`. The only thing you need to be careful of is not
 using any of the field names used by this plugin, which should be extremely easy since they all start with
 `_acfop_`.
+
+## Saving options page values with a custom slug as the post ID
+It is posible to use a custom slug for saving options page values. For example, if you wanted to save values of an options page to a user you could supply "user_1" as the "$post_id" value for the opitons page. This also has another side effect. Normally, when ACF saves values to "options" in the options table you will find the fields with the "options_" prefix. So for example, if your field name is "my_field" then in the options table you will find "options_my_field" as the options name. You can supply a custom slug for this, let's say that you set the post ID setting for the options page to "my-custom-slug". this would cause the same field in the options page to have the name "my-custom-slug_my_field". 2 New options have been added to this plugin and you can choose to use the options page slug for the post ID or you can specify a custom slug to use instead.
+
 
 ## Customize Options Page
 Version 3.8.0 of this plugin added the ability to customize the ACF options page by adding header and footer content. In addtion to the WYSIWYG fields that have been added to the options page admin editor you can also customize these sections, or the entire options page using filters.

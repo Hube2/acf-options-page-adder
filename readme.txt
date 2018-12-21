@@ -12,6 +12,8 @@ Allows easy creation of options pages using Advanced Custom Fields Pro without n
 
 == Description ==
 
+*** New feature added: Custom Post ID Slugs ***
+
 This is an add on plugin for Advanced Custom Fields (ACF) 5 + the Options Page Add On (or ACF Pro).
 ***This plugin will not provide any functionality unless ACF 5 and the Options Page Add On (or ACF5 Pro)
 is installed***
@@ -65,6 +67,9 @@ function my_acf_options_page_adder_cap($cap) {
 == Saving Values to the Options Page Post ==
 
 ACF v5.2.7 added the ability to save options page fields to a post ID. This plugin will let you save the options to the same post ID of the post created when adding an options page using this plugin. You can even use get_fields($options_page_id) without needing to worry about getting the fields for the options page itself. Why? because all the fields used for creating the options page start with an underscore _ and will not be returned by get_fields(). The only thing you need to be careful of is not using any of the field names used by this plugin, which should be extremely easy since they all start with _acfop_.
+
+== Saving Values Using a Custom post ID slug ==
+It is posible to use a custom slug for saving options page values. For example, if you wanted to save values of an options page to a user you could supply "user_1" as the $post_id value for the opitons page. This also has another side effect. Normally, when ACF saves values to "options" in the options table you will find the fields with the "options_" prefix. So for example, if your field name is "my_field" then in the options table you will find "options_my_field" as the options name. You can supply a custom slug for this, let's say that you set the post ID setting for the options page to "my-custom-slug". this would cause the same field in the options page to have the name "my-custom-slug_my_field". 2 New options have been added to this plugin and you can choose to use the options page slug for the post ID or you can specify a custom slug to use instead.
 
 == Get Post ID for Options Page ==
 
