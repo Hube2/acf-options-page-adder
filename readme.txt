@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 5.0
-Stable tag: 3.9.0
+Stable tag: 3.9.1
 Donate link: 
 License: 
 License URI: 
@@ -165,6 +165,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.9.1 =
+* corrected bug/error when installed and not acf options pages active
 
 = 3.9.0 =
 * adjusted post type to ensure disabling glutenberg

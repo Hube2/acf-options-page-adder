@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.9.0
+		Version: 3.9.1
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.9.0';
+		private $version = '3.9.1';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -1016,7 +1016,8 @@
 						$parent_menus[$item[2]] = 'Comments';
 					} elseif ($item[2] == 'plugins.php') {
 						$parent_menus[$item[2]] = 'Plugins';
-					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5])) {
+					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5]) &&
+					          count($options_pages)) {
 						// search options pages to get correct slug
 						$found = false;
 						foreach ($options_pages as $slug => $options_page) {
