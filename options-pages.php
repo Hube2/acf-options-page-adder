@@ -1017,7 +1017,7 @@
 					} elseif ($item[2] == 'plugins.php') {
 						$parent_menus[$item[2]] = 'Plugins';
 					} elseif (isset($item[5]) && preg_match('/^toplevel_page_/i', $item[5]) &&
-					          count($options_pages)) {
+					          is_array($options_pages) && count($options_pages)) {
 						// search options pages to get correct slug
 						$found = false;
 						foreach ($options_pages as $slug => $options_page) {
