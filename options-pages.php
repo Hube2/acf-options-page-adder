@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.9.2
+		Version: 3.9.3
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.9.2';
+		private $version = '3.9.3';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -31,6 +31,8 @@
 		private $hooks = array(); // options page hook to post id
 		
 		public function __construct() {
+			add_action('acf/init', array($this, 'init'), 20);
+			add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
 			add_action('plugins_loaded', array($this, 'load_text_domain'));
 			add_action('after_setup_theme', array($this, 'after_setup_theme'), 1);
 			add_filter('acf/load_value/key=field_acf_key_acfop_title', array($this, 'set_title_field'), 20, 3);
@@ -163,6 +165,7 @@
 			// check to see if acf5 is installed
 			// if not then do not run anything else in this plugin
 			// move all other actions to this function except text domain since this is too late
+			/*
 			if (!class_exists('acf') ||
 					!function_exists('acf_get_setting') ||
 					intval(acf_get_setting('version')) < 5 ||
@@ -170,9 +173,9 @@
 				$this->active = false;
 				return;
 			}
-			add_action('init', array($this, 'init'), 20);
+			*/
 			add_action('admin_menu', array($this, 'build_admin_menu_list'), 9999);
-			add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
+			//add_action('admin_menu', array($this, 'add_hooks'), 9999); // makes sure everything has been added
 			add_filter('acf/load_field/name=_acfop_parent', array($this, 'acf_load_parent_menu_field'));
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
@@ -722,15 +725,16 @@
 			if (!$skip_hook) {
 				$settings['hook'] = get_plugin_page_hookname($slug, $parent);
 			}
-			
-			$allow = intval(get_post_meta($post_id, '_acfop_customize', true));
+			$allow = get_post_meta($post_id, '_acfop_customize', true);
+			$header = '';
+			$footer = '';
 			if ($allow === '') {
 				$allow = 0;
+				$header = trim(get_post_meta($post_id, '_acfop_header_content', true));
+				$footer = trim(get_post_meta($post_id, '_acfop_footer_content', true));
 			} else {
 				$allow = intval($allow);
 			}
-			$header = trim(get_post_meta($post_id, '_acfop_header_content', true));
-			$footer = trim(get_post_meta($post_id, '_acfop_footer_content', true));
 			if ($allow || $header || $footer) {
 				$allow = true;
 				update_post_meta($post_id, '_acfop_customize', '1');
@@ -738,6 +742,8 @@
 				$allow = false;
 				update_post_meta($post_id, '_acfop_customize', '0');
 			}
+			$header = trim(get_post_meta($post_id, '_acfop_header_content', true));
+			$footer = trim(get_post_meta($post_id, '_acfop_footer_content', true));
 			$settings['customize'] = $allow;
 			$settings['header'] = $header;
 			$settings['footer'] = $footer;
@@ -746,10 +752,13 @@
 		} // end private function build_options_page_settings
 		
 		public function add_hooks() {
+			//echo '<pre>'; print_r($this->options_pages); die;
 			foreach($this->options_pages as $id => $options_page) {
 				if (isset($options_page['customize']) && !$options_page['customize']) {
 					continue;
 				}
+				//echo get_plugin_page_hookname($options_page['acf']['menu_slug'], $options_page['acf']['parent_slug']);
+				//echo '<pre>'; print_r($options_page); die;
 				if (isset($options_page['hook'])) {
 					$hook = $options_page['hook'];
 				} else {
@@ -763,6 +772,7 @@
 		} // end public function add_hooks
 		
 		public function customize_start() {
+			//echo 'here'; die;
 			ob_start();
 		} // end public function customize_start
 		
@@ -772,13 +782,18 @@
 			
 			$content = ob_get_clean();
 			
+			
+			
 			$hook = current_filter();
 			
 			$options_page = $this->options_pages[$this->hooks[$hook]];
+			echo $this->hooks[$hook];
 			
 			$header = '';
-			if ($options_page['header']) {
-				$header = apply_filters('acf_the_content', $header);
+			if (!$options_page['header']) {
+				$header = trim(get_post_meta($this->hooks[$hook], '_acfop_header_content', true));
+			} else {
+				$header = apply_filters('acf_the_content', $options_page['header']);
 			}
 			$header = apply_filters('acf-options-page-adder/page-header', $header, $hook);
 			if ($header) {
@@ -786,8 +801,10 @@
 			}
 			
 			$footer = '';
-			if ($options_page['footer']) {
-				$footer = apply_filters('acf_the_content', $footer);
+			if (!$options_page['footer']) {
+				$footer = trim(get_post_meta($this->hooks[$hook], '_acfop_footer_content', true));
+			} else {
+				$footer = apply_filters('acf_the_content', $options_page['footer']);
 			}
 			$footer = apply_filters('acf-options-page-adder/page-footer', $footer, $hook);
 			if ($footer) {
