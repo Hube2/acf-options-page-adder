@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 5.2
-Stable tag: 3.9.3
+Stable tag: 3.9.4
 Donate link: 
 License: 
 License URI: 
@@ -165,6 +165,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 4.9.4 =
+* removed bug introduced in 3.9.3 (post id shown)
 
 = 3.9.3 =
 * corrected bugs in options page custimizations
