@@ -166,7 +166,7 @@ add_filter('remove_hube2_nag', '__return_true');
 
 == Changelog ==
 
-= 4.9.4 =
+= 3.9.4 =
 * removed bug introduced in 3.9.3 (post id shown)
 
 = 3.9.3 =
