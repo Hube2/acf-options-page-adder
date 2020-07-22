@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.9.4
+		Version: 3.9.5
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.9.4';
+		private $version = '3.9.5';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -44,6 +44,7 @@
 			add_action('admin_enqueue_scripts', array($this, 'script'));
 			add_action('acf/save_post', array($this, 'acf_save_post'), 20);
 			add_filter('user_has_cap', array($this, 'attach_files'), 10, 4);
+			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 		} // end public function __construct
 		
 		public function attach_files($allcaps, $caps, $args, $user) {
@@ -180,7 +181,6 @@
 			add_filter('acf/load_field/name=_acfop_capability', array($this, 'acf_load_capabilities_field'));
 			add_filter('manage_edit-'.$this->post_type.'_columns', array($this, 'admin_columns'));
 			add_action('manage_'.$this->post_type.'_posts_custom_column', array($this, 'admin_columns_content'), 10, 2);
-			add_action('acf/include_fields', array($this, 'acf_include_fields'));
 			require_once(dirname(__FILE__).'/api-template.php');
 		} // end public function after_setup_theme
 		
