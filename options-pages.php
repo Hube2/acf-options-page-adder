@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.9.5
+		Version: 3.9.6
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.9.5';
+		private $version = '3.9.6';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -163,6 +163,9 @@
 		} // end public function set_title_field
 		
 		public function after_setup_theme() {
+			if (!function_exists('acf_add_options_page')) {
+				return;
+			}
 			// check to see if acf5 is installed
 			// if not then do not run anything else in this plugin
 			// move all other actions to this function except text domain since this is too late
@@ -185,12 +188,18 @@
 		} // end public function after_setup_theme
 		
 		public function init() {
+			if (!function_exists('acf_add_options_page')) {
+				return;
+			}
 			$this->register_post_type();
 			$this->acf_add_options_pages();
 			do_action('acf_options_page/init');
 		} // end public function init
 		
 		public function acf_include_fields() {
+			if (!function_exists('acf_add_options_page')) {
+				return;
+			}
 			// this function is called when ACF5 is installed
 			$field_group = array(
 				'key' => 'acf_options-page-details',
@@ -752,6 +761,9 @@
 		} // end private function build_options_page_settings
 		
 		public function add_hooks() {
+			if (!function_exists('acf_add_options_page')) {
+				return;
+			}
 			//echo '<pre>'; print_r($this->options_pages); die;
 			foreach($this->options_pages as $id => $options_page) {
 				if (isset($options_page['customize']) && !$options_page['customize']) {

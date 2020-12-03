@@ -3,7 +3,7 @@ Contributors: Hube2
 Tags: Options Page, ACF
 Requires at least: 3.5
 Tested up to: 5.5
-Stable tag: 3.9.5
+Stable tag: 3.9.6
 Donate link: 
 License: 
 License URI: 
@@ -165,6 +165,9 @@ add_filter('remove_hube2_nag', '__return_true');
 
 
 == Changelog ==
+
+= 3.9.6 =
+* disable all functionality if acf options page functions do not exist
 
 = 3.9.5 =
 * moved acf/include_fields to __construct due to change is ACF timing
