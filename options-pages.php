@@ -6,7 +6,7 @@
 		Description: Allows easy creation of options pages using Advanced Custom Fields Pro without needing to do any PHP coding. Requires that ACF Pro is installed.
 		Author: John A. Huebner II
 		Author URI: https://github.com/Hube2
-		Version: 3.9.6
+		Version: 3.10.0
 	*/
 	
 	// If this file is called directly, abort.
@@ -16,7 +16,7 @@
 	
 	class acfOptionsPageAdder {
 		
-		private $version = '3.9.6';
+		private $version = '3.10.0';
 		private $post_type = 'acf-options-page';
 		private $parent_menus = array();
 		private $exclude_locations = array('',
@@ -315,6 +315,27 @@
 						'maxlength' => '',
 						'readonly' => 0,
 						'disabled' => 0,
+					),
+					array(
+						'key' => 'field_acf_key_acfop_show_in_graphql',
+						'label' => __('Show in GraphQL', 'acf-options-page-adder'),
+						'name' => '_acfop_show_in_graphql',
+						'prefix' => '',
+						'type' => 'true_false',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+						),
+						'show_in_graphql' => 1,
+						'message' => '',
+						'default_value' => 0,
+						'ui' => 1,
+						'ui_on_text' => '',
+						'ui_off_text' => '',
 					),
 					array(
 						'key' => 'field_acf_key_acfop_tab_advanced',
@@ -665,6 +686,10 @@
 			$settings['acf'] = array();
 			if ($title == '') {
 				$title = get_the_title($post_id);
+			}
+			$show_in_graphql = trim(get_post_meta($post_id, '_acfop_show_in_graphql', true));
+			if ($show_in_graphql) {
+				$settings['acf']['show_in_graphql'] = $show_in_graphql;
 			}
 			$settings['acf']['page_title'] = $title;
 			$menu_text = trim(get_post_meta($post_id, '_acfop_menu', true));
