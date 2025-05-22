@@ -1,3 +1,5 @@
+This plugin has been discontinued, it is no longer needed, all of the functionality of this plugin is not available in ACF Pro. The plugin is no longer maintained and I will no longer supply support for this plugin. Use this plugin at your own risk.
+
 ACF Options Page Admin
 ==========================================
 
